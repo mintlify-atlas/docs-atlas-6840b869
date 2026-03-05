@@ -1,0 +1,114 @@
+{
+  "projectType": "cli-tool",
+  "projectName": "HackingTool",
+  "projectDescription": "All-in-one hacking toolkit with 100+ security tools for penetration testing and CTF challenges",
+  "theme": "aspen",
+  "primaryColor": "#7B61FF",
+  "lightColor": "#9D84FF",
+  "darkColor": "#5A3FCC",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": [
+              "introduction",
+              "installation",
+              "quickstart"
+            ]
+          },
+          {
+            "group": "Usage Guide",
+            "pages": [
+              "usage/interface",
+              "usage/configuration",
+              "usage/docker"
+            ]
+          },
+          {
+            "group": "Tool Categories",
+            "pages": [
+              "tools/overview",
+              "tools/anonymity",
+              "tools/information-gathering",
+              "tools/wordlist-generation",
+              "tools/wireless-attacks",
+              "tools/sql-injection",
+              "tools/phishing",
+              "tools/web-attacks",
+              "tools/post-exploitation",
+              "tools/forensics",
+              "tools/payload-creation",
+              "tools/exploit-frameworks",
+              "tools/reverse-engineering",
+              "tools/ddos",
+              "tools/remote-administration",
+              "tools/xss",
+              "tools/steganography",
+              "tools/other-tools"
+            ]
+          },
+          {
+            "group": "Advanced",
+            "pages": [
+              "advanced/troubleshooting",
+              "advanced/contributing",
+              "advanced/legal-disclaimer"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Tool Reference",
+        "groups": [
+          {
+            "group": "Command Reference",
+            "pages": [
+              "reference/commands",
+              "reference/installation-modes"
+            ]
+          },
+          {
+            "group": "Tool List",
+            "pages": [
+              "reference/tool-list",
+              "reference/external-tools"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "keyFeatures": [
+    "100+ integrated security and penetration testing tools",
+    "Interactive menu-driven CLI interface",
+    "Automated tool installation and management",
+    "18 tool categories covering all aspects of security testing",
+    "Docker support for containerized deployment",
+    "Support for Kali Linux, Parrot OS, and Arch Linux"
+  ],
+  "publicApiSurface": [
+    "hackingtool - Main command to launch the tool",
+    "python3 hackingtool.py - Direct Python execution",
+    "sudo hackingtool - Run with root privileges",
+    "AnonSurfTools - Anonymity and privacy tools",
+    "InformationGatheringTools - Network reconnaissance",
+    "WordlistGeneratorTools - Password list generation",
+    "WirelessAttackTools - WiFi security testing",
+    "SqlInjectionTools - SQL injection testing",
+    "PhishingAttackTools - Social engineering",
+    "WebAttackTools - Web application testing",
+    "PostExploitationTools - Post-compromise tools",
+    "ForensicTools - Digital forensics",
+    "PayloadCreatorTools - Payload generation",
+    "ExploitFrameworkTools - Exploitation frameworks",
+    "ReverseEngineeringTools - Binary analysis",
+    "DDOSTools - DDoS testing tools",
+    "RemoteAdministrationTools - RAT tools",
+    "XSSAttackTools - Cross-site scripting testing",
+    "SteganographyTools - Hidden data techniques",
+    "OtherTools - Miscellaneous security tools"
+  ]
+}
