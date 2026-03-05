@@ -1,0 +1,512 @@
+---
+title: 'Forensic Tools'
+description: 'Digital forensics tools for investigation, analysis, and evidence collection'
+icon: 'magnifying-glass'
+---
+
+## Overview
+
+Forensic tools are essential for cyber investigators, incident responders, and security analysts. These tools help:
+
+- Investigate security incidents
+- Recover deleted files and artifacts
+- Analyze disk images and memory dumps
+- Capture and analyze network traffic
+- Collect and preserve digital evidence
+- Support legal proceedings with forensic evidence
+
+<Note>
+Forensic investigations should follow proper chain of custody procedures and be conducted by trained professionals to ensure evidence admissibility.
+</Note>
+
+## Featured Tools
+
+<CardGroup cols={2}>
+  <Card title="Autopsy" icon="folder-open" href="https://www.autopsy.com">
+    Comprehensive digital forensics platform for investigators
+  </Card>
+  
+  <Card title="Wireshark" icon="network-wired" href="https://www.wireshark.org">
+    Industry-standard network protocol analyzer
+  </Card>
+  
+  <Card title="Bulk Extractor" icon="magnifying-glass-chart" href="https://github.com/simsong/bulk_extractor">
+    Extract useful information without parsing file systems
+  </Card>
+  
+  <Card title="Guymager" icon="hard-drive" href="https://guymager.sourceforge.io/">
+    Free forensic imager for media acquisition
+  </Card>
+</CardGroup>
+
+## Available Forensic Tools
+
+### Digital Forensics Platforms
+
+<Accordion title="Autopsy">
+  **Description**: Autopsy is a comprehensive platform used by cyber investigators for digital forensics and incident response
+  
+  **Usage**:
+  ```bash
+  sudo autopsy
+  ```
+  
+  **Key Features**:
+  - **Multi-Platform Support**: Works on any operating system
+  - **File Recovery**: Recover deleted files from any OS and media
+  - **Metadata Extraction**: Extract image metadata (EXIF, IPTC)
+  - **Timeline Analysis**: Create timelines of file activity
+  - **Keyword Search**: Search across entire disk images
+  - **Hash Filtering**: Filter known good/bad files using hash databases
+  - **Registry Analysis**: Parse Windows registry files
+  - **Email Analysis**: Analyze email archives
+  
+  **Supported File Systems**:
+  - NTFS, FAT, exFAT
+  - Ext2/3/4, XFS
+  - HFS+, APFS
+  - ISO 9660, UDF
+  
+  **Investigation Workflow**:
+  1. Create or load a case
+  2. Add data sources (disk images, drives)
+  3. Configure ingest modules
+  4. Analyze results and artifacts
+  5. Generate reports
+  
+  <Note>Autopsy is pre-installed on most forensic distributions</Note>
+  
+  **Website**: [autopsy.com](https://www.autopsy.com)
+</Accordion>
+
+### Network Forensics
+
+<Accordion title="Wireshark">
+  **Description**: Wireshark is the world's foremost network protocol analyzer to see what's happening on your network and investigate network-related incidents
+  
+  **Usage**:
+  ```bash
+  sudo wireshark
+  ```
+  
+  **Key Features**:
+  - **Deep Inspection**: Hundreds of protocols supported
+  - **Live Capture**: Real-time packet capture and analysis
+  - **Offline Analysis**: Analyze saved capture files
+  - **Rich VoIP Analysis**: Call flows, RTP analysis
+  - **Decryption**: Decrypt SSL/TLS traffic with keys
+  - **Statistics**: Comprehensive protocol statistics
+  - **Filtering**: Powerful display and capture filters
+  
+  **Common Use Cases**:
+  - Network troubleshooting
+  - Security incident investigation
+  - Protocol analysis and debugging
+  - Malware traffic analysis
+  - Data exfiltration detection
+  
+  **Display Filters Examples**:
+  ```
+  # Filter HTTP traffic
+  http
+  
+  # Filter specific IP
+  ip.addr == 192.168.1.1
+  
+  # Filter TCP port
+  tcp.port == 443
+  
+  # Filter DNS queries
+  dns.qry.name contains "example.com"
+  ```
+  
+  **Capture Filters Examples**:
+  ```
+  # Capture only HTTP
+  tcp port 80
+  
+  # Capture specific host
+  host 192.168.1.1
+  
+  # Capture subnet
+  net 192.168.1.0/24
+  ```
+  
+  <Note>Wireshark is pre-installed on most security distributions</Note>
+  
+  **Website**: [wireshark.org](https://www.wireshark.org)
+</Accordion>
+
+### Data Extraction & Analysis
+
+<Accordion title="Bulk Extractor">
+  **Description**: Extract useful information from disk images without parsing the file system. Scans for email addresses, credit cards, URLs, and other patterns
+  
+  **Installation & Usage**:
+  
+  Bulk Extractor offers both GUI and CLI modes:
+  
+  **CLI Mode**:
+  ```bash
+  # Install
+  sudo apt install bulk-extractor
+  
+  # Show help
+  bulk_extractor -h
+  
+  # Basic usage
+  bulk_extractor [options] imagefile
+  
+  # Example: Extract from disk image
+  bulk_extractor -o output_dir disk_image.dd
+  
+  # Extract specific features only
+  bulk_extractor -o output_dir -x email -x ccn disk_image.dd
+  ```
+  
+  **GUI Mode**:
+  ```bash
+  # Clone repository for GUI version
+  git clone https://github.com/simsong/bulk_extractor.git
+  cd bulk_extractor/java_gui
+  ./BEViewer
+  ```
+  
+  **Key Features**:
+  - **No File System Parsing**: Works on raw data
+  - **Pattern Recognition**: Finds emails, URLs, credit cards
+  - **Parallel Processing**: Fast multi-threaded scanning
+  - **Multiple Output Formats**: Text, HTML reports
+  - **Context Extraction**: Provides context around findings
+  
+  **What It Extracts**:
+  - Email addresses
+  - URLs and domains
+  - Credit card numbers
+  - Social security numbers
+  - Phone numbers
+  - GPS coordinates
+  - Cryptocurrency addresses
+  - ZIP file components
+  
+  **Output Files**:
+  - `email.txt` - All email addresses found
+  - `url.txt` - All URLs found
+  - `ccn.txt` - Credit card numbers
+  - `telephone.txt` - Phone numbers
+  - `report.xml` - Summary report
+  
+  **GitHub**: [simsong/bulk_extractor](https://github.com/simsong/bulk_extractor)
+</Accordion>
+
+### Disk Imaging & Acquisition
+
+<Accordion title="Guymager">
+  **Description**: Guymager is a free forensic imager for media acquisition. It's fast, provides detailed logging, and creates forensically sound disk images
+  
+  **Installation**:
+  ```bash
+  sudo apt install guymager
+  ```
+  
+  **Usage**:
+  ```bash
+  sudo guymager
+  ```
+  
+  **Key Features**:
+  - **Fast Imaging**: Multi-threaded acquisition
+  - **Multiple Formats**: EWF (E01), AFF, dd
+  - **Verification**: Automatic hash calculation
+  - **Compression**: Optional compression for space savings
+  - **Queue Management**: Image multiple devices
+  - **Detailed Logging**: Complete acquisition logs
+  
+  **Supported Image Formats**:
+  - **EWF (Expert Witness Format)**: E01 files
+  - **AFF (Advanced Forensic Format)**: AFF files
+  - **dd**: Raw bit-by-bit copies
+  
+  **Imaging Process**:
+  1. Launch Guymager as root
+  2. Select source device
+  3. Right-click and choose "Acquire image"
+  4. Select image format and destination
+  5. Choose hash algorithms (MD5/SHA-256)
+  6. Start acquisition
+  7. Verify hash values
+  
+  **Best Practices**:
+  - Always use write blockers
+  - Calculate multiple hashes (MD5 and SHA-256)
+  - Maintain chain of custody
+  - Store images on separate media
+  - Document all steps
+  
+  **Website**: [guymager.sourceforge.io](https://guymager.sourceforge.io/)
+</Accordion>
+
+### Online Forensic Tools
+
+<Accordion title="Toolsley">
+  **Description**: Toolsley provides a collection of more than ten useful online tools for forensic investigation and analysis
+  
+  **Available Tools**:
+  
+  **1. File Signature Verifier**
+  - Verify file types by magic bytes
+  - Detect file type mismatches
+  - Identify disguised files
+  
+  **2. File Identifier**
+  - Identify unknown file types
+  - Check file headers
+  - Analyze file structure
+  
+  **3. Hash & Validate**
+  - Calculate file hashes (MD5, SHA-1, SHA-256)
+  - Verify file integrity
+  - Compare hash values
+  
+  **4. Binary Inspector**
+  - Examine binary file contents
+  - Hex dump viewer
+  - ASCII representation
+  
+  **5. Encode Text**
+  - Base64 encoding/decoding
+  - URL encoding/decoding
+  - Hex encoding
+  
+  **6. Data URI Generator**
+  - Create data URIs from files
+  - Embed files in HTML/CSS
+  - Convert images to base64
+  
+  **7. Password Generator**
+  - Generate secure passwords
+  - Customizable complexity
+  - Entropy calculation
+  
+  **Use Cases**:
+  - Quick file analysis without local tools
+  - Hash verification
+  - File type identification
+  - Data encoding/decoding
+  
+  <Note>Online tools should not be used for sensitive evidence. Use offline tools for confidential investigations.</Note>
+  
+  **Website**: [toolsley.com](https://www.toolsley.com/)
+</Accordion>
+
+## Forensic Investigation Workflow
+
+<Steps>
+  <Step title="Identification">
+    Identify potential sources of digital evidence and scope of investigation
+  </Step>
+  
+  <Step title="Preservation">
+    Create forensic images using Guymager while maintaining chain of custody
+  </Step>
+  
+  <Step title="Collection">
+    Gather relevant data using appropriate tools and techniques
+  </Step>
+  
+  <Step title="Examination">
+    Analyze evidence using Autopsy, Wireshark, and Bulk Extractor
+  </Step>
+  
+  <Step title="Analysis">
+    Interpret findings and correlate evidence across multiple sources
+  </Step>
+  
+  <Step title="Reporting">
+    Document findings in a clear, comprehensive forensic report
+  </Step>
+</Steps>
+
+## Common Investigation Scenarios
+
+### Incident Response Investigation
+
+```bash
+# 1. Create disk image
+sudo guymager  # Use GUI to create forensic image
+
+# 2. Extract artifacts
+bulk_extractor -o artifacts/ disk_image.e01
+
+# 3. Analyze in Autopsy
+sudo autopsy  # Load the disk image for detailed analysis
+
+# 4. Capture network traffic (if ongoing)
+sudo wireshark  # Capture and analyze network activity
+```
+
+### Data Recovery
+
+```bash
+# Launch Autopsy
+sudo autopsy
+
+# Steps in Autopsy:
+# 1. Create new case
+# 2. Add disk image as data source
+# 3. Run "Recent Activity" ingest module
+# 4. Search for deleted files
+# 5. Export recovered files
+```
+
+### Network Incident Analysis
+
+```bash
+# Capture live traffic
+sudo wireshark
+
+# Or analyze existing capture
+wireshark capture.pcap
+
+# Use filters to find suspicious activity:
+# - http.request.method == "POST"
+# - dns.qry.name contains "suspicious"
+# - ip.addr == <suspect_ip>
+```
+
+## Evidence Types
+
+<CardGroup cols={2}>
+  <Card title="Disk Evidence" icon="hard-drive">
+    Disk images, file systems, deleted files, file metadata
+  </Card>
+  
+  <Card title="Network Evidence" icon="network-wired">
+    Packet captures, flow data, DNS queries, HTTP traffic
+  </Card>
+  
+  <Card title="Memory Evidence" icon="memory">
+    RAM dumps, running processes, network connections
+  </Card>
+  
+  <Card title="Log Evidence" icon="file-lines">
+    System logs, application logs, security logs, audit trails
+  </Card>
+</CardGroup>
+
+## Best Practices
+
+### Chain of Custody
+
+<Warning>
+**Critical Requirements**:
+
+1. **Documentation**: Record every person who handles evidence
+2. **Timestamps**: Log date/time of all evidence interactions
+3. **Hashing**: Calculate and verify cryptographic hashes
+4. **Storage**: Use secure, tamper-evident storage
+5. **Access Control**: Limit evidence access to authorized personnel
+6. **Write Protection**: Use write blockers during acquisition
+</Warning>
+
+### Forensic Soundness
+
+<Note>
+**Principles**:
+
+- Work on copies, never original evidence
+- Maintain data integrity through hashing
+- Document all actions and tools used
+- Use validated forensic tools
+- Follow established procedures (NIST, ISO)
+- Maintain detailed contemporaneous notes
+</Note>
+
+## Tool Comparison
+
+| Tool | Purpose | Platform | Use Case |
+|------|---------|----------|----------|
+| **Autopsy** | Complete forensic analysis | Cross-platform | Full disk investigations |
+| **Wireshark** | Network traffic analysis | Cross-platform | Network incidents |
+| **Bulk Extractor** | Data extraction | Cross-platform | Quick artifact extraction |
+| **Guymager** | Disk imaging | Linux | Forensic acquisition |
+| **Toolsley** | Online utilities | Web-based | Quick analysis |
+
+## Legal Considerations
+
+### Evidence Admissibility
+
+<Accordion title="Requirements for Court">
+  **Technical Requirements**:
+  - Forensically sound acquisition methods
+  - Verified data integrity (hashes)
+  - Documented chain of custody
+  - Repeatable methodology
+  - Tool validation
+  
+  **Documentation Requirements**:
+  - Investigation notes
+  - Tool outputs and logs
+  - Hash values and verification
+  - Timeline of events
+  - Analyst qualifications
+</Accordion>
+
+<Accordion title="Legal Frameworks">
+  **Relevant Standards**:
+  - NIST SP 800-86: Guide to Integrating Forensic Techniques
+  - ISO/IEC 27037: Guidelines for digital evidence
+  - ACPO Principles (UK)
+  - Daubert Standard (US)
+  - SWGDE/SWGIT Guidelines
+</Accordion>
+
+## Training & Certification
+
+### Recommended Certifications
+
+- **GCFA** - GIAC Certified Forensic Analyst
+- **EnCE** - EnCase Certified Examiner
+- **CCE** - Certified Computer Examiner
+- **CFCE** - Certified Forensic Computer Examiner
+- **CHFI** - Computer Hacking Forensic Investigator
+
+### Skills Development
+
+<CardGroup cols={2}>
+  <Card title="Disk Forensics" icon="hard-drive">
+    File system analysis, data recovery, artifact extraction
+  </Card>
+  
+  <Card title="Network Forensics" icon="network-wired">
+    Packet analysis, protocol understanding, traffic correlation
+  </Card>
+  
+  <Card title="Memory Forensics" icon="memory">
+    Volatility analysis, process analysis, malware detection
+  </Card>
+  
+  <Card title="Mobile Forensics" icon="mobile">
+    iOS/Android forensics, app analysis, data extraction
+  </Card>
+</CardGroup>
+
+## See Also
+
+- [Post-Exploitation Tools](/tools/post-exploitation) - Understand attacker techniques
+- [Web Attack Tools](/tools/web-attacks) - Web-related investigations
+- [Getting Started](/getting-started) - Learn the basics
+
+## Additional Resources
+
+### Communities & Resources
+- SANS Digital Forensics Community
+- Forensics Focus Forums
+- r/computerforensics (Reddit)
+- Digital Forensics Discord servers
+
+### Practice Datasets
+- Digital Corpora
+- NIST Computer Forensics Tool Testing
+- Honeynet Project Challenges
+- Forensics CTF competitions

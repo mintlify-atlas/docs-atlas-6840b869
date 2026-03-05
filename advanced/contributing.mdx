@@ -1,0 +1,552 @@
+---
+title: 'Contributing'
+description: 'Learn how to contribute to HackingTool and add new security tools'
+---
+
+# Contributing to HackingTool
+
+Thank you for your interest in contributing to HackingTool! This guide will help you understand the project structure and how to add new tools.
+
+## Getting Started
+
+### Prerequisites
+
+Before contributing, make sure you have:
+
+- Python 3.x installed
+- Git installed and configured
+- A GitHub account
+- Familiarity with Python object-oriented programming
+- Understanding of the tool you want to add
+
+### Fork and Clone
+
+<Accordion title="Set up your development environment">
+1. **Fork the repository** on GitHub: [https://github.com/Z4nzu/hackingtool](https://github.com/Z4nzu/hackingtool)
+
+2. **Clone your fork:**
+   ```bash
+   git clone https://github.com/YOUR-USERNAME/hackingtool.git
+   cd hackingtool
+   ```
+
+3. **Add upstream remote:**
+   ```bash
+   git remote add upstream https://github.com/Z4nzu/hackingtool.git
+   ```
+
+4. **Create a virtual environment:**
+   ```bash
+   python3 -m venv venv
+   source venv/bin/activate
+   ```
+
+5. **Install dependencies:**
+   ```bash
+   pip install -r requirements.txt
+   ```
+</Accordion>
+
+## Project Structure
+
+Understanding the codebase structure is crucial for contributing:
+
+```
+hackingtool/
+├── core.py                    # Core classes: HackingTool, HackingToolsCollection
+├── hackingtool.py            # Main entry point
+├── install.py                # Installation script
+├── requirements.txt          # Python dependencies
+├── tools/                    # All tool implementations
+│   ├── anonsurf.py          # Anonymity tools
+│   ├── information_gathering_tools.py
+│   ├── wireless_attack_tools.py
+│   ├── sql_tools.py
+│   ├── phising_attack.py
+│   ├── webattack.py
+│   ├── post_exploitation.py
+│   ├── forensic_tools.py
+│   ├── payload_creator.py
+│   ├── exploit_frameworks.py
+│   ├── reverse_engineering.py
+│   ├── ddos.py
+│   ├── remote_administration.py
+│   ├── xss_attack.py
+│   ├── steganography.py
+│   ├── wordlist_generator.py
+│   ├── other_tools.py
+│   └── others/              # Subcategory tools
+│       ├── android_attack.py
+│       ├── email_verifier.py
+│       ├── hash_crack.py
+│       ├── homograph_attacks.py
+│       ├── mix_tools.py
+│       ├── payload_injection.py
+│       ├── socialmedia.py
+│       ├── socialmedia_finder.py
+│       ├── web_crawling.py
+│       └── wifi_jamming.py
+└── .github/
+    ├── workflows/            # CI/CD workflows
+    └── ISSUE_TEMPLATE/      # Issue templates
+```
+
+## Understanding core.py
+
+The `core.py` file contains the foundation of HackingTool. Let's explore the main classes:
+
+### HackingTool Class
+
+The `HackingTool` class is the base class for all individual tools:
+
+```python
+class HackingTool(object):
+    TITLE: str = ""                      # Tool display name
+    DESCRIPTION: str = ""                # Tool description
+    INSTALL_COMMANDS: List[str] = []     # Installation commands
+    INSTALLATION_DIR: str = ""           # Where tool is installed
+    UNINSTALL_COMMANDS: List[str] = []   # Uninstall commands
+    RUN_COMMANDS: List[str] = []         # Commands to run the tool
+    OPTIONS: List[Tuple[str, Callable]] = []  # Custom options
+    PROJECT_URL: str = ""                # GitHub/project URL
+```
+
+<Note>
+File reference: `core.py:36-44`
+</Note>
+
+**Key methods:**
+
+- `install()` - Executes installation commands (core.py:104)
+- `run()` - Executes run commands (core.py:130)
+- `uninstall()` - Removes the tool (core.py:118)
+- `show_options()` - Displays tool menu (core.py:64)
+- `show_info()` - Shows tool information (core.py:58)
+
+### HackingToolsCollection Class
+
+Groups related tools together:
+
+```python
+class HackingToolsCollection(object):
+    TITLE: str = ""           # Collection name
+    DESCRIPTION: str = ""     # Collection description  
+    TOOLS: List = []          # List of HackingTool instances
+```
+
+<Note>
+File reference: `core.py:149-152`
+</Note>
+
+## Adding a New Tool
+
+### Step 1: Choose the Right Category
+
+First, determine which category your tool belongs to:
+
+- **Anonymity** (`anonsurf.py`)
+- **Information Gathering** (`information_gathering_tools.py`)
+- **Wireless Attacks** (`wireless_attack_tools.py`)
+- **SQL Injection** (`sql_tools.py`)
+- **Phishing** (`phising_attack.py`)
+- **Web Attacks** (`webattack.py`)
+- **Post Exploitation** (`post_exploitation.py`)
+- **Forensics** (`forensic_tools.py`)
+- **Payload Creation** (`payload_creator.py`)
+- **Exploit Frameworks** (`exploit_frameworks.py`)
+- **Reverse Engineering** (`reverse_engineering.py`)
+- **DDoS** (`ddos.py`)
+- **Remote Administration** (`remote_administration.py`)
+- **XSS Attacks** (`xss_attack.py`)
+- **Steganography** (`steganography.py`)
+- **Wordlist Generation** (`wordlist_generator.py`)
+- **Other Tools** (`other_tools.py` or subcategories in `others/`)
+
+### Step 2: Create Your Tool Class
+
+Here's a complete example of adding a new tool:
+
+<Accordion title="Example: Adding a new information gathering tool">
+```python
+# In tools/information_gathering_tools.py
+
+from core import HackingTool
+
+class YourNewTool(HackingTool):
+    TITLE = "Your Tool Name"
+    DESCRIPTION = "Brief description of what this tool does"
+    
+    # Installation commands - executed in order
+    INSTALL_COMMANDS = [
+        "git clone https://github.com/author/tool-repo.git",
+        "cd tool-repo && pip install -r requirements.txt",
+    ]
+    
+    # Commands to run the tool
+    RUN_COMMANDS = [
+        "cd tool-repo && python3 tool.py"
+    ]
+    
+    # Project URL for reference
+    PROJECT_URL = "https://github.com/author/tool-repo"
+    
+    def __init__(self):
+        super(YourNewTool, self).__init__()
+```
+</Accordion>
+
+### Step 3: Add to Collection
+
+Add your tool to the appropriate collection class:
+
+```python
+# Find the collection class in the same file
+class InformationGatheringTools(HackingToolsCollection):
+    TITLE = "Information Gathering Tools"
+    DESCRIPTION = "Tools for reconnaissance and information gathering"
+    TOOLS = [
+        NetworkMapper(),
+        PortScanner(),
+        # ... other existing tools ...
+        YourNewTool(),  # Add your tool here
+    ]
+```
+
+### Step 4: Advanced Tool Options
+
+<Accordion title="Add custom options to your tool">
+If your tool needs custom options beyond install/run:
+
+```python
+class AdvancedTool(HackingTool):
+    TITLE = "Advanced Tool"
+    DESCRIPTION = "Tool with custom options"
+    INSTALL_COMMANDS = ["git clone https://github.com/example/tool.git"]
+    RUN_COMMANDS = ["cd tool && ./run.sh"]
+    PROJECT_URL = "https://github.com/example/tool"
+    
+    def __init__(self):
+        # Add custom options
+        super(AdvancedTool, self).__init__([
+            ("Custom Action 1", self.custom_action_1),
+            ("Custom Action 2", self.custom_action_2),
+        ])
+    
+    def custom_action_1(self):
+        """Implement your custom action"""
+        console.print("[cyan]Running custom action 1...[/cyan]")
+        os.system("your-custom-command")
+    
+    def custom_action_2(self):
+        """Another custom action"""
+        console.print("[yellow]Running custom action 2...[/yellow]")
+        os.system("another-command")
+```
+</Accordion>
+
+### Step 5: Lifecycle Hooks
+
+<Accordion title="Use lifecycle hooks for custom behavior">
+You can override these methods for custom behavior:
+
+```python
+class CustomTool(HackingTool):
+    TITLE = "Custom Tool"
+    DESCRIPTION = "Tool with lifecycle hooks"
+    INSTALL_COMMANDS = ["git clone https://example.com/tool.git"]
+    RUN_COMMANDS = ["./tool"]
+    
+    def before_install(self):
+        """Called before installation"""
+        console.print("[yellow]Preparing to install...[/yellow]")
+        # Create directories, check prerequisites, etc.
+    
+    def after_install(self):
+        """Called after installation"""
+        console.print("[green]Tool installed successfully![/green]")
+        console.print("[cyan]Running post-install configuration...[/cyan]")
+        # Post-installation setup
+    
+    def before_run(self):
+        """Called before running"""
+        console.print("[yellow]Starting tool...[/yellow]")
+        # Pre-run checks
+    
+    def after_run(self):
+        """Called after running"""
+        console.print("[green]Tool execution completed[/green]")
+        # Cleanup, save results, etc.
+    
+    def before_uninstall(self) -> bool:
+        """Called before uninstall - return False to cancel"""
+        return console.input("Are you sure? [y/n]: ").lower() == 'y'
+    
+    def after_uninstall(self):
+        """Called after uninstall"""
+        console.print("[red]Tool removed[/red]")
+```
+</Accordion>
+
+## Code Style Guidelines
+
+### Follow Python Conventions
+
+<Note>
+The project uses `ruff`, `black`, and `mypy` for code quality. Check `.github/workflows/lint_python.yml` for CI requirements.
+</Note>
+
+**Key guidelines:**
+
+1. **Use Rich library for output:**
+   ```python
+   from rich.console import Console
+   console = Console()
+   console.print("[green]Success![/green]")
+   ```
+
+2. **Follow PEP 8 naming:**
+   - Classes: `PascalCase`
+   - Functions/variables: `snake_case`
+   - Constants: `UPPER_CASE`
+
+3. **Add docstrings:**
+   ```python
+   def custom_function(self):
+       """Brief description of what this function does."""
+       pass
+   ```
+
+4. **Use type hints (Python 3.7+):**
+   ```python
+   from typing import List, Tuple, Callable
+   
+   OPTIONS: List[Tuple[str, Callable]] = []
+   ```
+
+### Testing Your Changes
+
+Before submitting:
+
+```bash
+# Run the tool locally
+sudo python3 hackingtool.py
+
+# Navigate to your tool and test:
+# - Installation
+# - Running
+# - Uninstallation (if applicable)
+# - Custom options
+
+# Format code with black
+pip install black
+black .
+
+# Run linting
+pip install ruff
+ruff .
+
+# Check types
+pip install mypy
+mypy --ignore-missing-imports .
+```
+
+## Submitting Pull Requests
+
+### Create a Feature Branch
+
+```bash
+# Update your fork
+git checkout master
+git pull upstream master
+
+# Create a feature branch
+git checkout -b add-new-tool-name
+```
+
+### Make Your Changes
+
+<Accordion title="Best practices for commits">
+1. **Make focused commits:**
+   ```bash
+   git add tools/your_category.py
+   git commit -m "Add NewTool to information gathering category"
+   ```
+
+2. **Write clear commit messages:**
+   - Use present tense: "Add feature" not "Added feature"
+   - Be descriptive but concise
+   - Reference issue numbers if applicable: "Add tool X (fixes #123)"
+
+3. **Test before committing:**
+   - Verify the tool installs correctly
+   - Test all menu options
+   - Check for runtime errors
+</Accordion>
+
+### Push and Create PR
+
+```bash
+# Push to your fork
+git push origin add-new-tool-name
+```
+
+Then create a Pull Request on GitHub:
+
+1. Go to your fork on GitHub
+2. Click "Compare & pull request"
+3. Fill out the PR template with:
+   - Description of the tool
+   - Category it belongs to
+   - Why it should be included
+   - Testing performed
+   - Screenshots (if applicable)
+
+<Tip>
+Reference the original tool's repository and provide credit to the original author in your PR description.
+</Tip>
+
+## PR Review Process
+
+After submitting your PR:
+
+1. **Automated checks will run:**
+   - Installation test (`test_install.yml`)
+   - Python linting (`lint_python.yml`)
+
+2. **Maintainer review:**
+   - Code quality check
+   - Tool relevance verification
+   - Security considerations
+
+3. **Address feedback:**
+   ```bash
+   # Make requested changes
+   git add .
+   git commit -m "Address PR feedback"
+   git push origin add-new-tool-name
+   ```
+
+<Warning>
+Do not add tools that:
+- Are outdated or unmaintained
+- Have known security vulnerabilities
+- Are illegal in most jurisdictions
+- Duplicate existing functionality
+</Warning>
+
+## Contributing Beyond Code
+
+You can contribute in many ways:
+
+### Documentation
+
+- Improve README.md
+- Add usage examples
+- Write tutorials
+- Translate documentation
+
+### Bug Reports
+
+Use the bug report template at `.github/ISSUE_TEMPLATE/bug_report.md`:
+
+**Include:**
+- OS and version
+- Python version
+- Steps to reproduce
+- Expected vs actual behavior
+- Error messages/logs
+
+### Feature Requests
+
+Use the feature request template at `.github/ISSUE_TEMPLATE/feature_request.md`:
+
+**Describe:**
+- The problem you're trying to solve
+- Your proposed solution
+- Alternative approaches considered
+- Additional context
+
+### Suggest New Tools
+
+<Accordion title="Tool suggestion guidelines">
+When suggesting a new tool, provide:
+
+1. **Tool name and purpose**
+2. **GitHub/project URL**
+3. **Category it belongs to**
+4. **Why it's useful for penetration testing**
+5. **Installation method**
+6. **License information**
+7. **Active maintenance status**
+
+You can submit via [this form](https://forms.gle/b235JoCKyUq5iM3t8) or create an issue.
+</Accordion>
+
+## Community Guidelines
+
+### Be Respectful
+
+- Treat all contributors with respect
+- Provide constructive feedback
+- Be patient with newcomers
+- Follow the code of conduct
+
+### Stay On Topic
+
+- Keep discussions relevant to the project
+- Use appropriate channels (issues, PRs, discussions)
+- Don't spam or self-promote
+
+### Ethical Considerations
+
+<Warning>
+HackingTool is for authorized security testing only. Contributors must:
+- Not promote illegal activities
+- Include proper warnings in tool descriptions
+- Respect responsible disclosure practices
+- Follow ethical hacking principles
+</Warning>
+
+## Development Tips
+
+### Debug Mode
+
+```python
+# Enable rich tracebacks (already enabled in core.py)
+from rich.traceback import install
+install(show_locals=True)
+```
+
+### Testing Individual Tools
+
+```python
+# Test your tool class directly
+if __name__ == "__main__":
+    tool = YourNewTool()
+    tool.show_options()
+```
+
+### Check Existing Implementations
+
+Study existing tool implementations for patterns:
+
+- Simple tool: `tools/anonsurf.py:17-36` (AnonymouslySurf)
+- Tool with options: `tools/anonsurf.py:30-36` (custom stop method)
+- Non-runnable tool: `tools/anonsurf.py:39-53` (Multitor)
+
+## Resources
+
+- **Project Repository:** [https://github.com/Z4nzu/hackingtool](https://github.com/Z4nzu/hackingtool)
+- **Report Issues:** [GitHub Issues](https://github.com/Z4nzu/hackingtool/issues)
+- **Feature Requests:** [Google Form](https://forms.gle/b235JoCKyUq5iM3t8)
+- **Python Rich Documentation:** [https://rich.readthedocs.io/](https://rich.readthedocs.io/)
+
+<Tip>
+Join the community! Star the repository, follow the maintainer on [Twitter](https://twitter.com/_Zinzu07), and share your contributions.
+</Tip>
+
+## Thank You!
+
+Every contribution makes HackingTool better. Whether you're adding tools, fixing bugs, improving documentation, or helping others, your efforts are appreciated!
+
+Happy hacking! (Ethically, of course)

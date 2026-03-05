@@ -1,0 +1,464 @@
+---
+title: 'Wordlist Generator Tools'
+description: 'Create custom wordlists for password cracking and brute-force attacks'
+icon: 'list'
+---
+
+<Warning>
+  **Legal Notice**: Wordlists should only be used for authorized password testing, security audits, and research. Unauthorized password cracking is illegal.
+</Warning>
+
+## Overview
+
+Wordlist generators create custom dictionaries for password cracking, brute-force attacks, and security testing. These tools help security professionals test password strength by generating targeted wordlists based on personal information, patterns, or comprehensive character combinations.
+
+## Use Cases
+
+- **Password Auditing**: Test organizational password policies
+- **Penetration Testing**: Create targeted wordlists for specific targets
+- **Security Research**: Analyze password patterns and weaknesses
+- **Social Engineering Assessments**: Generate personalized password lists
+- **Credential Testing**: Verify password strength requirements
+
+## Available Tools
+
+<CardGroup cols={2}>
+  <Card title="CUPP" icon="user" href="https://github.com/Mebus/cupp">
+    Common User Passwords Profiler - personalized wordlists
+  </Card>
+  
+  <Card title="WordlistCreator" icon="grid" href="https://github.com/Z4nzu/wlcreator">
+    Generate all password combinations by pattern
+  </Card>
+  
+  <Card title="Goblin WordGenerator" icon="dice" href="https://github.com/UndeadSec/GoblinWordGenerator">
+    Advanced wordlist generation tool
+  </Card>
+  
+  <Card title="SMWYG" icon="database" href="https://github.com/Viralmaniar/SMWYG-Show-Me-What-You-Got">
+    Search 1.4 billion leaked passwords
+  </Card>
+</CardGroup>
+
+---
+
+## CUPP - Common User Passwords Profiler
+
+### Description
+
+CUPP generates personalized wordlists based on target information. It's particularly effective for social engineering assessments, as people often use personal information in their passwords (names, birthdays, pet names, etc.).
+
+### Installation
+
+```bash
+git clone https://github.com/Mebus/cupp.git
+cd cupp
+```
+
+### Usage
+
+```bash
+# Interactive mode - generates personalized wordlist
+cd cupp
+python3 cupp.py -i
+```
+
+### Interactive Mode Example
+
+CUPP will ask questions about your target:
+
+```
+> First Name: John
+> Surname: Smith
+> Nickname: Johnny
+> Birthdate (DDMMYYYY): 15081990
+> Partner's name: Sarah
+> Partner's nickname: Sara
+> Partner's birthdate: 20051988
+> Child's name: Emma
+> Child's nickname: Em
+> Child's birthdate: 10032015
+> Pet's name: Max
+> Company name: TechCorp
+```
+
+CUPP generates combinations like:
+- john1990
+- Smith2015
+- JohnnySarah
+- emmamax
+- techcorp15
+- And thousands more variations
+
+### Advanced Options
+
+```bash
+# Download default wordlists
+python3 cupp.py -l
+
+# Improve existing wordlist with common patterns
+python3 cupp.py -w wordlist.txt -a
+
+# Show version
+python3 cupp.py -v
+```
+
+<Accordion title="CUPP Configuration">
+  Edit `cupp.cfg` to customize:
+  - Years range
+  - Special characters to append
+  - Leet speak substitutions
+  - Common patterns
+  
+  ```ini
+  [years]
+  years = 2020,2021,2022,2023,2024
+  
+  [leet]
+  a = 4,@
+  e = 3
+  i = 1,!
+  o = 0
+  s = 5,$
+  ```
+</Accordion>
+
+<Note>
+  **Output Size**: CUPP can generate very large wordlists (millions of entries). Consider filtering or limiting combinations for practical use.
+</Note>
+
+---
+
+## WordlistCreator (wlcreator)
+
+### Description
+
+WlCreator is a C program that generates all possible password combinations based on specified parameters. You can customize the character set (lowercase, uppercase, numbers, special characters) and length.
+
+### Installation
+
+```bash
+sudo git clone https://github.com/Z4nzu/wlcreator.git
+cd wlcreator
+```
+
+### Compilation and Usage
+
+```bash
+# Compile the program
+sudo gcc -o wlcreator wlcreator.c
+
+# Generate wordlist with length 5
+./wlcreator 5
+```
+
+### Interactive Configuration
+
+When you run wlcreator, it prompts for:
+
+```
+1. Password Length: 8
+2. Include Lowercase (a-z)? [y/n]: y
+3. Include Uppercase (A-Z)? [y/n]: y
+4. Include Numbers (0-9)? [y/n]: y
+5. Include Special Characters? [y/n]: n
+```
+
+### Usage Examples
+
+```bash
+# 4-character passwords with lowercase only
+./wlcreator 4
+# Choose: lowercase only
+# Generates: aaaa, aaab, aaac, ... zzzz
+
+# 6-character alphanumeric passwords
+./wlcreator 6
+# Choose: lowercase, uppercase, numbers
+
+# Output to file
+./wlcreator 5 > wordlist.txt
+```
+
+### Performance Considerations
+
+<Warning>
+  **Exponential Growth**: Be cautious with length and character sets:
+  
+  - 4 chars, lowercase only: 456,976 combinations
+  - 6 chars, alphanumeric: 56+ billion combinations
+  - 8 chars, all characters: 6+ quadrillion combinations
+  
+  Generating very large wordlists requires significant disk space and time.
+</Warning>
+
+---
+
+## Goblin WordGenerator
+
+### Description
+
+Goblin WordGenerator creates custom wordlists with various generation modes and patterns.
+
+### Installation
+
+```bash
+sudo git clone https://github.com/UndeadSec/GoblinWordGenerator.git
+cd GoblinWordGenerator
+```
+
+### Running
+
+```bash
+python3 goblin.py
+```
+
+### Features
+
+- Multiple generation algorithms
+- Custom pattern support
+- Combination generation
+- Rules-based wordlist creation
+- Leet speak transformations
+
+---
+
+## SMWYG - Show Me What You Got
+
+### Description
+
+This tool allows you to search through 1.4 billion clear text passwords from the BreachCompilation database leak. It's invaluable for OSINT and checking if specific credentials have been compromised.
+
+### Installation
+
+```bash
+sudo git clone https://github.com/Viralmaniar/SMWYG-Show-Me-What-You-Got.git
+cd SMWYG-Show-Me-What-You-Got
+pip3 install -r requirements.txt
+```
+
+### Running
+
+```bash
+cd SMWYG-Show-Me-What-You-Got
+python SMWYG.py
+```
+
+### Features
+
+- Search 1.4 billion passwords
+- Email-based credential lookup
+- Domain-based searches
+- Password pattern analysis
+- Export results
+
+### Use Cases
+
+<Accordion title="OSINT and Credential Analysis">
+  **Organization Assessment**
+  - Check if employee emails have been compromised
+  - Identify leaked credentials for your domain
+  - Analyze password patterns in breaches
+  
+  **Penetration Testing**
+  - Verify if credentials are publicly available
+  - Build target-specific wordlists from leaks
+  - Identify credential reuse patterns
+  
+  **Security Awareness**
+  - Demonstrate breach impact to stakeholders
+  - Show real compromised passwords
+  - Educate users about password security
+</Accordion>
+
+<Warning>
+  **Data Sensitivity**: This tool searches leaked credentials. Use responsibly and ethically. Do not access or use credentials you don't own.
+</Warning>
+
+---
+
+## Best Practices
+
+### Wordlist Strategy
+
+1. **Start Small, Scale Up**
+   ```bash
+   # Begin with common passwords
+   rockyou.txt (14M passwords)
+   
+   # Add targeted entries
+   CUPP-generated personalized list
+   
+   # Expand if needed
+   Full character combination sets
+   ```
+
+2. **Use Rules Instead of Large Wordlists**
+   ```bash
+   # Hashcat rules transform small wordlists efficiently
+   hashcat -a 0 -m 0 hashes.txt wordlist.txt -r rules/best64.rule
+   
+   # John the Ripper rules
+   john --wordlist=small.txt --rules=Jumbo hashes.txt
+   ```
+
+3. **Combine Multiple Sources**
+   ```bash
+   # Merge wordlists
+   cat cupp_output.txt leaked_passwords.txt common.txt > combined.txt
+   
+   # Remove duplicates and sort
+   sort -u combined.txt > unique_wordlist.txt
+   ```
+
+### Optimization
+
+```bash
+# Remove duplicates
+sort -u wordlist.txt > unique.txt
+
+# Filter by length (8-12 characters)
+awk 'length>=8 && length<=12' wordlist.txt > filtered.txt
+
+# Remove words with specific patterns
+grep -v '[^a-zA-Z0-9]' wordlist.txt > alphanumeric_only.txt
+
+# Get wordlist statistics
+wc -l wordlist.txt  # Line count
+du -h wordlist.txt  # File size
+```
+
+### Integration with Cracking Tools
+
+<Accordion title="Hashcat">
+  ```bash
+  # Dictionary attack
+  hashcat -a 0 -m 1000 ntlm_hashes.txt wordlist.txt
+  
+  # With rules
+  hashcat -a 0 -m 1000 ntlm_hashes.txt wordlist.txt -r rules/best64.rule
+  
+  # Combinator attack (combine two wordlists)
+  hashcat -a 1 -m 1000 ntlm_hashes.txt wordlist1.txt wordlist2.txt
+  ```
+</Accordion>
+
+<Accordion title="John the Ripper">
+  ```bash
+  # Basic wordlist attack
+  john --wordlist=custom_wordlist.txt hashes.txt
+  
+  # With rules
+  john --wordlist=wordlist.txt --rules=Jumbo hashes.txt
+  
+  # Show cracked passwords
+  john --show hashes.txt
+  ```
+</Accordion>
+
+<Accordion title="Hydra (Network Services)">
+  ```bash
+  # SSH brute force
+  hydra -L users.txt -P wordlist.txt ssh://192.168.1.1
+  
+  # HTTP POST form
+  hydra -l admin -P wordlist.txt 192.168.1.1 http-post-form "/login:user=^USER^&pass=^PASS^:F=incorrect"
+  
+  # FTP brute force
+  hydra -l ftpuser -P wordlist.txt ftp://192.168.1.1
+  ```
+</Accordion>
+
+## Popular Wordlist Resources
+
+### Pre-built Wordlists
+
+| Wordlist | Size | Description |
+|----------|------|-------------|
+| rockyou.txt | 139M | Most popular, from 2009 breach |
+| crackstation.txt | 15GB | Massive comprehensive list |
+| SecLists | Varies | Curated collection of lists |
+| weakpass.com | Various | Leaked password databases |
+
+### Download Commands
+
+```bash
+# RockYou (included in Kali Linux)
+gunzip /usr/share/wordlists/rockyou.txt.gz
+
+# SecLists - comprehensive collection
+git clone https://github.com/danielmiessler/SecLists.git
+
+# Common user passwords
+wget https://github.com/danielmiessler/SecLists/raw/master/Passwords/Common-Credentials/10-million-password-list-top-1000000.txt
+```
+
+## Advanced Techniques
+
+### Targeted Wordlist Generation
+
+```bash
+# Extract words from target website
+cewl -d 3 -m 5 https://example.com -w target_wordlist.txt
+
+# Generate based on company name variations
+echo "TechCorp" | sed 's/.*/\L&\n\u&\n\U&/' > base.txt
+# Produces: techcorp, Techcorp, TECHCORP
+```
+
+### Password Mutation
+
+```bash
+# Common substitutions
+sed 's/a/@/g; s/e/3/g; s/i/1/g; s/o/0/g; s/s/$/g' base.txt > leet.txt
+
+# Add years
+for year in {2020..2024}; do sed "s/$/$year/" base.txt; done > with_years.txt
+
+# Add common suffixes
+while read word; do echo "${word}123"; echo "${word}!"; echo "${word}2024"; done < base.txt > suffixed.txt
+```
+
+<Note>
+  **Responsible Use**: Always document wordlist generation in your penetration testing reports. Explain your methodology and justify the approach taken.
+</Note>
+
+## Troubleshooting
+
+<Accordion title="Wordlist Too Large">
+  **Solutions:**
+  - Filter by length: `awk 'length>=8 && length<=14'`
+  - Sample random entries: `shuf -n 100000 large.txt > sample.txt`
+  - Split into chunks: `split -l 1000000 large.txt chunk_`
+  - Use rules instead of larger wordlist
+</Accordion>
+
+<Accordion title="Out of Memory">
+  **Solutions:**
+  - Process in smaller batches
+  - Use streaming instead of loading entire file
+  - Increase swap space
+  - Use tools with lower memory footprint
+</Accordion>
+
+<Accordion title="Character Encoding Issues">
+  **Solutions:**
+  ```bash
+  # Convert to UTF-8
+  iconv -f ISO-8859-1 -t UTF-8 wordlist.txt > utf8_wordlist.txt
+  
+  # Remove non-ASCII characters
+  LC_ALL=C sed 's/[^[:print:]]//g' wordlist.txt > ascii_only.txt
+  ```
+</Accordion>
+
+## Additional Resources
+
+- [CrackStation Wordlist Generator](https://crackstation.net/)
+- [Hashcat Rules](https://hashcat.net/wiki/doku.php?id=rule_based_attack)
+- [Password Analysis Tools](https://github.com/sc0tfree/mentalist)
+- [CUPP GitHub Wiki](https://github.com/Mebus/cupp/wiki)
+
+<Warning>
+  **Ethical Reminder**: Wordlists are powerful tools. Use them only for authorized testing, never for unauthorized access attempts. Maintain strict confidentiality of any credentials discovered during testing.
+</Warning>

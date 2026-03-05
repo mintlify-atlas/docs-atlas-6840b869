@@ -1,0 +1,466 @@
+---
+title: 'Installation Modes'
+description: 'Tool installation and execution modes in HackingTool'
+icon: 'download'
+---
+
+## Installation Architecture
+
+HackingTool provides a centralized framework for managing multiple security tools. Each tool can be installed and run through the unified interface.
+
+### System Installation
+
+The main HackingTool framework is installed to:
+
+```
+/usr/share/hackingtool/          # Main application directory
+├── hackingtool.py               # Main entry point
+├── core.py                      # Core framework classes
+├── install.py                   # System installer
+├── venv/                        # Python virtual environment
+├── tools/                       # Tool category modules
+└── requirements.txt             # Python dependencies
+
+/usr/bin/hackingtool             # Launcher script
+```
+
+## Tool Installation Process
+
+When you select "Install" for any tool:
+
+### 1. Pre-Installation Hook
+
+```python
+def before_install(self):
+    # Optional preparation steps
+    # Tool-specific setup
+    pass
+```
+
+Some tools display requirements or warnings before installation.
+
+### 2. Installation Execution
+
+Each tool defines `INSTALL_COMMANDS` list:
+
+```python
+INSTALL_COMMANDS = [
+    "git clone https://github.com/tool/repo.git",
+    "cd repo && pip install -r requirements.txt"
+]
+```
+
+Commands are executed sequentially using `os.system()`.
+
+### 3. Post-Installation Hook
+
+```python
+def after_install(self):
+    console.print("[green]✔ Successfully installed![/green]")
+```
+
+Confirmation message and any additional setup steps.
+
+## Path Configuration
+
+Tools are installed to user-specified directory:
+
+### Default Installation Path
+
+```bash
+/home/hackingtool/               # Default base directory
+├── nmap/                        # Individual tool repos
+├── sqlmap-dev/
+├── wireshark/
+└── ...
+```
+
+### Custom Installation Path
+
+On first run, configure custom path:
+
+<Tabs>
+  <Tab title="Interactive Setup">
+    ```
+    Set Path
+    [1] Custom directory
+    [2] Default (/home/hackingtool/)
+    
+    Choice: 1
+    Enter Path: /opt/my-tools/
+    ```
+  </Tab>
+  
+  <Tab title="Configuration File">
+    ```bash
+    # Stored in:
+    ~/hackingtoolpath.txt
+    
+    # Contents:
+    /opt/my-tools/
+    ```
+  </Tab>
+</Tabs>
+
+<Note>
+All subsequent tool installations use the configured path. Edit `~/hackingtoolpath.txt` to change.
+</Note>
+
+## Tool Execution Modes
+
+HackingTool tools support different execution patterns:
+
+### Mode 1: Direct Execution
+
+Tools with `RUN_COMMANDS` list:
+
+```python
+RUN_COMMANDS = ["cd tooldir && python3 tool.py"]
+```
+
+<ParamField path="Run" type="action">
+  Executes predefined command sequence
+  - Changes to tool directory
+  - Launches tool with default parameters
+  - Returns to HackingTool menu after completion
+</ParamField>
+
+**Example Tools:**
+- Sqlmap: `cd sqlmap-dev && python3 sqlmap.py --wizard`
+- Nmap: Interactive prompts for target IP
+- Anonsurf: `sudo anonsurf start`
+
+### Mode 2: Interactive Execution
+
+Tools that prompt for parameters:
+
+```python
+def run(self):
+    target = input("Enter target IP: ")
+    subprocess.run(["sudo", "nmap", "-O", target])
+```
+
+<ParamField path="Interactive" type="mode">
+  Tool requests user input before execution:
+  - Target URLs/IPs
+  - Attack parameters
+  - Configuration options
+</ParamField>
+
+**Example Tools:**
+- Port Scanner: Asks for target IP
+- DDoS tools: Request URL, threads, timer
+- Payload creators: Prompt for payload type
+
+### Mode 3: Manual Execution
+
+Tools marked as `runnable=False`:
+
+```python
+def __init__(self):
+    super().__init__(runnable=False)
+```
+
+<ParamField path="Manual" type="mode">
+  Tool provides installation only. User must:
+  1. Navigate to tool directory
+  2. Read tool documentation
+  3. Execute with custom parameters
+</ParamField>
+
+**Example Tools:**
+- NMAP (use system nmap command)
+- SecretFinder (complex command-line options)
+- XSStrike (requires manual parameter tuning)
+
+### Mode 4: Non-Installable Tools
+
+Pre-installed system tools:
+
+```python
+def __init__(self):
+    super().__init__(installable=False)
+```
+
+<ParamField path="System" type="preinstalled">
+  Already available on most penetration testing distributions:
+  - Wireshark
+  - Autopsy
+  - Skipfish
+</ParamField>
+
+## Installation Variants
+
+### Full Installation
+
+Complete dependency installation:
+
+```bash
+# Example: ReconSpider
+git clone https://github.com/bhavsec/reconspider.git
+apt install python3 python3-pip
+cd reconspider
+python3 setup.py install
+```
+
+### Minimal Installation
+
+Clone only:
+
+```bash
+# Example: Cupp
+git clone https://github.com/Mebus/cupp.git
+# No additional dependencies
+```
+
+### Compiled Installation
+
+Tools requiring compilation:
+
+```bash
+# Example: Xerosploit
+git clone https://github.com/LionSec/xerosploit.git
+cd xerosploit
+python install.py
+```
+
+## Virtual Environment Setup
+
+HackingTool runs in isolated Python environment:
+
+### During System Install
+
+```bash
+# Installer creates:
+python3 -m venv /usr/share/hackingtool/venv
+
+# Activates and installs requirements:
+source /usr/share/hackingtool/venv/bin/activate
+pip install -r requirements.txt
+```
+
+### Requirements
+
+```txt
+rich>=13.0.0
+requests
+python-nmap
+pycryptodome
+```
+
+<Note>
+Individual tools may have their own virtual environments or dependency requirements.
+</Note>
+
+## Batch Installation
+
+No built-in batch installation feature. To install multiple tools:
+
+### Manual Process
+
+1. Launch HackingTool
+2. Select category
+3. Select tool
+4. Choose "Install"
+5. Wait for completion
+6. Return and repeat
+
+### Automation Option
+
+Create custom script:
+
+```bash
+#!/bin/bash
+# Not officially supported
+
+cd /home/hackingtool/
+
+# Clone tools directly
+git clone https://github.com/sqlmapproject/sqlmap.git
+git clone https://github.com/nmap/nmap.git
+# etc...
+```
+
+## Installation Status Tracking
+
+Currently, HackingTool does NOT track installation status:
+
+<ParamField path="is_installed()" type="unimplemented">
+  ```python
+  def is_installed(self, dir_to_check=None):
+      console.print("[yellow]⚠ Unimplemented: DO NOT USE[/yellow]")
+      return "?"
+  ```
+</ParamField>
+
+Users must manually check if tools are installed:
+
+```bash
+ls -la ~/hackingtoolpath.txt  # Check base directory
+ls /home/hackingtool/         # List installed tools
+```
+
+## Update Mechanisms
+
+### Framework Update
+
+From menu option 99:
+
+```bash
+[1] Update System
+    - apt update && upgrade
+    - Install/update core packages
+
+[2] Update Hackingtool
+    - Remove old installation
+    - Clone latest from GitHub
+    - Re-run installer
+```
+
+### Individual Tool Updates
+
+No automated update. Manual process:
+
+```bash
+cd /home/hackingtool/toolname
+git pull origin main
+# Re-run tool-specific setup if needed
+```
+
+### Special Tool Updates
+
+Some tools include update functions:
+
+<Accordion title="TheFatRat Update">
+  ```python
+  def update(self):
+      os.system("cd TheFatRat && bash update && chmod +x setup.sh && bash setup.sh")
+  ```
+  
+  Accessible from tool's options menu.
+</Accordion>
+
+<Accordion title="BlackPhish Update">
+  ```python
+  def update(self):
+      os.system("cd BlackPhish && sudo bash update.sh")
+  ```
+</Accordion>
+
+## Distribution-Specific Installation
+
+### Debian/Kali/Parrot (APT)
+
+```bash
+apt update -y && apt upgrade -y
+apt-get install -y git python3-pip python3-venv figlet boxes php curl xdotool wget
+```
+
+### Arch Linux (Pacman)
+
+```bash
+pacman -Syu --noconfirm
+pacman -S --noconfirm git python-pip
+```
+
+<Note>
+Some tools (like figlet) may not be available in Arch repositories and require AUR installation.
+</Note>
+
+## Dependency Management
+
+Each tool manages its own dependencies:
+
+### Python Dependencies
+
+```bash
+cd tool-directory
+pip install -r requirements.txt
+# or
+python3 setup.py install
+```
+
+### System Dependencies
+
+```bash
+# Examples:
+sudo apt install libssl-dev libffi-dev build-essential  # WiFi-Pumpkin
+sudo apt install python3-pyqt5                           # GUI tools
+sudo apt install golang                                  # Go-based tools
+```
+
+### Language-Specific
+
+<Tabs>
+  <Tab title="Ruby">
+    ```bash
+    gem install XSpear
+    ```
+  </Tab>
+  
+  <Tab title="Go">
+    ```bash
+    go install github.com/tool/package
+    ```
+  </Tab>
+  
+  <Tab title="Rust">
+    ```bash
+    cargo build --release
+    ```
+  </Tab>
+</Tabs>
+
+## Uninstallation Process
+
+### Framework Uninstall
+
+From menu option 99:
+
+```bash
+sudo rm -rf /usr/share/doc/hackingtool/
+sudo rm -rf /etc/hackingtool/
+sudo rm /usr/bin/hackingtool
+```
+
+### Individual Tool Removal
+
+Some tools provide uninstall commands:
+
+```python
+UNINSTALL_COMMANDS = [
+    "sudo make uninstall",
+    "rm -rf /path/to/tool"
+]
+```
+
+Most tools: Manual deletion from installation directory.
+
+## Installation Best Practices
+
+<Accordion title="1. Verify System Compatibility">
+  - Use supported Linux distribution (Kali, Parrot, Arch)
+  - Ensure Python 3.6+ installed
+  - Check internet connectivity
+  - Run with sudo privileges
+</Accordion>
+
+<Accordion title="2. Plan Storage Space">
+  - Each tool: 10MB - 500MB
+  - Full suite: ~10-20GB
+  - Place on partition with adequate space
+</Accordion>
+
+<Accordion title="3. Install Selectively">
+  - Don't install all 100+ tools
+  - Choose based on use case
+  - Test tools individually
+  - Review tool documentation before installing
+</Accordion>
+
+<Accordion title="4. Maintain Clean Environment">
+  - Use dedicated testing VM
+  - Snapshot before bulk installations
+  - Regular cleanup of unused tools
+  - Keep HackingTool framework updated
+</Accordion>

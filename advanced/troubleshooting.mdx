@@ -1,0 +1,441 @@
+---
+title: 'Troubleshooting'
+description: 'Common issues and solutions for HackingTool installation and usage'
+---
+
+# Troubleshooting Guide
+
+This guide covers common issues you may encounter when installing or running HackingTool and their solutions.
+
+## Installation Issues
+
+### Root Permission Required
+
+<Warning>
+HackingTool must be run as root. If you see permission errors, ensure you're using `sudo`.
+</Warning>
+
+**Error:** `This installer must be run as root`
+
+**Solution:**
+```bash
+sudo python3 install.py
+```
+
+Or for manual installation:
+```bash
+sudo hackingtool
+```
+
+### Internet Connection Errors
+
+**Error:** `Internet connection not available`
+
+The installer checks connectivity to both Google and GitHub. If you see this error:
+
+<Accordion title="Check your network connection">
+1. Verify your internet connection:
+   ```bash
+   ping -c 4 google.com
+   ```
+
+2. Check if you can reach GitHub:
+   ```bash
+   curl -I https://github.com
+   ```
+
+3. If you're behind a proxy, configure git:
+   ```bash
+   git config --global http.proxy http://proxy.example.com:8080
+   git config --global https.proxy https://proxy.example.com:8080
+   ```
+</Accordion>
+
+### Git Clone Failures
+
+**Error:** `Failed to clone repository`
+
+**Common causes:**
+- Network connectivity issues
+- Firewall blocking git protocol
+- Disk space issues
+
+**Solutions:**
+
+<Accordion title="Manual clone and installation">
+If automatic cloning fails, try manual installation:
+
+```bash
+# Clone the repository manually
+git clone https://github.com/Z4nzu/hackingtool.git
+cd hackingtool
+
+# Set proper permissions
+chmod -R 755 .
+
+# Run the installer
+sudo python3 install.py
+```
+</Accordion>
+
+## Dependency Issues
+
+### Python Version Compatibility
+
+<Note>
+HackingTool requires Python 3.x. Python 2.7 is not supported.
+</Note>
+
+**Check your Python version:**
+```bash
+python3 --version
+```
+
+If Python 3 is not installed:
+
+**Kali/Debian/Ubuntu:**
+```bash
+sudo apt-get update
+sudo apt-get install python3 python3-pip python3-venv
+```
+
+**Arch Linux:**
+```bash
+sudo pacman -S python python-pip
+```
+
+### Missing System Dependencies
+
+**Error:** `apt-get install failed` or package installation errors
+
+**Required packages:**
+- git
+- python3-pip
+- python3-venv
+- figlet
+- boxes
+- php
+- curl
+- xdotool
+- wget
+
+<Accordion title="Install missing dependencies by platform">
+**For Kali Linux / Parrot OS / Debian / Ubuntu:**
+```bash
+sudo apt-get update
+sudo apt-get install -y git python3-pip python3-venv figlet boxes php curl xdotool wget
+```
+
+**For Arch Linux:**
+```bash
+sudo pacman -Syu
+sudo pacman -S --noconfirm git python-pip figlet
+```
+
+<Tip>
+On Arch Linux, `figlet` may need to be installed from AUR if not available in official repos.
+</Tip>
+</Accordion>
+
+### Python Package Installation Failures
+
+**Error:** Issues installing requirements from `requirements.txt`
+
+The project requires these Python packages:
+- boxes
+- flask
+- lolcat
+- requests
+- rich
+
+**Manual installation:**
+```bash
+pip3 install boxes flask lolcat requests rich
+```
+
+**If pip is not working:**
+```bash
+# Upgrade pip
+python3 -m pip install --upgrade pip
+
+# Install with user flag if permission denied
+pip3 install --user boxes flask lolcat requests rich
+```
+
+## Platform-Specific Issues
+
+### Kali Linux vs Arch Linux
+
+The installer prompts you to select your distribution:
+
+```
+[1] Kali / Parrot (apt)
+[2] Arch Linux (pacman)
+[0] Exit
+```
+
+<Warning>
+Select the correct option for your distribution. Using the wrong package manager will cause installation failures.
+</Warning>
+
+<Accordion title="Kali Linux specific issues">
+**Issue:** Package manager conflicts
+
+**Solution:**
+```bash
+# Update package lists
+sudo apt-get update
+
+# Fix broken dependencies
+sudo apt-get install -f
+
+# Reconfigure dpkg if needed
+sudo dpkg --configure -a
+```
+</Accordion>
+
+<Accordion title="Arch Linux specific issues">
+**Issue:** `figlet` not found in pacman
+
+**Solution:**
+Install from AUR:
+```bash
+git clone https://aur.archlinux.org/figlet.git
+cd figlet
+makepkg -si
+```
+
+Or use an AUR helper:
+```bash
+yay -S figlet
+# or
+paru -S figlet
+```
+</Accordion>
+
+### Parrot OS Specifics
+
+Parrot OS uses apt like Kali, so select option [1] during installation.
+
+<Note>
+Parrot OS is fully compatible with HackingTool. Use the same troubleshooting steps as Kali Linux.
+</Note>
+
+## Tool Installation Failures
+
+### Individual Tool Installation Errors
+
+When installing individual hacking tools through the menu, you may encounter:
+
+**Error:** Tool clone or installation fails
+
+<Accordion title="Common tool installation issues">
+1. **Repository no longer available**
+   - Some tool repositories may be moved or deleted
+   - Check the project URL in the tool description
+   - Look for forks or alternative repositories
+
+2. **Dependencies missing for specific tools**
+   - Read the tool's README for specific requirements
+   - Install tool-specific dependencies manually
+
+3. **Permission issues during tool installation**
+   ```bash
+   # Ensure hackingtool is run with sudo
+   sudo hackingtool
+   ```
+</Accordion>
+
+### Tool Won't Run After Installation
+
+**Issue:** Tool installed successfully but won't execute
+
+**Debugging steps:**
+
+```bash
+# Check if tool binary exists
+which <tool-name>
+
+# Check PATH
+echo $PATH
+
+# Try running with full path
+/usr/share/hackingtool/tools/<tool-name>
+```
+
+## Path Configuration Issues
+
+### HackingTool Command Not Found
+
+**Error:** `hackingtool: command not found`
+
+**Solution:**
+
+<Accordion title="Fix PATH configuration">
+The installer should create a launcher at `/usr/bin/hackingtool`. If it's missing:
+
+```bash
+# Check if the binary exists
+ls -la /usr/bin/hackingtool
+
+# If missing, run the installer again
+cd /path/to/hackingtool
+sudo python3 install.py
+
+# Or create a manual symlink
+sudo ln -s /usr/share/hackingtool/hackingtool.sh /usr/bin/hackingtool
+```
+
+Verify the installation:
+```bash
+which hackingtool
+# Should output: /usr/bin/hackingtool
+```
+</Accordion>
+
+### Virtual Environment Issues
+
+**Error:** Virtual environment not activated properly
+
+The installer creates a virtual environment at `/usr/share/hackingtool/venv`
+
+**Manual activation:**
+```bash
+cd /usr/share/hackingtool
+source venv/bin/activate
+python3 hackingtool.py
+```
+
+## Runtime Errors
+
+### ImportError or ModuleNotFoundError
+
+**Error:** `ModuleNotFoundError: No module named 'rich'` (or other modules)
+
+**Solution:**
+```bash
+# Activate the virtual environment
+cd /usr/share/hackingtool
+source venv/bin/activate
+
+# Install requirements
+pip install -r requirements.txt
+
+# Or install missing module directly
+pip install rich
+```
+
+### Permission Denied Errors
+
+**Error:** Permission denied when running tools
+
+<Warning>
+Most penetration testing tools require root privileges. Always run HackingTool with sudo.
+</Warning>
+
+```bash
+sudo hackingtool
+```
+
+### Directory Already Exists
+
+**Error:** `The directory /usr/share/hackingtool already exists`
+
+The installer will prompt you to replace it. If you want to keep your existing installation:
+
+```bash
+# Backup your current installation
+sudo mv /usr/share/hackingtool /usr/share/hackingtool.backup
+
+# Then run the installer
+sudo python3 install.py
+```
+
+## Docker-Specific Issues
+
+<Accordion title="Docker installation and runtime issues">
+### Build Errors
+
+**Error:** Docker build fails
+
+```bash
+# Check Docker daemon is running
+sudo systemctl status docker
+
+# Start Docker if needed
+sudo systemctl start docker
+
+# Build the image
+docker build -t vgpastor/hackingtool .
+```
+
+### Container Won't Start
+
+```bash
+# Check container status
+docker ps -a
+
+# View container logs
+docker logs hackingtool
+
+# Start with docker-compose
+docker-compose up -d
+```
+
+### Cannot Access Container
+
+```bash
+# Exec into running container
+docker exec -it hackingtool bash
+
+# If container is not running, start it first
+docker start hackingtool
+docker exec -it hackingtool bash
+```
+</Accordion>
+
+## Getting Help
+
+If you encounter issues not covered here:
+
+<Accordion title="How to report issues">
+1. **Check existing issues:** [GitHub Issues](https://github.com/Z4nzu/hackingtool/issues)
+
+2. **Create a bug report:** Use the bug report template at `.github/ISSUE_TEMPLATE/bug_report.md`
+
+3. **Include this information:**
+   - Operating system and version
+   - Python version (`python3 --version`)
+   - Installation method (manual, Docker)
+   - Full error message
+   - Steps to reproduce
+
+4. **Provide system information:**
+   ```bash
+   # OS info
+   cat /etc/os-release
+   
+   # Python version
+   python3 --version
+   
+   # Installed packages
+   pip3 list
+   ```
+</Accordion>
+
+<Tip>
+Before reporting an issue, try running the installation again with a clean environment. Many issues are resolved by removing the old installation and reinstalling.
+</Tip>
+
+## Quick Fixes Checklist
+
+Before diving deep into troubleshooting, try these quick fixes:
+
+- [ ] Run with `sudo`
+- [ ] Update system packages (`apt update` or `pacman -Syu`)
+- [ ] Verify internet connection
+- [ ] Check Python 3 is installed
+- [ ] Ensure all dependencies are installed
+- [ ] Remove and reinstall HackingTool
+- [ ] Check disk space (`df -h`)
+- [ ] Review error messages carefully

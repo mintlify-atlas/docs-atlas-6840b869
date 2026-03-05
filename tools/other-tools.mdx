@@ -1,0 +1,611 @@
+---
+title: Other Tools
+description: Additional security tools including Android hacking, email verification, hash cracking, WiFi deauth, social media finder, payload injection, and web crawling
+---
+
+# Other Tools
+
+This section covers additional specialized security tools that don't fit into the main categories. These tools address various security testing needs including Android exploitation, email verification, password cracking, wireless security, OSINT, payload creation, and web reconnaissance.
+
+## Tool Categories
+
+<CardGroup cols={2}>
+  <Card title="Android Hacking" icon="android" href="#android-hacking-tools">
+    Tools for Android device exploitation and security testing
+  </Card>
+  <Card title="Email Verification" icon="envelope" href="#email-verification-tools">
+    Verify email address existence and validity
+  </Card>
+  <Card title="Hash Cracking" icon="key" href="#hash-cracking-tools">
+    Password hash identification and cracking tools
+  </Card>
+  <Card title="WiFi Deauthentication" icon="wifi" href="#wifi-deauthentication-tools">
+    WiFi jamming and deauthentication testing tools
+  </Card>
+  <Card title="Social Media Finder" icon="magnifying-glass" href="#social-media-finder-tools">
+    OSINT tools for finding social media accounts
+  </Card>
+  <Card title="Payload Injection" icon="syringe" href="#payload-injection-tools">
+    Tools for creating and injecting malicious payloads
+  </Card>
+  <Card title="Web Crawling" icon="spider" href="#web-crawling-tools">
+    Fast web crawlers for reconnaissance
+  </Card>
+  <Card title="CloudFlare Bypass" icon="cloud" href="#cloudflare-bypass">
+    Discover real IPs behind CloudFlare protection
+  </Card>
+</CardGroup>
+
+---
+
+## Android Hacking Tools
+
+Tools for testing Android device security, exploiting vulnerabilities, and assessing mobile application security.
+
+<Warning>
+Android exploitation tools should only be used on devices you own or have explicit authorization to test. Unauthorized access to mobile devices is illegal.
+</Warning>
+
+### Keydroid
+
+**Description**: Android Keylogger combined with Reverse Shell functionality for comprehensive device monitoring during authorized security assessments.
+
+**GitHub**: [F4dl0/keydroid](https://github.com/F4dl0/keydroid)
+
+**Installation**:
+
+```bash
+sudo git clone https://github.com/F4dl0/keydroid.git
+cd keydroid
+bash keydroid.sh
+```
+
+<Note>
+Some components require manual installation. Refer to the [GitHub repository](https://github.com/F4dl0/keydroid) for detailed setup instructions.
+</Note>
+
+**Features**:
+- Keylogging capabilities
+- Reverse shell access
+- Android payload generation
+- Remote command execution
+
+---
+
+### MySMS
+
+**Description**: Script that generates an Android App to intercept and monitor SMS messages through WAN connections.
+
+**GitHub**: [papusingh2sms/mysms](https://github.com/papusingh2sms/mysms)
+
+**Installation**:
+
+```bash
+sudo git clone https://github.com/papusingh2sms/mysms.git
+cd mysms
+bash mysms.sh
+```
+
+<Note>
+Manual setup required. See [GitHub documentation](https://github.com/papusingh2sms/mysms) for configuration details.
+</Note>
+
+---
+
+### Lockphish
+
+**Description**: First tool designed for phishing attacks on lock screens. Can grab Windows credentials, Android PIN, and iPhone Passcode using HTTPS links.
+
+**GitHub**: [JasonJerry/lockphish](https://github.com/JasonJerry/lockphish)
+
+**Installation**:
+
+```bash
+sudo git clone https://github.com/JasonJerry/lockphish.git
+cd lockphish
+bash lockphish.sh
+```
+
+**Targets**:
+- Windows lock screen credentials
+- Android PIN codes
+- iPhone passcodes
+
+---
+
+### DroidCam (WishFish)
+
+**Description**: Powerful tool for capturing front camera snapshots using a phishing link.
+
+**GitHub**: [kinghacker0/WishFish](https://github.com/kinghacker0/WishFish)
+
+**Installation**:
+
+```bash
+sudo git clone https://github.com/kinghacker0/WishFish.git
+sudo apt install php wget openssh-client
+cd WishFish
+sudo bash wishfish.sh
+```
+
+---
+
+### EvilApp
+
+**Description**: Script to generate Android applications that can hijack authenticated sessions by stealing cookies.
+
+**GitHub**: [crypticterminal/EvilApp](https://github.com/crypticterminal/EvilApp)
+
+**Installation**:
+
+```bash
+sudo git clone https://github.com/crypticterminal/EvilApp.git
+cd EvilApp
+bash evilapp.sh
+```
+
+**Capabilities**:
+- Session hijacking
+- Cookie theft
+- Authentication bypass testing
+
+---
+
+## Email Verification Tools
+
+Tools for verifying email address existence and validity during OSINT operations.
+
+### Knockmail
+
+**Description**: KnockMail verifies whether email addresses exist without sending actual emails.
+
+**GitHub**: [heywoodlh/KnockMail](https://github.com/heywoodlh/KnockMail)
+
+**Installation**:
+
+```bash
+git clone https://github.com/heywoodlh/KnockMail.git
+cd KnockMail
+sudo pip3 install -r requirements.txt
+```
+
+**Usage**:
+
+```bash
+cd KnockMail
+python3 knockmail.py
+
+# Example
+python3 knockmail.py -e target@example.com
+```
+
+**Use Cases**:
+- OSINT investigations
+- Email validation before campaigns
+- User enumeration testing
+- Account existence verification
+
+---
+
+## Hash Cracking Tools
+
+Tools for identifying hash types and cracking password hashes.
+
+### Hash Buster
+
+**Description**: Automatic hash type identification and cracking tool supporting multiple hash algorithms.
+
+**GitHub**: [s0md3v/Hash-Buster](https://github.com/s0md3v/Hash-Buster)
+
+**Installation**:
+
+```bash
+git clone https://github.com/s0md3v/Hash-Buster.git
+cd Hash-Buster
+make install
+```
+
+**Usage**:
+
+```bash
+# Show help
+buster -h
+
+# Crack a hash
+buster -s <hash>
+
+# Specify hash type
+buster -s <hash> -t md5
+```
+
+**Supported Hash Types**:
+- MD5
+- SHA1
+- SHA256
+- SHA384
+- SHA512
+- And more...
+
+**Features**:
+- Automatic hash type identification
+- Multiple hash algorithm support
+- Fast cracking engine
+- Dictionary attack support
+
+<Accordion title="Example Usage">
+```bash
+# Identify and crack MD5 hash
+buster -s "5f4dcc3b5aa765d61d8327deb882cf99"
+
+# Output:
+# [+] Hash type identified: MD5
+# [+] Cracking hash...
+# [+] Hash cracked: password
+```
+</Accordion>
+
+---
+
+## WiFi Deauthentication Tools
+
+Tools for testing WiFi network security through deauthentication attacks and jamming.
+
+<Warning>
+**Legal Warning**: WiFi jamming and deauthentication attacks are illegal in most jurisdictions without explicit authorization. Only use on networks you own or have written permission to test.
+</Warning>
+
+### WifiJammer-NG
+
+**Description**: Continuously jam all WiFi clients and access points within range for security testing purposes.
+
+**GitHub**: [MisterBianco/wifijammer-ng](https://github.com/MisterBianco/wifijammer-ng)
+
+**Installation**:
+
+```bash
+sudo git clone https://github.com/MisterBianco/wifijammer-ng.git
+cd wifijammer-ng
+sudo pip install -r requirements.txt
+```
+
+**Usage**:
+
+```bash
+cd wifijammer-ng
+sudo python wifijammer.py [-a AP_MAC] [-c CHANNEL] [-i INTERFACE] [-p PACKETS] [-s SKIP] [-t TIME_INTERVAL]
+
+# Example: Target specific AP
+sudo python wifijammer.py -a 00:11:22:33:44:55 -i wlan0mon
+
+# Example: Target channel
+sudo python wifijammer.py -c 6 -i wlan0mon
+```
+
+<Accordion title="Command Options">
+```bash
+Options:
+  -a, --ap          Target access point MAC address
+  -c, --channel     Target channel
+  -d, --directedonly Only send directed deauth packets
+  -i, --interface   Wireless interface (must be in monitor mode)
+  -m, --maximum     Maximum number of clients to deauth
+  -k, --kill        Kill processes that might interfere
+  -p, --packets     Number of packets per burst
+  -s, --skip        Skip channels (comma separated)
+  -t, --time        Time interval between bursts
+  -D, --dry         Dry run (don't send packets)
+```
+</Accordion>
+
+---
+
+### KawaiiDeauther
+
+**Description**: Penetration testing toolkit designed to perform WiFi jamming on clients/routers and spam fake access points.
+
+**GitHub**: [aryanrtm/KawaiiDeauther](https://github.com/aryanrtm/KawaiiDeauther)
+
+**Installation**:
+
+```bash
+sudo git clone https://github.com/aryanrtm/KawaiiDeauther.git
+cd KawaiiDeauther
+sudo bash install.sh
+```
+
+**Usage**:
+
+```bash
+cd KawaiiDeauther
+sudo bash KawaiiDeauther.sh
+```
+
+**Features**:
+- WiFi deauthentication attacks
+- Fake AP generation
+- Client jamming
+- Router disruption testing
+- Multiple attack modes
+
+---
+
+## Social Media Finder Tools
+
+OSINT tools for discovering social media profiles and online presence.
+
+### Social Mapper (FacialFind)
+
+**Description**: Social Media Mapping Tool that correlates profiles via facial recognition across different social media platforms.
+
+**GitHub**: [Greenwolf/social_mapper](https://github.com/Greenwolf/social_mapper)
+
+**Installation**:
+
+```bash
+sudo apt install -y software-properties-common
+sudo add-apt-repository ppa:mozillateam/firefox-next
+sudo apt update && sudo apt upgrade
+sudo git clone https://github.com/Greenwolf/social_mapper.git
+sudo apt install -y build-essential cmake libgtk-3-dev libboost-all-dev
+cd social_mapper/setup
+sudo python3 -m pip install --no-cache-dir -r requirements.txt
+```
+
+<Note>
+**Manual Setup Required**:
+1. Download [Geckodriver](https://github.com/mozilla/geckodriver/releases) for your OS
+2. Place it in `/usr/bin` (Linux) or appropriate location
+3. Configure social media account credentials
+</Note>
+
+**Usage**:
+
+```bash
+cd social_mapper
+python social_mapper.py -f <folder_name> -i <image_folder_path> -m fast -fb -tw
+```
+
+---
+
+### FindUser
+
+**Description**: Find usernames across over 75 social networks.
+
+**GitHub**: [xHak9x/finduser](https://github.com/xHak9x/finduser)
+
+**Installation**:
+
+```bash
+sudo git clone https://github.com/xHak9x/finduser.git
+cd finduser
+sudo chmod +x finduser.sh
+```
+
+**Usage**:
+
+```bash
+cd finduser
+sudo bash finduser.sh
+```
+
+---
+
+### Sherlock
+
+**Description**: Hunt down social media accounts by username across hundreds of social networks.
+
+**GitHub**: [sherlock-project/sherlock](https://github.com/sherlock-project/sherlock)
+
+**Installation**:
+
+```bash
+git clone https://github.com/sherlock-project/sherlock.git
+cd sherlock
+sudo python3 -m pip install -r requirements.txt
+```
+
+**Usage**:
+
+```bash
+cd sherlock
+sudo python3 sherlock <username>
+
+# Example
+sudo python3 sherlock john_doe
+
+# Multiple usernames
+sudo python3 sherlock user1 user2 user3
+
+# Save results
+sudo python3 sherlock username -o results.txt
+```
+
+---
+
+### SocialScan
+
+**Description**: Check email address and username availability on online platforms with 100% accuracy.
+
+**GitHub**: [iojw/socialscan](https://github.com/iojw/socialscan)
+
+**Installation**:
+
+```bash
+sudo pip install socialscan
+```
+
+**Usage**:
+
+```bash
+# Check username
+sudo socialscan username123
+
+# Check email
+sudo socialscan user@example.com
+
+# Check both
+sudo socialscan username123 user@example.com
+
+# Multiple queries
+sudo socialscan user1 user2@email.com user3
+```
+
+---
+
+## Payload Injection Tools
+
+Tools for creating and injecting malicious payloads into various file types.
+
+### Debinject
+
+**Description**: Tool that injects malicious code into Debian package files (*.deb).
+
+**GitHub**: [UndeadSec/Debinject](https://github.com/UndeadSec/Debinject)
+
+**Installation**:
+
+```bash
+sudo git clone https://github.com/UndeadSec/Debinject.git
+cd Debinject
+```
+
+**Usage**:
+
+```bash
+python debinject.py
+```
+
+**Use Cases**:
+- Testing package integrity verification
+- Assessing software supply chain security
+- Validating code signing implementations
+
+---
+
+### Pixload
+
+**Description**: Set of tools for creating and injecting payloads into images.
+
+**GitHub**: [chinarulezzz/pixload](https://github.com/chinarulezzz/pixload)
+
+**Installation**:
+
+```bash
+sudo apt install libgd-perl libimage-exiftool-perl libstring-crc32-perl
+sudo git clone https://github.com/chinarulezzz/pixload.git
+```
+
+**Features**:
+- Inject payloads into various image formats
+- Maintain image appearance
+- Bypass basic file validation
+- Test upload security mechanisms
+
+**Supported Formats**:
+- BMP
+- GIF
+- JPG
+- PNG
+- WebP
+
+---
+
+## Web Crawling Tools
+
+Fast web crawling and spidering tools for reconnaissance.
+
+### GoSpider
+
+**Description**: Fast web spider written in Go for efficient web crawling and URL discovery.
+
+**GitHub**: [jaeles-project/gospider](https://github.com/jaeles-project/gospider)
+
+**Installation**:
+
+```bash
+sudo go get -u github.com/jaeles-project/gospider
+```
+
+**Usage**:
+
+```bash
+# Basic crawl
+gospider -s "https://example.com"
+
+# With depth limit
+gospider -s "https://example.com" -d 3
+
+# Save output
+gospider -s "https://example.com" -o output.txt
+
+# Concurrent crawling
+gospider -s "https://example.com" -c 10
+```
+
+**Features**:
+- Fast, concurrent crawling
+- JavaScript rendering support
+- Link extraction
+- Form discovery
+- Subdomain enumeration
+- AWS/GCP bucket detection
+
+---
+
+## CloudFlare Bypass
+
+### HatCloud
+
+**Description**: Tool built in Ruby to bypass CloudFlare protection and discover real IP addresses of websites.
+
+**GitHub**: [HatBashBR/HatCloud](https://github.com/HatBashBR/HatCloud)
+
+**Installation**:
+
+```bash
+git clone https://github.com/HatBashBR/HatCloud.git
+```
+
+**Usage**:
+
+```bash
+cd HatCloud
+sudo ruby hatcloud.rb -b target-website.com
+```
+
+**How it Works**:
+- Queries DNS history databases
+- Checks subdomain records
+- Analyzes mail server IPs
+- Tests direct IP access
+- Enumerates possible origin servers
+
+<Note>
+**Legitimate Uses**:
+- Security assessments of your own infrastructure
+- Testing CloudFlare configuration
+- Verifying origin server protection
+- Auditing DNS security
+</Note>
+
+---
+
+## Best Practices
+
+<Warning>
+**General Security Guidelines**:
+
+1. **Authorization First**: Always obtain written permission before testing
+2. **Scope Definition**: Clearly define what is in and out of scope
+3. **Legal Review**: Understand legal implications in your jurisdiction
+4. **Documentation**: Keep detailed records of all activities
+5. **Data Protection**: Handle sensitive data appropriately
+6. **Responsible Disclosure**: Report findings through proper channels
+</Warning>
+
+## Related Resources
+
+- [OWASP Mobile Security Testing Guide](https://owasp.org/www-project-mobile-security-testing-guide/)
+- [WiFi Security Best Practices](https://www.cisa.gov/)
+- [OSINT Framework](https://osintframework.com/)
+- [Web Application Testing Guide](https://owasp.org/www-project-web-security-testing-guide/)

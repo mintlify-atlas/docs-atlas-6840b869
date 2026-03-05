@@ -1,0 +1,289 @@
+---
+title: 'Commands Reference'
+description: 'Complete command-line reference for HackingTool'
+icon: 'terminal'
+---
+
+## Main Execution Commands
+
+HackingTool provides multiple ways to launch and interact with the tool.
+
+### Primary Command
+
+After installation, launch HackingTool using:
+
+```bash
+hackingtool
+```
+
+This is the standard entry point installed to `/usr/bin/hackingtool`.
+
+### Python Execution
+
+Run directly from the source directory:
+
+```bash
+python3 hackingtool.py
+```
+
+<Note>
+The tool requires Python 3 and runs within a virtual environment when installed via the installer.
+</Note>
+
+## Installation Commands
+
+### System Installation
+
+Install HackingTool system-wide with root privileges:
+
+```bash
+sudo python3 install.py
+```
+
+The installer performs the following:
+- Clones repository to `/usr/share/hackingtool`
+- Creates Python virtual environment
+- Installs all requirements
+- Sets up launcher script at `/usr/bin/hackingtool`
+
+<ParamField path="install.py options" type="interactive">
+  During installation, you'll be prompted to:
+  
+  **Distribution Selection**
+  - `1` - Kali/Parrot (apt-based)
+  - `2` - Arch Linux (pacman)
+  - `0` - Exit installation
+</ParamField>
+
+### Manual Git Clone
+
+```bash
+git clone https://github.com/Z4nzu/hackingtool.git
+cd hackingtool
+sudo python3 install.py
+```
+
+## Interactive Menu System
+
+HackingTool uses a numbered menu system with no command-line flags.
+
+### Main Menu Navigation
+
+When you run `hackingtool`, the main menu displays:
+
+```
+0  - Anonymously Hiding Tools
+1  - Information gathering tools
+2  - Wordlist Generator
+3  - Wireless attack tools
+4  - SQL Injection Tools
+5  - Phishing attack tools
+6  - Web Attack tools
+7  - Post exploitation tools
+8  - Forensic tools
+9  - Payload creation tools
+10 - Exploit framework
+11 - Reverse engineering tools
+12 - DDOS Attack Tools
+13 - Remote Administrator Tools (RAT)
+14 - XSS Attack Tools
+15 - Steganograhy tools
+16 - Other tools
+99 - Update or Uninstall | Hackingtool
+```
+
+<ParamField path="menu selection" type="integer">
+  Enter the number corresponding to your desired tool category, then press Enter.
+  
+  **Special Options:**
+  - `99` - Access update/uninstall menu
+  - Press Ctrl+C to exit at any time
+</ParamField>
+
+### Tool Selection Process
+
+1. **Select Category** - Choose from 0-16 or 99
+2. **View Tools** - See available tools in that category
+3. **Choose Tool** - Select specific tool by number
+4. **Tool Actions** - Most tools offer:
+   - `Install` - Clone and install the tool
+   - `Run` - Execute the tool
+   - `98` - Open project page (if available)
+   - `99` - Return to previous menu
+
+## Exit Codes
+
+<ParamField path="0" type="success">
+  Normal exit - User selected exit from menu or completed operation successfully
+</ParamField>
+
+<ParamField path="1" type="error">
+  Error exit - Installation failure, missing dependencies, or runtime error
+</ParamField>
+
+<ParamField path="KeyboardInterrupt" type="user action">
+  User pressed Ctrl+C - Graceful shutdown initiated
+</ParamField>
+
+## Path Configuration
+
+On first run, HackingTool prompts for installation path:
+
+```bash
+Set Path
+[1] Custom path
+[2] Default path (/home/hackingtool/)
+```
+
+<Note>
+The path is saved to `~/hackingtoolpath.txt` and used for all tool installations.
+</Note>
+
+### Custom Path Example
+
+```
+Select: 1
+Enter Path: /opt/security-tools/
+```
+
+All tools will be cloned to subdirectories under this path.
+
+## Update Commands
+
+From the main menu (option 99):
+
+### Update System
+
+```bash
+sudo apt update && sudo apt full-upgrade -y
+sudo apt-get install tor openssl curl python3-pip
+```
+
+### Update HackingTool
+
+Automatic update process:
+1. Removes old installation from `/etc/hackingtool/` and `/usr/share/doc/hackingtool/`
+2. Clones latest version from GitHub
+3. Runs new installer
+
+## Uninstall Commands
+
+From the main menu (option 99 > Uninstall):
+
+```bash
+# Removes:
+# - /usr/share/doc/hackingtool/
+# - /etc/hackingtool/
+# - /usr/bin/hackingtool launcher
+```
+
+<Note>
+Individual tools installed in your custom path directory are NOT removed during uninstallation.
+</Note>
+
+## Platform Requirements
+
+<ParamField path="Linux" type="required">
+  **Supported**: Debian-based (Kali, Parrot, Ubuntu) and Arch Linux
+  
+  The tool is designed for Linux penetration testing distributions.
+</ParamField>
+
+<ParamField path="Windows" type="not supported">
+  Windows is not officially supported. A guidance message directs users to install Linux or use WSL.
+</ParamField>
+
+<ParamField path="macOS" type="partial">
+  May work but not officially tested or supported.
+</ParamField>
+
+## Common Command Patterns
+
+### Quick Start
+
+```bash
+# Install
+sudo python3 install.py
+
+# Run
+hackingtool
+
+# Select category 1 (Information Gathering)
+# Select tool 0 (NMAP)
+# Choose Install
+# Wait for installation
+# Choose Run
+```
+
+### Batch Tool Usage
+
+Many tools support command-line arguments after installation:
+
+```bash
+# Example: Running sqlmap directly
+cd sqlmap-dev
+python3 sqlmap.py -u http://example.com --batch
+
+# Example: Running nmap
+sudo nmap -O -Pn 192.168.1.1
+```
+
+## Environment Variables
+
+HackingTool reads and respects:
+
+<ParamField path="$HOME" type="path">
+  Used for `~/hackingtoolpath.txt` configuration file
+</ParamField>
+
+<ParamField path="$GOPATH" type="path" default="$HOME/go">
+  Required for Go-based tools (e.g., DalFox)
+</ParamField>
+
+<ParamField path="$PATH" type="path list">
+  Launcher script is installed to `/usr/bin/` which should be in PATH
+</ParamField>
+
+## Troubleshooting Commands
+
+### Check Installation
+
+```bash
+which hackingtool
+# Should output: /usr/bin/hackingtool
+
+ls -la /usr/share/hackingtool/
+# Should show cloned repository
+```
+
+### Verify Python Environment
+
+```bash
+source /usr/share/hackingtool/venv/bin/activate
+python3 --version
+pip list
+```
+
+### Permission Issues
+
+```bash
+# Fix tool directory permissions
+sudo chmod -R 755 /usr/share/hackingtool/
+
+# Re-run installer with sudo
+sudo python3 install.py
+```
+
+## Command Output
+
+HackingTool uses the Rich library for colorful terminal output:
+
+- **Magenta/Purple** - Headers and titles
+- **Green** - Success messages
+- **Red** - Error messages
+- **Yellow** - Warnings and prompts
+- **Cyan** - Information and descriptions
+
+<Note>
+Output formatting requires a terminal that supports ANSI color codes.
+</Note>

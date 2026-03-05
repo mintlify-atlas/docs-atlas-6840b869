@@ -1,0 +1,395 @@
+---
+title: 'Configuration'
+description: 'Configuring HackingTool paths, directories, and environment settings'
+---
+
+## Overview
+
+HackingTool uses a simple file-based configuration system to manage where tools are installed and stored. Configuration is set up on first run and persists across sessions.
+
+## Path Configuration File
+
+### hackingtoolpath.txt
+
+The primary configuration file is `hackingtoolpath.txt`, which stores the installation directory path:
+
+```python
+# From hackingtool.py:154-172
+def choose_path():
+    fpath = os.path.expanduser("~/hackingtoolpath.txt")
+    if not os.path.exists(fpath):
+        os.system("clear" if system() == "Linux" else "cls")
+        build_menu()
+        console.print(Panel("Setup path for tool installations", border_style="magenta"))
+        choice = Prompt.ask("[magenta]Set Path[/magenta]", choices=["1", "2"], default="2")
+        if choice == "1":
+            inpath = Prompt.ask("[magenta]Enter Path (with Directory Name)[/magenta]")
+            with open(fpath, "w") as f:
+                f.write(inpath)
+            console.print(f"[green]Successfully Set Path to:[/green] {inpath}")
+        else:
+            autopath = "/home/hackingtool/"
+            with open(fpath, "w") as f:
+                f.write(autopath)
+            console.print(f"[green]Your Default Path Is:[/green] {autopath}")
+            sleep(1)
+    return fpath
+```
+
+### File Location
+
+<CodeGroup>
+```bash Linux
+~/hackingtoolpath.txt
+```
+
+```bash Expanded Path
+/home/username/hackingtoolpath.txt
+```
+</CodeGroup>
+
+## Initial Setup
+
+On first run, HackingTool prompts you to configure the installation path:
+
+<Accordion title="Step 1: Path Setup Prompt">
+  You'll see a panel asking to set up the path:
+  ```
+  ╭─────────────────────────────────────╮
+  │ Setup path for tool installations   │
+  ╰─────────────────────────────────────╯
+  ```
+  
+  Two options are available:
+  - **1**: Custom path (you specify)
+  - **2**: Default path (automatic)
+</Accordion>
+
+<Accordion title="Step 2: Choose Configuration Method">
+  **Option 1 - Custom Path:**
+  ```python
+  if choice == "1":
+      inpath = Prompt.ask("[magenta]Enter Path (with Directory Name)[/magenta]")
+      with open(fpath, "w") as f:
+          f.write(inpath)
+  ```
+  
+  **Option 2 - Default Path:**
+  ```python
+  else:
+      autopath = "/home/hackingtool/"
+      with open(fpath, "w") as f:
+          f.write(autopath)
+  ```
+</Accordion>
+
+<Accordion title="Step 3: Directory Creation">
+  The directory is created and set as working directory:
+  ```python
+  # From hackingtool.py:207-211
+  with open(fpath) as f:
+      archive = f.readline().strip()
+      os.makedirs(archive, exist_ok=True)
+      os.chdir(archive)
+  ```
+</Accordion>
+
+## Default Installation Directory
+
+The default installation path is:
+
+```bash
+/home/hackingtool/
+```
+
+<Note>
+This directory is created automatically if it doesn't exist (`exist_ok=True`).
+</Note>
+
+### Directory Structure
+
+Once tools are installed, your directory might look like:
+
+```
+/home/hackingtool/
+├── tool1/
+├── tool2/
+├── tool3/
+└── ...
+```
+
+Each tool is typically cloned or installed in its own subdirectory.
+
+## Custom Path Configuration
+
+### Setting a Custom Path
+
+To use a custom installation directory:
+
+1. Choose option `1` when prompted on first run
+2. Enter your desired path with directory name
+3. Example custom paths:
+
+<CodeGroup>
+```bash Home Directory
+/home/username/my-tools/
+```
+
+```bash Custom Location
+/opt/hackingtool/
+```
+
+```bash Workspace
+/workspace/security-tools/
+```
+</CodeGroup>
+
+<Tip>
+Ensure you have write permissions for the directory you specify.
+</Tip>
+
+### Modifying Existing Configuration
+
+To change the installation path after initial setup:
+
+```bash
+# Edit the configuration file
+nano ~/hackingtoolpath.txt
+
+# Update the path
+/your/new/path/
+```
+
+Or delete it to trigger setup again:
+
+```bash
+rm ~/hackingtoolpath.txt
+python3 hackingtool.py
+```
+
+## Tool Installation Directories
+
+### How Tools Are Installed
+
+Each tool defines its own `INSTALLATION_DIR` and `INSTALL_COMMANDS`:
+
+```python
+# From core.py:36-44
+class HackingTool(object):
+    TITLE: str = ""
+    DESCRIPTION: str = ""
+    INSTALL_COMMANDS: List[str] = []
+    INSTALLATION_DIR: str = ""
+    UNINSTALL_COMMANDS: List[str] = []
+    RUN_COMMANDS: List[str] = []
+    OPTIONS: List[Tuple[str, Callable]] = []
+    PROJECT_URL: str = ""
+```
+
+### Installation Process
+
+When you select "Install" for a tool:
+
+```python
+# From core.py:104-113
+def install(self):
+    self.before_install()
+    if isinstance(self.INSTALL_COMMANDS, (list, tuple)):
+        for INSTALL_COMMAND in self.INSTALL_COMMANDS:
+            console.print(f"[yellow]→ {INSTALL_COMMAND}[/yellow]")
+            os.system(INSTALL_COMMAND)
+        self.after_install()
+```
+
+1. `before_install()` hook is called
+2. Each command in `INSTALL_COMMANDS` executes
+3. Commands run in the configured directory
+4. `after_install()` hook confirms success
+
+<Note>
+Installation commands typically use `git clone`, `apt install`, or `pip install`.
+</Note>
+
+## Environment Setup
+
+### System Requirements
+
+HackingTool requires:
+
+```python
+# From requirements.txt
+boxes
+flask
+lolcat
+requests
+rich
+```
+
+### Python Dependencies
+
+Install dependencies with:
+
+```bash
+pip3 install -r requirements.txt
+```
+
+Or individually:
+
+```bash
+pip3 install boxes flask lolcat requests rich
+```
+
+### System Packages
+
+Some tools may require additional system packages:
+
+```python
+# From tool_manager.py:29-31
+def update_sys(self):
+    os.system("sudo apt update && sudo apt full-upgrade -y")
+    os.system("sudo apt-get install tor openssl curl && sudo apt-get update tor openssl curl")
+    os.system("sudo apt-get install python3-pip")
+```
+
+<Tabs>
+  <Tab title="Debian/Ubuntu">
+    ```bash
+    sudo apt update
+    sudo apt install git python3-pip figlet sudo
+    sudo apt install boxes php curl xdotool wget
+    sudo apt install tor openssl curl
+    ```
+  </Tab>
+  <Tab title="Kali Linux">
+    Most dependencies are pre-installed. Install missing packages:
+    ```bash
+    sudo apt update
+    sudo apt install python3-pip
+    pip3 install -r requirements.txt
+    ```
+  </Tab>
+</Tabs>
+
+## Working Directory
+
+HackingTool changes the working directory to the configured path:
+
+```python
+# From hackingtool.py:210
+os.chdir(archive)
+```
+
+This ensures:
+- Tools install in the correct location
+- Relative paths work correctly
+- All operations are contained
+
+### Verifying Current Directory
+
+Check where HackingTool is operating:
+
+```bash
+pwd
+# Should output: /home/hackingtool/ (or your custom path)
+```
+
+## Docker Configuration
+
+When running in Docker, the path is pre-configured:
+
+```dockerfile
+# From Dockerfile:10
+RUN true && echo "/root/hackingtool/" > /home/hackingtoolpath.txt;
+```
+
+<Note>
+In Docker, the installation path is always `/root/hackingtool/` and cannot be changed.
+</Note>
+
+## Customizing Tool Behavior
+
+### Installation Hooks
+
+Tools can customize installation behavior:
+
+```python
+# From core.py:102, 112-113
+def before_install(self): pass
+
+def after_install(self):
+    console.print("[green]✔ Successfully installed![/green]")
+```
+
+Override these in your tool classes to add custom logic.
+
+### Run Hooks
+
+Similarly for running tools:
+
+```python
+# From core.py:128, 138
+def before_run(self): pass
+def after_run(self): pass
+```
+
+## Configuration Best Practices
+
+<Tip>
+**Recommended Setup:**
+1. Use the default path (`/home/hackingtool/`) for simplicity
+2. Ensure sufficient disk space (tools can be large)
+3. Run with appropriate permissions
+4. Keep the path consistent across sessions
+</Tip>
+
+<Warning>
+**Avoid:**
+- Installing to system directories without sudo
+- Using paths with spaces or special characters
+- Changing the path after tools are installed
+- Deleting the configuration file while tools are installed
+</Warning>
+
+## Troubleshooting Configuration
+
+### Path Not Found
+
+If you see path-related errors:
+
+```bash
+# Check if config file exists
+ls -la ~/hackingtoolpath.txt
+
+# View current configuration
+cat ~/hackingtoolpath.txt
+
+# Verify directory exists
+ls -la $(cat ~/hackingtoolpath.txt)
+```
+
+### Permission Denied
+
+If you can't write to the configured path:
+
+```bash
+# Check permissions
+ls -ld $(cat ~/hackingtoolpath.txt)
+
+# Fix permissions (if needed)
+sudo chown -R $USER:$USER $(cat ~/hackingtoolpath.txt)
+```
+
+### Reset Configuration
+
+To start fresh:
+
+```bash
+# Remove configuration
+rm ~/hackingtoolpath.txt
+
+# Optionally clean installation directory
+rm -rf /home/hackingtool/
+
+# Run HackingTool to reconfigure
+python3 hackingtool.py
+```

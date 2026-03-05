@@ -1,80 +1,517 @@
 ---
-title: "Quickstart"
-description: "Start building awesome documentation in minutes"
+title: Quickstart
+description: Get started with HackingTool in minutes - launch the interface, navigate categories, and install your first security tool
 ---
 
-## Get started in three steps
+## Prerequisites
 
-Get your documentation site running locally and make your first customization.
-
-### Step 1: Set up your local environment
-
-<AccordionGroup>
-  <Accordion icon="copy" title="Clone your docs locally">
-    During the onboarding process, you created a GitHub repository with your docs content if you didn't already have one. You can find a link to this repository in your [dashboard](https://dashboard.mintlify.com).
-    
-    To clone the repository locally so that you can make and preview changes to your docs, follow the [Cloning a repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) guide in the GitHub docs.
-  </Accordion>
-  <Accordion icon="rectangle-terminal" title="Start the preview server">
-    1. Install the Mintlify CLI: `npm i -g mint`
-    2. Navigate to your docs directory and run: `mint dev`
-    3. Open `http://localhost:3000` to see your docs live!
-    
-    <Tip>Your preview updates automatically as you edit files.</Tip>
-  </Accordion>
-</AccordionGroup>
-
-### Step 2: Deploy your changes
-
-<AccordionGroup>
-  <Accordion icon="github" title="Install our GitHub app">
-    Install the Mintlify GitHub app from your [dashboard](https://dashboard.mintlify.com/settings/organization/github-app).
-    
-    Our GitHub app automatically deploys your changes to your docs site, so you don't need to manage deployments yourself.
-</Accordion>
-<Accordion icon="palette" title="Update your site name and colors">
-    For a first change, let's update the name and colors of your docs site.
-
-    1. Open `docs.json` in your editor.
-    2. Change the `"name"` field to your project name.
-    3. Update the `"colors"` to match your brand.
-    4. Save and see your changes instantly at `http://localhost:3000`.
-
-    <Tip>Try changing the primary color to see an immediate difference!</Tip>
-  </Accordion>
-</AccordionGroup>
-
-### Step 3: Go live
-
-<Accordion icon="rocket" title="Publish your docs">
-  1. Commit and push your changes.
-  2. Your docs will update and be live in moments!
-</Accordion>
-
-## Next steps
-
-Now that you have your docs running, explore these key features:
+Before starting, ensure you have:
 
 <CardGroup cols={2}>
-
-<Card title="Write Content" icon="pen-to-square" href="/essentials/markdown">
-  Learn MDX syntax and start writing your documentation.
-</Card>
-
-<Card title="Customize style" icon="palette" href="/essentials/settings">
-  Make your docs match your brand perfectly.
-</Card>
-
-<Card title="Add code examples" icon="square-code" href="/essentials/code">
-  Include syntax-highlighted code blocks.
-</Card>
-
-<Card title="API documentation" icon="code" href="/api-reference/introduction">
-  Auto-generate API docs from OpenAPI specs.
-</Card>
-
+  <Card title="HackingTool Installed" icon="check">
+    Follow the [Installation Guide](/installation) if you haven't installed HackingTool yet
+  </Card>
+  <Card title="Root Access" icon="user-shield">
+    You must run HackingTool with `sudo` privileges
+  </Card>
 </CardGroup>
 
-<Note>
-  **Need help?** See our [full documentation](https://mintlify.com/docs) or join our [community](https://mintlify.com/community).
-</Note>
+## Launching HackingTool
+
+<Steps>
+  <Step title="Start HackingTool">
+    Open your terminal and run:
+    ```bash
+    sudo hackingtool
+    ```
+
+    <Note>
+    On first launch, you'll be prompted to set an installation path for tools. Choose option `2` for the default path `/home/hackingtool/` or option `1` to specify a custom directory.
+    </Note>
+  </Step>
+
+  <Step title="View the Main Menu">
+    You'll see the HackingTool ASCII logo and main menu:
+
+    ```
+       ▄█    █▄       ▄████████  ▄████████    ▄█   ▄█▄  ▄█  ███▄▄▄▄      ▄██████▄           ███      ▄██████▄   ▄██████▄   ▄█       
+      ███    ███     ███    ███ ███    ███   ███ ▄███▀ ███  ███▀▀▀██▄   ███    ███      ▀█████████▄ ███    ███ ███    ███ ███       
+      ███    ███     ███    ███ ███    █▀    ███▐██▀   ███▌ ███   ███   ███    █▀          ▀███▀▀██ ███    ███ ███    ███ ███       
+     ▄███▄▄▄▄███▄▄   ███    ███ ███         ▄█████▀    ███▌ ███   ███  ▄███                 ███   ▀ ███    ███ ███    ███ ███       
+    ▀▀███▀▀▀▀███▀  ▀███████████ ███        ▀▀█████▄    ███▌ ███   ███ ▀▀███ ████▄           ███     ███    ███ ███    ███ ███       
+      ███    ███     ███    ███ ███    █▄    ███▐██▄   ███  ███   ███   ███    ███          ███     ███    ███ ███    ███ ███       
+      ███    ███     ███    ███ ███    ███   ███ ▀███▄ ███  ███   ███   ███    ███          ███     ███    ███ ███    ███ ███▌    ▄ 
+      ███    █▀      ███    █▀  ████████▀    ███   ▀█▀ █▀    ▀█   █▀    ████████▀          ▄████▀    ▀██████▀   ▀██████▀  █████▄▄██ 
+
+     https://github.com/Z4nzu/hackingtool | Version 1.1.0
+     Please Don't Use For illegal Activity
+
+    ╭─────────────────── HackingTool — Main Menu ───────────────────╮
+    │                                                               │
+    │     0  🛡️  Anonymously Hiding Tools                          │
+    │     1  🔍  Information gathering tools                        │
+    │     2  📚  Wordlist Generator                                 │
+    │     3  📶  Wireless attack tools                              │
+    │     4  🧩  SQL Injection Tools                                │
+    │     5  🎣  Phishing attack tools                              │
+    │     6  🌐  Web Attack tools                                   │
+    │     7  🔧  Post exploitation tools                            │
+    │     8  🕵️  Forensic tools                                     │
+    │     9  📦  Payload creation tools                             │
+    │    10  🧰  Exploit framework                                  │
+    │    11  🔁  Reverse engineering tools                          │
+    │    12  ⚡  DDOS Attack Tools                                   │
+    │    13  🖥️  Remote Administrator Tools (RAT)                   │
+    │    14  💥  XSS Attack Tools                                    │
+    │    15  🖼️  Steganograhy tools                                 │
+    │    16  ✨  Other tools                                         │
+    │    99  ♻️  Update or Uninstall | Hackingtool                  │
+    │                                                               │
+    ╰───────────────────────────────────────────────────────────────╯
+    
+    Choose number and press Enter — 99 to exit
+    ```
+  </Step>
+</Steps>
+
+## Understanding the Interface
+
+HackingTool uses a **rich terminal UI** with color-coded categories:
+
+<CardGroup cols={3}>
+  <Card title="Menu Navigation" icon="keyboard">
+    Type a number (0-16 or 99) and press Enter
+  </Card>
+  <Card title="Category Icons" icon="icons">
+    Each category has a unique emoji for quick identification
+  </Card>
+  <Card title="Interactive Prompts" icon="message">
+    Follow on-screen prompts to install and configure tools
+  </Card>
+</CardGroup>
+
+## Tool Categories Overview
+
+HackingTool organizes 100+ security tools into 17 categories:
+
+| Number | Category | Icon | Example Tools |
+|--------|----------|------|---------------|
+| 0 | Anonymously Hiding Tools | 🛡️ | Anonsurf, Multitor |
+| 1 | Information Gathering | 🔍 | Nmap, ReconSpider, Sherlock |
+| 2 | Wordlist Generator | 📚 | Cupp, WordlistCreator |
+| 3 | Wireless Attack | 📶 | WiFi-Pumpkin, Wifiphisher, Wifite |
+| 4 | SQL Injection | 🧩 | SQLMap, NoSQLMap |
+| 5 | Phishing Attack | 🎣 | SET, SocialFish, HiddenEye |
+| 6 | Web Attack | 🌐 | Skipfish, Sublist3r, Dirb |
+| 7 | Post Exploitation | 🔧 | Vegile, HeraKeylogger |
+| 8 | Forensic Tools | 🕵️ | Autopsy, Wireshark, Volatility |
+| 9 | Payload Creation | 📦 | TheFatRat, MSFvenom, Venom |
+| 10 | Exploit Framework | 🧰 | RouterSploit, WebSploit, Commix |
+| 11 | Reverse Engineering | 🔁 | Androguard, Apk2Gold, JadX |
+| 12 | DDOS Attack | ⚡ | SlowLoris, UFOnet, GoldenEye |
+| 13 | RAT Tools | 🖥️ | Stitch, Pyshell |
+| 14 | XSS Attack | 💥 | XSStrike, DalFox, XSpear |
+| 15 | Steganography | 🖼️ | SteganoHide, StegoCracker |
+| 16 | Other Tools | ✨ | Social media finders, hash crackers |
+
+## Installing Your First Tool
+
+Let's walk through installing **Nmap**, a popular network scanning tool:
+
+<Steps>
+  <Step title="Select Information Gathering">
+    From the main menu, type `1` and press Enter to access Information Gathering tools:
+    
+    ```
+    Choose a tool to proceed: 1
+    ```
+  </Step>
+
+  <Step title="Browse Available Tools">
+    You'll see a submenu with all information gathering tools:
+    
+    ```
+    ╭─────────────── Information gathering tools ───────────────╮
+    │                                                           │
+    │   0  Network Map (nmap)                                   │
+    │   1  Dracnmap                                             │
+    │   2  Port scanning                                        │
+    │   3  Host to IP                                           │
+    │   4  Xerosploit                                           │
+    │   5  RED HAWK (All In One Scanning)                       │
+    │   6  ReconSpider (For All Scanning)                       │
+    │   7  IsItDown (Check Website Down/Up)                     │
+    │   8  Infoga - Email OSINT                                 │
+    │   9  ReconDog                                             │
+    │  10  Striker                                              │
+    │  11  SecretFinder (like API & etc)                        │
+    │  12  Find Info Using Shodan                               │
+    │  13  Port Scanner - rang3r (Python 2.7)                   │
+    │  14  Port Scanner - Ranger Reloaded (Python 3+)           │
+    │  15  Breacher                                             │
+    │  99  Back to Main Menu                                    │
+    │                                                           │
+    ╰───────────────────────────────────────────────────────────╯
+    ```
+  </Step>
+
+  <Step title="Select Nmap">
+    Type `0` to select Nmap:
+    
+    ```
+    Choose a tool to proceed: 0
+    ```
+    
+    HackingTool will:
+    1. Check if Nmap is already installed
+    2. Download and install Nmap if needed
+    3. Display installation status
+    
+    <Tip>
+    Most tools are cloned from GitHub repositories and installed automatically with their dependencies.
+    </Tip>
+  </Step>
+
+  <Step title="Verify Installation">
+    After installation, you can verify Nmap is working:
+    
+    ```bash
+    nmap --version
+    ```
+    
+    Expected output:
+    ```
+    Nmap version 7.94 ( https://nmap.org )
+    Platform: x86_64-pc-linux-gnu
+    Compiled with: liblua-5.3.6 openssl-3.0.11
+    ```
+  </Step>
+</Steps>
+
+## Running Your First Scan
+
+Now that Nmap is installed, let's perform a basic network scan:
+
+<Warning>
+**Legal Notice**: Only scan networks and systems you own or have explicit permission to test. Unauthorized scanning is illegal.
+</Warning>
+
+<Steps>
+  <Step title="Scan Your Local Network">
+    Identify devices on your local network:
+    
+    ```bash
+    sudo nmap -sn 192.168.1.0/24
+    ```
+    
+    **Example Output:**
+    ```
+    Starting Nmap 7.94 ( https://nmap.org )
+    Nmap scan report for 192.168.1.1
+    Host is up (0.0012s latency).
+    MAC Address: AA:BB:CC:DD:EE:FF (Router Manufacturer)
+    
+    Nmap scan report for 192.168.1.100
+    Host is up (0.023s latency).
+    MAC Address: 11:22:33:44:55:66 (Device Manufacturer)
+    
+    Nmap done: 256 IP addresses (12 hosts up) scanned in 3.45 seconds
+    ```
+  </Step>
+
+  <Step title="Perform a Port Scan">
+    Scan common ports on a specific host:
+    
+    ```bash
+    sudo nmap -sV 192.168.1.100
+    ```
+    
+    **Example Output:**
+    ```
+    Starting Nmap 7.94 ( https://nmap.org )
+    Nmap scan report for 192.168.1.100
+    Host is up (0.00055s latency).
+    Not shown: 997 closed ports
+    PORT    STATE SERVICE VERSION
+    22/tcp  open  ssh     OpenSSH 8.9p1 Ubuntu 3ubuntu0.1
+    80/tcp  open  http    Apache httpd 2.4.52
+    443/tcp open  ssl/http Apache httpd 2.4.52
+    
+    Service detection performed. Please report any incorrect results.
+    Nmap done: 1 IP address (1 host up) scanned in 6.78 seconds
+    ```
+  </Step>
+
+  <Step title="Save Scan Results">
+    Export results to a file for documentation:
+    
+    ```bash
+    sudo nmap -sV -oN scan_results.txt 192.168.1.100
+    ```
+    
+    This creates `scan_results.txt` with the full scan output.
+  </Step>
+</Steps>
+
+## Exploring More Tools
+
+### Information Gathering Tools
+
+Try these popular tools from the collection:
+
+<AccordionGroup>
+  <Accordion title="Sherlock - Social Media Username Search">
+    **Purpose**: Find social media accounts associated with a username
+    
+    **Installation**: Select category `1` → option for Sherlock
+    
+    **Basic Usage**:
+    ```bash
+    sherlock username123
+    ```
+    
+    **Example Output**:
+    ```
+    [+] Twitter: https://twitter.com/username123
+    [+] GitHub: https://github.com/username123
+    [+] Instagram: https://instagram.com/username123
+    [-] Facebook: Not Found
+    ```
+  </Accordion>
+
+  <Accordion title="ReconSpider - All-in-One OSINT">
+    **Purpose**: Comprehensive reconnaissance and information gathering
+    
+    **Installation**: Select category `1` → ReconSpider option
+    
+    **Features**:
+    - Domain/IP information
+    - WHOIS lookup
+    - DNS records
+    - Subdomain enumeration
+    - Port scanning
+  </Accordion>
+
+  <Accordion title="Sublist3r - Subdomain Enumeration">
+    **Purpose**: Discover subdomains of a target domain
+    
+    **Installation**: Select category `6` (Web Attack tools) → SubDomain Finder
+    
+    **Basic Usage**:
+    ```bash
+    sublist3r -d example.com
+    ```
+    
+    **Example Output**:
+    ```
+    [*] Enumerating subdomains for example.com
+    [+] www.example.com
+    [+] mail.example.com
+    [+] blog.example.com
+    [+] api.example.com
+    Total Unique Subdomains Found: 4
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Navigation Tips
+
+<CardGroup cols={2}>
+  <Card title="Return to Main Menu" icon="arrow-left">
+    Type `99` in any submenu to return to the main menu
+  </Card>
+  
+  <Card title="Exit HackingTool" icon="door-open">
+    Type `99` from the main menu to exit the application
+  </Card>
+  
+  <Card title="Confirm Actions" icon="check-circle">
+    After installing a tool, you'll be asked: "Return to main menu? [Y/n]"
+  </Card>
+  
+  <Card title="View Tool Info" icon="info-circle">
+    Most tools display their GitHub repository and description before installation
+  </Card>
+</CardGroup>
+
+## Working Directory
+
+All tools are installed to your configured path (default: `/home/hackingtool/`):
+
+```bash
+cd /home/hackingtool/
+ls -la
+```
+
+**Directory Structure:**
+```
+/home/hackingtool/
+├── nmap/
+├── sherlock/
+├── sublist3r/
+├── recon-ng/
+├── sqlmap/
+└── ...
+```
+
+<Tip>
+You can change the tool installation directory by editing `~/hackingtoolpath.txt` or deleting it to be prompted again on next launch.
+</Tip>
+
+## Common Workflows
+
+### Workflow 1: Reconnaissance Phase
+
+<Steps>
+  <Step title="Enable Anonymity">
+    **Category 0** → Anonsurf
+    ```bash
+    anonsurf start
+    ```
+  </Step>
+
+  <Step title="Gather Target Information">
+    **Category 1** → Nmap, ReconDog, or RED HAWK for initial recon
+  </Step>
+
+  <Step title="Enumerate Subdomains">
+    **Category 6** → Sublist3r for subdomain discovery
+  </Step>
+
+  <Step title="Search for Vulnerabilities">
+    **Category 4** → SQLMap for SQL injection testing
+    **Category 14** → XSStrike for XSS vulnerabilities
+  </Step>
+</Steps>
+
+### Workflow 2: Password Testing
+
+<Steps>
+  <Step title="Generate Wordlist">
+    **Category 2** → Cupp (Common User Passwords Profiler)
+    ```bash
+    cupp -i  # Interactive mode
+    ```
+  </Step>
+
+  <Step title="Use Wordlist">
+    Apply the generated wordlist to brute force tools in Category 16
+  </Step>
+</Steps>
+
+### Workflow 3: Wireless Security Testing
+
+<Steps>
+  <Step title="Monitor Mode">
+    Enable monitor mode on your wireless adapter
+  </Step>
+
+  <Step title="Launch Wifite">
+    **Category 3** → Wifite for automated WiFi attacks
+    ```bash
+    sudo wifite
+    ```
+  </Step>
+
+  <Step title="Capture Handshakes">
+    Wifite automatically captures WPA handshakes
+  </Step>
+
+  <Step title="Crack Passwords">
+    Use captured handshakes with wordlists from Category 2
+  </Step>
+</Steps>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Tool Installation Fails">
+    **Problem**: Git clone or installation errors
+    
+    **Solutions**:
+    1. Check internet connectivity: `ping github.com`
+    2. Verify you have git installed: `git --version`
+    3. Ensure sufficient disk space: `df -h`
+    4. Try manually cloning: `cd /home/hackingtool && git clone [tool-url]`
+  </Accordion>
+
+  <Accordion title="Tool Won't Run">
+    **Problem**: Command not found after installation
+    
+    **Solutions**:
+    1. Navigate to tool directory: `cd /home/hackingtool/[tool-name]`
+    2. Run directly: `python3 tool.py` or `./tool.sh`
+    3. Check dependencies: `pip3 install -r requirements.txt`
+    4. Verify permissions: `chmod +x tool.sh`
+  </Accordion>
+
+  <Accordion title="Permission Denied Errors">
+    **Problem**: Cannot write to directories or execute tools
+    
+    **Solution**: Always run HackingTool with sudo:
+    ```bash
+    sudo hackingtool
+    ```
+  </Accordion>
+
+  <Accordion title="Menu Not Displaying Correctly">
+    **Problem**: Broken characters or formatting issues
+    
+    **Solutions**:
+    1. Ensure terminal supports UTF-8: `echo $LANG`
+    2. Install missing fonts for emoji support
+    3. Use a modern terminal emulator (Terminator, Tilix, Kitty)
+  </Accordion>
+</AccordionGroup>
+
+## Best Practices
+
+<CardGroup cols={2}>
+  <Card title="Always Get Authorization" icon="file-contract">
+    Only test systems you own or have written permission to assess
+  </Card>
+  
+  <Card title="Document Everything" icon="file-pen">
+    Keep logs of all scans and tests for reporting
+  </Card>
+  
+  <Card title="Use Anonymity Tools" icon="mask">
+    Enable Anonsurf or VPN before testing (where appropriate)
+  </Card>
+  
+  <Card title="Stay Updated" icon="arrows-rotate">
+    Regularly update HackingTool (option 99) for latest tools
+  </Card>
+  
+  <Card title="Test in Lab First" icon="flask">
+    Practice on your own lab environment before real assessments
+  </Card>
+  
+  <Card title="Understand Each Tool" icon="graduation-cap">
+    Read tool documentation before use - don't run blind
+  </Card>
+</CardGroup>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Explore Categories" icon="grid" href="/tools/overview">
+    Deep dive into all 18 tool categories and their capabilities
+  </Card>
+  
+  <Card title="Advanced Usage" icon="book" href="/advanced/troubleshooting">
+    Learn advanced techniques and troubleshooting tips
+  </Card>
+  
+  <Card title="Tool References" icon="screwdriver-wrench" href="/reference/tool-list">
+    Complete list of all 100+ integrated security tools
+  </Card>
+  
+  <Card title="Join Community" icon="users" href="https://github.com/Z4nzu/hackingtool">
+    Contribute to the project and suggest new tools
+  </Card>
+</CardGroup>
+
+<Warning>
+**Ethical Use Only**: HackingTool is intended for security professionals, researchers, and students learning cybersecurity. Always follow responsible disclosure practices and applicable laws.
+</Warning>

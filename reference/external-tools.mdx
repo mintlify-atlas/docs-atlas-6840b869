@@ -1,0 +1,438 @@
+---
+title: 'External Tools & Licensing'
+description: 'Third-party tools, repositories, and licensing information'
+icon: 'github'
+---
+
+## External Tool Integration
+
+HackingTool acts as a **centralized management framework** for over 100 third-party security tools. It does not develop these tools but provides unified installation and execution interface.
+
+<Note>
+All tools are developed and maintained by their respective authors. HackingTool simply automates the installation and launching process.
+</Note>
+
+## Tool Sources
+
+All integrated tools are sourced from public repositories:
+
+### Primary Sources
+
+<ParamField path="GitHub" type="primary">
+  **95%+ of tools** are cloned directly from GitHub repositories
+  
+  ```bash
+  git clone https://github.com/author/toolname.git
+  ```
+</ParamField>
+
+<ParamField path="GitLab" type="secondary">
+  Few tools like **Dirb** are hosted on GitLab
+  
+  ```bash
+  git clone https://gitlab.com/kalilinux/packages/dirb.git
+  ```
+</ParamField>
+
+<ParamField path="Package Managers" type="installed">
+  Some tools are installed via system package managers:
+  - `apt install wireshark`
+  - `apt install steghide`
+  - `gem install XSpear`
+  - `pip install slowloris`
+</ParamField>
+
+### Tool Repository Patterns
+
+Most tools follow GitHub URL structure:
+
+```
+https://github.com/{author}/{repository}
+```
+
+**Examples:**
+- `https://github.com/sqlmapproject/sqlmap` - SQL injection
+- `https://github.com/nmap/nmap` - Network scanning
+- `https://github.com/trustedsec/social-engineer-toolkit` - Social engineering
+
+## Licensing Information
+
+### HackingTool Framework License
+
+<ParamField path="HackingTool" type="license">
+  **Repository**: https://github.com/Z4nzu/hackingtool
+  
+  **License**: Check repository for current license
+  
+  **Usage**: Educational and ethical penetration testing only
+</ParamField>
+
+<Note>
+The main HackingTool codebase displays warning:
+
+"Please Don't Use For illegal Activity"
+
+Users are responsible for compliance with local laws and regulations.
+</Note>
+
+### External Tool Licenses
+
+Each integrated tool maintains its own license:
+
+<Accordion title="Open Source Licenses">
+  **Common Licenses Found:**
+  
+  - **MIT License** - Permissive (sqlmap, many Python tools)
+  - **GPL v2/v3** - Copyleft (nmap, metasploit components)
+  - **Apache 2.0** - Permissive with patent grant
+  - **BSD Licenses** - Permissive variants
+  - **Custom/Proprietary** - Some tools have unique licenses
+  
+  **Verification Required**: Always check individual tool repositories for current licensing terms.
+</Accordion>
+
+<Accordion title="License Compliance">
+  When using HackingTool and integrated tools:
+  
+  1. **Review each tool's license** before use
+  2. **Attribute authors** as required by licenses
+  3. **Respect copyleft requirements** (GPL, etc.)
+  4. **Commercial use restrictions** may apply to some tools
+  5. **Modification and redistribution** terms vary by tool
+</Accordion>
+
+## Tool Authorship
+
+HackingTool integrates tools from the global security community:
+
+### Notable Tool Authors & Organizations
+
+<ParamField path="Offensive Security" type="organization">
+  Creators of Kali Linux and many integrated tools
+  
+  Tools often pre-installed on Kali distributions
+</ParamField>
+
+<ParamField path="TrustedSec" type="organization">
+  **Social-Engineer Toolkit (SET)**
+  
+  https://github.com/trustedsec/social-engineer-toolkit
+</ParamField>
+
+<ParamField path="sqlmap Development Team" type="community">
+  **sqlmap** - Most popular SQL injection tool
+  
+  https://github.com/sqlmapproject/sqlmap
+</ParamField>
+
+<ParamField path="Individual Researchers" type="developers">
+  Hundreds of individual security researchers contribute tools:
+  
+  - **s0md3v** - ReconDog, Striker, Breacher, XSStrike
+  - **UndeadSec** - Multiple phishing and enumeration tools
+  - **Screetsec** - TheFatRat, Brutal, Dracnmap, Vegile
+  - **Z4nzu** (HackingTool creator) - wlcreator, fakeap, fastssh
+</ParamField>
+
+## Tool Update Mechanisms
+
+### Framework Updates
+
+HackingTool framework can be updated:
+
+```bash
+# From menu option 99 > Update Hackingtool
+# Automated process:
+1. Remove old installation
+2. Clone latest from GitHub
+3. Re-run installer
+```
+
+### Individual Tool Updates
+
+Two methods for updating external tools:
+
+<Tabs>
+  <Tab title="Manual Git Pull">
+    ```bash
+    cd /path/to/tool/
+    git pull origin main
+    # Re-run setup if needed
+    python3 setup.py install
+    ```
+  </Tab>
+  
+  <Tab title="Built-in Update (Select Tools)">
+    Some tools include update functions:
+    
+    **TheFatRat**:
+    ```bash
+    cd TheFatRat
+    bash update
+    chmod +x setup.sh
+    bash setup.sh
+    ```
+    
+    **BlackPhish**:
+    ```bash
+    cd BlackPhish
+    sudo bash update.sh
+    ```
+  </Tab>
+</Tabs>
+
+<Note>
+Most tools do NOT have automated updates. Manual git pull is required.
+</Note>
+
+## Version Compatibility
+
+### Python Version Requirements
+
+<ParamField path="Python 3.6+" type="required">
+  HackingTool framework requires Python 3.6 or higher
+  
+  Most integrated tools also require Python 3.x
+</ParamField>
+
+<ParamField path="Python 2.7" type="legacy">
+  **Deprecated** - Few older tools still require Python 2.7:
+  - Blazy (requires python2.7)
+  - Some legacy reconnaissance tools
+  
+  **Warning**: Python 2 reached end-of-life January 2020
+</ParamField>
+
+### Operating System Compatibility
+
+<Tabs>
+  <Tab title="Debian/Ubuntu/Kali">
+    **Best Support** - Primary development target
+    
+    ```bash
+    # Fully tested on:
+    - Kali Linux 2020+
+    - Parrot Security OS
+    - Ubuntu 18.04+
+    - Debian 10+
+    ```
+  </Tab>
+  
+  <Tab title="Arch Linux">
+    **Supported** - Via pacman package manager
+    
+    ```bash
+    # Installation process:
+    pacman -Syu --noconfirm
+    pacman -S --noconfirm git python-pip
+    ```
+    
+    Some packages may require AUR installation
+  </Tab>
+  
+  <Tab title="Windows">
+    **Not Officially Supported**
+    
+    Recommendation: Use WSL (Windows Subsystem for Linux) or VM
+  </Tab>
+  
+  <Tab title="macOS">
+    **Limited Support** - Not officially tested
+    
+    Some tools may work, many require Linux-specific features
+  </Tab>
+</Tabs>
+
+### Dependency Versions
+
+Tools have varying dependency requirements:
+
+<Accordion title="Language Runtime Versions">
+  **Ruby**:
+  - XSpear requires Ruby 2.5+
+  - HatCloud requires Ruby 2.x
+  
+  **Go/Golang**:
+  - DalFox requires Go 1.14+
+  - Built tools installed to `~/go/bin/`
+  
+  **Rust**:
+  - RVuln requires Rust toolchain
+  - `cargo build --release`
+  
+  **Node.js**:
+  - Some web-based tools may require Node
+</Accordion>
+
+<Accordion title="System Library Versions">
+  **OpenSSL**:
+  - Many cryptographic tools require libssl-dev
+  
+  **Qt/GTK**:
+  - GUI tools may require Qt5 or GTK3
+  
+  **Network Libraries**:
+  - libpcap for packet capture
+  - libnmap for network scanning
+</Accordion>
+
+## Tool Maintenance Status
+
+### Active Maintenance
+
+<ParamField path="Actively Maintained" type="status">
+  Tools with recent commits (within 1 year):
+  - sqlmap
+  - metasploit components
+  - Social-Engineer Toolkit
+  - WiFi-Pumpkin3
+  - Many others
+  
+  Check GitHub repository for latest activity
+</ParamField>
+
+### Archived/Unmaintained Tools
+
+<ParamField path="Legacy Status" type="warning">
+  Some tools are no longer actively maintained:
+  - Original versions may have vulnerabilities
+  - Dependencies may be outdated
+  - Functionality may break on newer systems
+  
+  **Recommendation**: Verify tool status before use
+</ParamField>
+
+## Security Considerations
+
+### Tool Verification
+
+<Note>
+**Important Security Practice:**
+
+When installing tools from external sources:
+1. **Verify repository authenticity** - Check author/organization
+2. **Review source code** - Especially for tools requiring root
+3. **Check commit history** - Look for suspicious recent changes
+4. **Scan for malware** - Use antivirus on downloaded files
+5. **Use isolated environment** - Test in VM before production use
+</Note>
+
+### Repository Integrity
+
+HackingTool clones from public repositories:
+
+```python
+INSTALL_COMMANDS = [
+    "git clone https://github.com/author/tool.git"
+]
+```
+
+<ParamField path="Risk Factors" type="security">
+  **Potential Issues**:
+  - Repository could be compromised after HackingTool release
+  - Man-in-the-middle attacks during clone (use HTTPS)
+  - Malicious forks with similar names
+  - Typosquatting on repository URLs
+  
+  **Mitigation**:
+  - Verify HTTPS connections
+  - Check repository star count and community
+  - Review code before execution with root privileges
+</ParamField>
+
+## External Resources
+
+### Official Documentation Links
+
+Each tool typically provides documentation:
+
+<Accordion title="Common Documentation Locations">
+  **GitHub Repository**:
+  - README.md - Installation and basic usage
+  - Wiki pages - Detailed documentation
+  - docs/ directory - Comprehensive guides
+  
+  **Project Websites**:
+  - Official tool websites (e.g., nmap.org)
+  - Tutorial blogs and videos
+  - Community forums
+</Accordion>
+
+### Community Resources
+
+<ParamField path="HackingTool GitHub" type="primary">
+  **Main Repository**: https://github.com/Z4nzu/hackingtool
+  
+  - Issue tracker
+  - Pull requests
+  - Community discussions
+</ParamField>
+
+<ParamField path="Individual Tool Communities" type="support">
+  Each tool has its own community:
+  - GitHub Issues
+  - Discord servers
+  - Reddit communities (e.g., r/netsec, r/AskNetsec)
+  - StackOverflow tags
+</ParamField>
+
+## Contributing External Tools
+
+To add new tools to HackingTool:
+
+### Integration Requirements
+
+```python
+class NewTool(HackingTool):
+    TITLE = "Tool Name"
+    DESCRIPTION = "Brief description"
+    INSTALL_COMMANDS = [
+        "git clone https://github.com/author/tool.git",
+        "cd tool && pip install -r requirements.txt"
+    ]
+    RUN_COMMANDS = ["cd tool && python tool.py"]
+    PROJECT_URL = "https://github.com/author/tool"
+```
+
+<Note>
+Contributions should follow HackingTool's code structure and include proper attribution to original tool authors.
+</Note>
+
+### Criteria for Tool Inclusion
+
+<ParamField path="Selection Criteria" type="guidelines">
+  Tools should be:
+  1. **Open source** - Public repository available
+  2. **Security-focused** - Penetration testing or security research
+  3. **Actively maintained** - Recent updates preferred
+  4. **Functional** - Working installation and execution
+  5. **Legal** - Ethical use with proper disclaimers
+  6. **Well-documented** - Clear usage instructions
+</ParamField>
+
+## Legal & Ethical Usage
+
+<Note>
+**Critical Warning:**
+
+HackingTool and all integrated tools are for:
+- **Authorized security testing only**
+- **Educational purposes**
+- **Legal penetration testing with permission**
+
+**Illegal Use Consequences:**
+- Criminal prosecution under computer fraud laws
+- Civil liability for damages
+- Professional license revocation
+
+Always obtain written authorization before testing any systems you do not own.
+</Note>
+
+### Jurisdictional Considerations
+
+Legality varies by country:
+- Some countries ban security tools entirely
+- Others require specific licenses for penetration testing
+- Export restrictions may apply to cryptographic tools
+
+**Users are solely responsible for legal compliance in their jurisdiction.**

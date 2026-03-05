@@ -1,0 +1,165 @@
+---
+title: Reverse Engineering Tools
+description: Tools for reverse engineering and analyzing Android applications and binaries
+---
+
+# Reverse Engineering Tools
+
+Reverse engineering tools help security researchers and developers analyze compiled applications, decompile code, and understand how software works at a lower level. These tools are essential for malware analysis, vulnerability research, and understanding Android app internals.
+
+## Use Cases
+
+- **Android App Analysis**: Decompile APK files to examine source code and resources
+- **Malware Research**: Analyze suspicious applications for malicious behavior
+- **Security Auditing**: Review compiled applications for security vulnerabilities
+- **Code Recovery**: Extract source code from applications when original source is unavailable
+- **Resource Extraction**: Decode AndroidManifest.xml and application resources
+
+<Warning>
+Reverse engineering tools should only be used on applications you own or have explicit permission to analyze. Unauthorized reverse engineering may violate software licenses and legal agreements.
+</Warning>
+
+## Available Tools
+
+<CardGroup cols={2}>
+  <Card title="Androguard" icon="android" href="https://github.com/androguard/androguard">
+    Reverse engineering, malware and goodware analysis of Android applications
+  </Card>
+  <Card title="Apk2Gold" icon="gem" href="https://github.com/lxdvs/apk2gold">
+    CLI tool for decompiling Android apps to Java source code
+  </Card>
+  <Card title="JadX" icon="code" href="https://github.com/skylot/jadx">
+    Dex to Java decompiler with APK resource decoding
+  </Card>
+</CardGroup>
+
+## Tool Details
+
+### Androguard
+
+**Description**: Androguard is a full-featured Python tool for reverse engineering and analyzing Android applications. It provides capabilities for malware analysis, goodware analysis, and general Android app inspection.
+
+**GitHub**: [androguard/androguard](https://github.com/androguard/androguard)
+
+**Installation**:
+
+```bash
+sudo pip3 install -U androguard
+```
+
+**Features**:
+- Full APK analysis and disassembly
+- DEX file parsing and analysis
+- Static and dynamic analysis capabilities
+- Malware detection support
+- Python API for custom analysis scripts
+
+---
+
+### Apk2Gold
+
+**Description**: Apk2Gold is a command-line tool designed to decompile Android applications (APK files) back to readable Java source code.
+
+**GitHub**: [lxdvs/apk2gold](https://github.com/lxdvs/apk2gold)
+
+**Installation**:
+
+```bash
+sudo git clone https://github.com/lxdvs/apk2gold.git
+cd apk2gold
+sudo bash make.sh
+```
+
+**Usage**:
+
+```bash
+# Run apk2gold on an APK file
+sudo apk2gold app.apk
+```
+
+<Accordion title="Usage Example">
+```bash
+# Decompile an APK file
+sudo apk2gold /path/to/application.apk
+
+# The tool will extract and decompile the APK to Java source
+```
+</Accordion>
+
+---
+
+### JadX
+
+**Description**: JadX is a powerful Dex to Java decompiler that can handle APK, DEX, AAR, and ZIP files. It provides both command-line and GUI interfaces for decompiling Android applications.
+
+**GitHub**: [skylot/jadx](https://github.com/skylot/jadx)
+
+**Installation**:
+
+```bash
+sudo git clone https://github.com/skylot/jadx.git
+cd jadx
+./gradlew dist
+```
+
+**Key Features**:
+- Decompile Dalvik bytecode to Java classes from APK, DEX, AAR and ZIP files
+- Decode AndroidManifest.xml and other resources from resources.arsc
+- Support for multiple output formats
+- GUI and CLI interfaces available
+- Gradle-based build system
+
+**Usage**:
+
+```bash
+# Using the CLI
+./build/jadx/bin/jadx -d output/ app.apk
+
+# Using the GUI
+./build/jadx/bin/jadx-gui
+```
+
+<Accordion title="Command-Line Options">
+```bash
+# Decompile APK to output directory
+jadx -d output/ app.apk
+
+# Decompile with resources
+jadx -r -d output/ app.apk
+
+# Export as Gradle project
+jadx --export-gradle -d output/ app.apk
+```
+</Accordion>
+
+---
+
+## Best Practices
+
+<Note>
+**Legal Considerations**:
+- Only analyze applications you own or have permission to examine
+- Respect intellectual property rights and software licenses
+- Use these tools for legitimate security research and development purposes
+- Be aware of local laws regarding reverse engineering
+</Note>
+
+### Analysis Workflow
+
+1. **Initial Assessment**: Start with basic APK information extraction
+2. **Decompilation**: Use appropriate tools based on app complexity
+3. **Code Review**: Examine decompiled source for security issues
+4. **Resource Analysis**: Check AndroidManifest.xml and app resources
+5. **Documentation**: Record findings and security concerns
+
+### Tool Selection Guide
+
+- **Androguard**: Best for programmatic analysis and malware research
+- **Apk2Gold**: Quick decompilation with simple CLI interface
+- **JadX**: Comprehensive analysis with GUI support and resource decoding
+
+## Related Resources
+
+- [Android Security Documentation](https://source.android.com/security)
+- [DEX File Format Specification](https://source.android.com/devices/tech/dalvik/dex-format)
+- [APK Structure Overview](https://developer.android.com/guide/components/fundamentals)

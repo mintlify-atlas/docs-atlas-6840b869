@@ -1,0 +1,298 @@
+---
+title: 'Interface Navigation'
+description: 'Understanding the HackingTool menu system and user interface'
+---
+
+## Overview
+
+HackingTool features a modern terminal user interface built with the [Rich library](https://github.com/Textualize/rich), offering an interactive menu-driven experience with a purple-themed design (version 1.1.0).
+
+## Main Menu Structure
+
+When you launch HackingTool, you'll see the ASCII logo banner followed by the main menu with 18 tool categories:
+
+```python
+# From hackingtool.py:54-73
+tool_definitions = [
+    ("Anonymously Hiding Tools", "🛡️"),
+    ("Information gathering tools", "🔍"),
+    ("Wordlist Generator", "📚"),
+    ("Wireless attack tools", "📶"),
+    ("SQL Injection Tools", "🧩"),
+    ("Phishing attack tools", "🎣"),
+    ("Web Attack tools", "🌐"),
+    ("Post exploitation tools", "🔧"),
+    ("Forensic tools", "🕵️"),
+    ("Payload creation tools", "📦"),
+    ("Exploit framework", "🧰"),
+    ("Reverse engineering tools", "🔁"),
+    ("DDOS Attack Tools", "⚡"),
+    ("Remote Administrator Tools (RAT)", "🖥️"),
+    ("XSS Attack Tools", "💥"),
+    ("Steganograhy tools", "🖼️"),
+    ("Other tools", "✨"),
+    ("Update or Uninstall | Hackingtool", "♻️"),
+]
+```
+
+### Menu Navigation
+
+The menu displays:
+- **Index numbers** (0-16) for tool categories
+- **Index 99** for Update/Uninstall tools
+- **Icon and category name** for each option
+- **Footer instruction**: "Choose number and press Enter — 99 to exit"
+
+<Tip>
+The menu uses a grid layout with right-justified index numbers and left-justified tool names, making it easy to scan.
+</Tip>
+
+## Rich UI Components
+
+HackingTool leverages several Rich library components for an enhanced terminal experience:
+
+<Tabs>
+  <Tab title="Panels">
+    Panels wrap content with borders and titles:
+    ```python
+    # From hackingtool.py:111-117
+    panel = Panel(
+        Align.center(header + Text("\n") + footer + Text("\n") + warning),
+        box=box.DOUBLE,
+        padding=(1, 2),
+        border_style="magenta"
+    )
+    ```
+    - Used for the main banner
+    - Tool category selections
+    - Information displays
+  </Tab>
+  <Tab title="Tables">
+    Tables organize menu options:
+    ```python
+    # From core.py:165-167
+    table = Table(title="Available Tools", box=box.MINIMAL_DOUBLE_HEAD)
+    table.add_column("No.", justify="center", style="bold cyan")
+    table.add_column("Tool Name", style="bold yellow")
+    ```
+    - Main menu grid
+    - Tool selection menus
+    - Option lists
+  </Tab>
+  <Tab title="Prompts">
+    Interactive input prompts:
+    ```python
+    # From hackingtool.py:179
+    choice = IntPrompt.ask("[magenta]Choose a tool to proceed[/magenta]", default=0)
+    ```
+    - `IntPrompt` for numeric choices
+    - `Prompt` for text input
+    - `Confirm` for yes/no questions
+  </Tab>
+  <Tab title="Console">
+    The Console object handles all output:
+    ```python
+    # From hackingtool.py:40
+    console = Console()
+    
+    # From core.py:17-18
+    _theme = Theme({"purple": "#7B61FF"})
+    console = Console(theme=_theme)
+    ```
+    - Styled text output
+    - Error messages
+    - Success notifications
+  </Tab>
+</Tabs>
+
+## Selecting Tool Categories
+
+### Step-by-Step Navigation
+
+<Accordion title="Step 1: Choose a Category">
+  Enter the index number (0-16) for your desired tool category:
+  ```bash
+  [magenta]Choose a tool to proceed[/magenta]: 1
+  ```
+  
+  This displays a selection panel:
+  ```python
+  # From hackingtool.py:186
+  console.print(Panel(f"[bold magenta]{icon}  Selected:[/bold magenta] [white]{name}"))
+  ```
+</Accordion>
+
+<Accordion title="Step 2: View Tool Options">
+  Each category shows available tools in a table format:
+  ```python
+  # From core.py:68-77
+  table = Table(title="Options", box=box.SIMPLE_HEAVY)
+  table.add_column("No.", style="bold cyan", justify="center")
+  table.add_column("Action", style="bold yellow")
+  
+  for index, option in enumerate(self.OPTIONS):
+      table.add_row(str(index + 1), option[0])
+  ```
+  
+  Common options include:
+  - **1. Install** - Install the tool
+  - **2. Run** - Execute the tool
+  - **98. Open Project Page** - View GitHub repository
+  - **99. Back to Menu** - Return to previous screen
+</Accordion>
+
+<Accordion title="Step 3: Execute Actions">
+  Select an action by entering its number:
+  ```python
+  # From core.py:81-87
+  option_index = input("\n[?] Select an option: ").strip()
+  try:
+      option_index = int(option_index)
+      if option_index - 1 in range(len(self.OPTIONS)):
+          ret_code = self.OPTIONS[option_index - 1][1]()
+  ```
+</Accordion>
+
+## Install vs Run Options
+
+### Install Option
+
+The Install option executes predefined installation commands:
+
+```python
+# From core.py:104-113
+def install(self):
+    self.before_install()
+    if isinstance(self.INSTALL_COMMANDS, (list, tuple)):
+        for INSTALL_COMMAND in self.INSTALL_COMMANDS:
+            console.print(f"[yellow]→ {INSTALL_COMMAND}[/yellow]")
+            os.system(INSTALL_COMMAND)
+        self.after_install()
+```
+
+<Note>
+  Each command is displayed in yellow before execution, showing exactly what's being run.
+</Note>
+
+### Run Option
+
+The Run option launches installed tools:
+
+```python
+# From core.py:130-136
+def run(self):
+    self.before_run()
+    if isinstance(self.RUN_COMMANDS, (list, tuple)):
+        for RUN_COMMAND in self.RUN_COMMANDS:
+            console.print(f"[cyan]⚙ Running:[/cyan] [bold]{RUN_COMMAND}[/bold]")
+            os.system(RUN_COMMAND)
+        self.after_run()
+```
+
+## Keyboard Shortcuts and Controls
+
+### Navigation Controls
+
+| Input | Action |
+|-------|--------|
+| `0-16` | Select tool category |
+| `99` | Exit/Back to previous menu |
+| `98` | Open project page (when available) |
+| `Enter` | Confirm selection |
+| `Ctrl+C` | Interrupt/Exit program |
+
+### Interrupt Handling
+
+```python
+# From hackingtool.py:200-202
+except KeyboardInterrupt:
+    console.print("\n[bold red]Interrupted by user — exiting[/bold red]")
+    break
+```
+
+<Warning>
+Using `Ctrl+C` will immediately exit the program. Use option `99` for a graceful exit.
+</Warning>
+
+## Return to Main Menu
+
+After completing an action, you'll be prompted:
+
+```python
+# From hackingtool.py:195-197
+if not Confirm.ask("[magenta]Return to main menu?[/magenta]", default=True):
+    console.print(Panel("[bold white on magenta]Exiting...[/bold white on magenta]"))
+    break
+```
+
+- Press `Enter` or type `y` to return to the main menu
+- Type `n` to exit the program
+
+## Error Handling
+
+The interface includes robust error handling:
+
+```python
+# From hackingtool.py:193-194
+except Exception as e:
+    console.print(Panel(f"[red]Error while opening {name}[/red]\n{e}", border_style="red"))
+```
+
+<Tabs>
+  <Tab title="Invalid Selection">
+    ```python
+    # From hackingtool.py:199
+    console.print("[red]Invalid selection. Pick a number from the menu.[/red]")
+    ```
+  </Tab>
+  <Tab title="Rich Tracebacks">
+    ```python
+    # From core.py:15-16
+    from rich.traceback import install
+    install()
+    ```
+    Enhanced error messages with syntax highlighting and local variable inspection.
+  </Tab>
+</Tabs>
+
+## Color Scheme and Styling
+
+HackingTool uses a consistent purple theme:
+
+```python
+# From core.py:17
+_theme = Theme({"purple": "#7B61FF"})
+```
+
+### Style Reference
+
+| Element | Style | Usage |
+|---------|-------|-------|
+| Menu index | `bold magenta` | Category numbers |
+| Tool names | `magenta` | Category titles |
+| Icons | `white` | Emoji icons |
+| Actions | `bold yellow` | Option names |
+| Success | `green` | Completion messages |
+| Errors | `red` | Error messages |
+| Commands | `yellow` | Install commands |
+| Running | `cyan` | Run commands |
+
+## Platform Compatibility
+
+The interface checks the operating system:
+
+```python
+# From hackingtool.py:206-218
+if system() == "Linux":
+    # Full functionality
+    fpath = choose_path()
+    # ...
+elif system() == "Windows":
+    console.print(Panel("[bold red]Please run this tool on a Debian/Linux system for best results[/bold red]"))
+    if Confirm.ask("Open guidance link in your browser?", default=True):
+        webbrowser.open_new_tab("https://tinyurl.com/y522modc")
+```
+
+<Warning>
+HackingTool is optimized for Linux (Debian-based) systems. Windows users will see a warning and guidance link.
+</Warning>

@@ -1,0 +1,284 @@
+---
+title: 'Anonymity & Privacy Tools'
+description: 'Hide your identity and secure your network traffic during security testing'
+icon: 'mask'
+---
+
+<Warning>
+  **Legal Notice**: Using anonymity tools for illegal activities is prohibited. These tools are for legitimate security testing and privacy protection only.
+</Warning>
+
+## Overview
+
+Anonymity tools help security professionals hide their identity and protect their network traffic during penetration testing and security research. These tools route your traffic through multiple nodes, change your IP address, and help maintain operational security.
+
+## Use Cases
+
+- **Penetration Testing**: Protect your identity during authorized security assessments
+- **Privacy Protection**: Secure your browsing and network traffic
+- **Research**: Safely analyze malicious infrastructure without exposing your identity
+- **Avoiding Detection**: Prevent defensive systems from identifying your testing infrastructure
+
+## Available Tools
+
+<CardGroup cols={2}>
+  <Card title="Kali Anonsurf" icon="shield" href="https://github.com/Und3rf10w/kali-anonsurf">
+    Complete anonymity suite with automatic RAM cleaning
+  </Card>
+  
+  <Card title="Multitor" icon="network-wired" href="https://github.com/trimstray/multitor">
+    Create multiple Tor instances for distributed anonymity
+  </Card>
+</CardGroup>
+
+---
+
+## Kali Anonsurf
+
+### Description
+
+Anonsurf is a comprehensive anonymity tool that automatically routes all your system traffic through the Tor network. It provides additional security by overwriting RAM when the system shuts down, preventing forensic recovery of sensitive data.
+
+### Features
+
+- Routes all traffic through Tor network
+- Automatic RAM cleaning on shutdown
+- IP address rotation
+- DNS leak protection
+- System-wide anonymization
+
+### Installation
+
+```bash
+# Clone the repository
+sudo git clone https://github.com/Und3rf10w/kali-anonsurf.git
+
+# Run the installer
+cd kali-anonsurf && sudo ./installer.sh
+
+# Cleanup
+cd .. && sudo rm -r kali-anonsurf
+```
+
+### Usage
+
+```bash
+# Start anonymization
+sudo anonsurf start
+
+# Check status
+sudo anonsurf status
+
+# Change IP address
+sudo anonsurf changeid
+
+# Stop anonymization
+sudo anonsurf stop
+```
+
+<Accordion title="Advanced Configuration">
+  **Custom Tor Configuration**
+  
+  Edit `/etc/tor/torrc` to customize:
+  - Exit node countries
+  - Bridge relays
+  - Custom ports
+  - Connection limits
+  
+  ```bash
+  sudo nano /etc/tor/torrc
+  ```
+</Accordion>
+
+<Note>
+  **Performance Impact**: Routing all traffic through Tor will significantly reduce your connection speed. This is normal and expected.
+</Note>
+
+---
+
+## Multitor
+
+### Description
+
+Multitor allows you to create multiple Tor instances simultaneously, enabling you to spread your requests across different IP addresses. This is particularly useful for distributed testing or when you need to appear as multiple different users.
+
+### Features
+
+- Run multiple Tor instances concurrently
+- Load balancing across Tor circuits
+- HAProxy integration for distribution
+- Privoxy support for HTTP proxy
+- Individual SOCKS ports per instance
+
+### Installation
+
+```bash
+# Clone the repository
+sudo git clone https://github.com/trimstray/multitor.git
+
+# Run setup
+cd multitor
+sudo bash setup.sh install
+```
+
+### Usage
+
+```bash
+# Initialize 2 Tor instances with specific configuration
+multitor --init 2 \
+  --user debian-tor \
+  --socks-port 9000 \
+  --control-port 9900 \
+  --proxy privoxy \
+  --haproxy
+
+# Start with 5 instances
+multitor --init 5
+
+# Check status
+multitor --show-id
+```
+
+### Configuration Options
+
+| Option | Description | Example |
+|--------|-------------|----------|
+| `--init` | Number of Tor instances | `--init 3` |
+| `--user` | System user for Tor | `--user debian-tor` |
+| `--socks-port` | Starting SOCKS port | `--socks-port 9000` |
+| `--control-port` | Starting control port | `--control-port 9900` |
+| `--proxy` | HTTP proxy type | `--proxy privoxy` |
+| `--haproxy` | Enable load balancing | `--haproxy` |
+
+<Accordion title="Use Cases for Multiple Tor Instances">
+  **Distributed Web Scraping**
+  - Avoid rate limiting by using different IPs
+  - Appear as multiple users to target services
+  
+  **Penetration Testing**
+  - Test from multiple geographic locations
+  - Avoid IP-based blocking during testing
+  
+  **OSINT Research**
+  - Gather intelligence without correlation
+  - Prevent profiling by target systems
+</Accordion>
+
+---
+
+## Best Practices
+
+### Operational Security
+
+1. **Verify Anonymity**: Always check your IP after starting anonymity tools
+   ```bash
+   curl ifconfig.me
+   ```
+
+2. **DNS Leaks**: Ensure DNS requests are also anonymized
+   ```bash
+   # Test for DNS leaks
+   curl -s https://dnsleaktest.com
+   ```
+
+3. **Application-Level Leaks**: Some applications may bypass system-wide proxies
+   - Configure applications individually
+   - Use firewall rules to enforce routing
+
+4. **Time Synchronization**: Tor requires accurate system time
+   ```bash
+   sudo ntpdate pool.ntp.org
+   ```
+
+### Limitations
+
+<Warning>
+  **Not a Silver Bullet**: Anonymity tools cannot protect against:
+  - Browser fingerprinting
+  - Application-level data leaks
+  - User behavior patterns
+  - Malicious Tor exit nodes (for unencrypted traffic)
+  - Advanced traffic analysis attacks
+</Warning>
+
+### Complementary Tools
+
+Enhance your anonymity with:
+
+- **Tails OS**: Entire operating system designed for anonymity
+- **Whonix**: VM-based isolated anonymous environment  
+- **Tor Browser**: Pre-configured browser for anonymous browsing
+- **VPN + Tor**: Additional layer (use VPN before Tor)
+- **MAC Address Changer**: Randomize hardware identifiers
+
+## Testing Your Anonymity
+
+Verify your setup is working correctly:
+
+```bash
+# Check your public IP
+curl -s https://api.ipify.org
+
+# Check Tor connectivity
+curl --socks5 localhost:9050 https://check.torproject.org/api/ip
+
+# DNS leak test
+dig +short myip.opendns.com @resolver1.opendns.com
+```
+
+<Note>
+  **Regular IP Changes**: Rotate your Tor circuit regularly to prevent long-term tracking:
+  ```bash
+  sudo anonsurf changeid  # For Anonsurf
+  killall -HUP tor       # For standard Tor
+  ```
+</Note>
+
+## Troubleshooting
+
+<Accordion title="Connection Issues">
+  **Tor won't start**
+  ```bash
+  # Check Tor status
+  sudo systemctl status tor
+  
+  # View Tor logs
+  sudo tail -f /var/log/tor/log
+  
+  # Restart Tor service
+  sudo systemctl restart tor
+  ```
+</Accordion>
+
+<Accordion title="Slow Connection">
+  **Performance optimization**
+  - Tor naturally reduces speed (expect 70-90% reduction)
+  - Use faster exit nodes by configuring country preferences
+  - Increase circuit build timeout in torrc
+  - Consider using bridges for better connectivity
+</Accordion>
+
+<Accordion title="Traffic Not Routed Through Tor">
+  **Verification steps**
+  ```bash
+  # Check iptables rules
+  sudo iptables -L -n -v
+  
+  # Verify Tor is running
+  ps aux | grep tor
+  
+  # Test with curl
+  curl --socks5 localhost:9050 https://check.torproject.org
+  ```
+</Accordion>
+
+## Additional Resources
+
+- [Tor Project Documentation](https://www.torproject.org/docs/)
+- [Anonymity Best Practices](https://www.whonix.org/wiki/DoNot)
+- [Tor Configuration Guide](https://2019.www.torproject.org/docs/tor-manual.html.en)
+- [OPSEC for Penetration Testers](https://www.offensive-security.com/)
+
+<Warning>
+  **Legal Disclaimer**: Using these tools does not make you completely anonymous. Advanced adversaries with significant resources may still be able to trace your activities. Always comply with local laws and regulations.
+</Warning>

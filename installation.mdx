@@ -1,0 +1,329 @@
+---
+title: Installation
+description: Install HackingTool on your Linux system with Python 3 and start building your security toolkit
+---
+
+<Note>
+HackingTool must be run as **root** on a Linux-based system. It is designed for Kali Linux, Parrot OS, Arch Linux, and other security-focused distributions.
+</Note>
+
+## System Requirements
+
+Before installing HackingTool, ensure your system meets these requirements:
+
+- **Operating System**: Linux (Kali Linux, Parrot OS, Arch Linux, or similar)
+- **Python**: Python 3.6 or higher
+- **Root Access**: Required for installation and running tools
+- **Internet Connection**: Required for downloading tools and dependencies
+- **Git**: For cloning the repository
+
+<Warning>
+HackingTool is designed for **Linux only**. Windows users should use WSL2, VirtualBox, or Docker.
+</Warning>
+
+## Installation Methods
+
+<Tabs>
+  <Tab title="Standard Installation">
+    ### Step-by-Step Installation
+
+    <Steps>
+      <Step title="Clone the Repository">
+        Clone the HackingTool repository from GitHub:
+        ```bash
+        git clone https://github.com/Z4nzu/hackingtool.git
+        ```
+      </Step>
+
+      <Step title="Set Permissions">
+        Grant execute permissions to the hackingtool directory:
+        ```bash
+        chmod -R 755 hackingtool
+        ```
+      </Step>
+
+      <Step title="Navigate to Directory">
+        Move into the hackingtool directory:
+        ```bash
+        cd hackingtool
+        ```
+      </Step>
+
+      <Step title="Run Installer">
+        Execute the installer script with root privileges:
+        ```bash
+        sudo python3 install.py
+        ```
+
+        The installer will:
+        - Check for root access
+        - Verify internet connectivity
+        - Update system packages
+        - Install required dependencies (git, python3-pip, python3-venv, figlet, boxes, php, curl, xdotool, wget)
+        - Clone the repository to `/usr/share/hackingtool`
+        - Create a virtual environment
+        - Install Python requirements (boxes, flask, lolcat, requests, rich)
+        - Create a launcher script at `/usr/bin/hackingtool`
+      </Step>
+
+      <Step title="Launch HackingTool">
+        After installation completes, start HackingTool:
+        ```bash
+        sudo hackingtool
+        ```
+      </Step>
+    </Steps>
+
+    ### Installation Output
+
+    During installation, you'll see:
+
+    ```
+    Select Best Option:
+    
+                  [1] Kali Linux / Parrot-Os (apt)
+                  [2] Arch Linux (pacman)
+                  [0] Exit
+    ```
+
+    Choose your distribution's package manager, and the installer will handle the rest.
+  </Tab>
+
+  <Tab title="Docker Installation">
+    ### Using Docker
+
+    For a containerized installation, use Docker:
+
+    <Steps>
+      <Step title="Clone Repository">
+        ```bash
+        git clone https://github.com/Z4nzu/hackingtool.git
+        cd hackingtool
+        ```
+      </Step>
+
+      <Step title="Build Docker Image">
+        Build the Docker image:
+        ```bash
+        docker build -t vgpastor/hackingtool .
+        ```
+      </Step>
+
+      <Step title="Run Container">
+        Start the container using docker-compose:
+        ```bash
+        docker-compose up -d
+        ```
+      </Step>
+
+      <Step title="Access Container">
+        Enter the container's interactive shell:
+        ```bash
+        docker exec -it hackingtool bash
+        ```
+
+        You'll see the distribution selection prompt:
+        ```
+        Select Best Option : 
+        
+                      [1] Kali Linux / Parrot-Os (apt)
+                      [2] Arch Linux (pacman)
+                      [0] Exit
+        ```
+      </Step>
+    </Steps>
+
+    <Tip>
+    Docker volumes are mounted to persist data and share files between host and container. Edit `docker-compose.yml` to expose additional ports.
+    </Tip>
+  </Tab>
+</Tabs>
+
+## Dependencies
+
+### System Packages
+
+The installer automatically installs these system packages:
+
+**For Debian/Ubuntu-based systems (apt):**
+- git
+- python3-pip
+- python3-venv
+- figlet
+- boxes
+- php
+- curl
+- xdotool
+- wget
+
+**For Arch Linux (pacman):**
+- git
+- python-pip
+- figlet (may require AUR)
+
+### Python Packages
+
+Installed via pip in a virtual environment:
+- **boxes** - Text formatting
+- **flask** - Web framework for certain tools
+- **lolcat** - Colorful output
+- **requests** - HTTP library
+- **rich** - Terminal UI framework
+
+## Installation Locations
+
+After installation:
+
+| Component | Location |
+|-----------|----------|
+| Main installation | `/usr/share/hackingtool/` |
+| Virtual environment | `/usr/share/hackingtool/venv/` |
+| Launcher script | `/usr/bin/hackingtool` |
+| Tool downloads | `~/hackingtool/` (configurable) or `/home/hackingtool/` |
+
+## Post-Installation Verification
+
+<Steps>
+  <Step title="Check Installation">
+    Verify the launcher is accessible:
+    ```bash
+    which hackingtool
+    ```
+    
+    Expected output:
+    ```
+    /usr/bin/hackingtool
+    ```
+  </Step>
+
+  <Step title="Test Launch">
+    Run HackingTool to verify it starts correctly:
+    ```bash
+    sudo hackingtool
+    ```
+    
+    You should see the ASCII logo and main menu with 18 tool categories.
+  </Step>
+
+  <Step title="Configure Tool Path">
+    On first run, you'll be prompted to set a path for tool installations:
+    ```
+    Set Path
+    [1] Custom Path
+    [2] Default Path (/home/hackingtool/)
+    ```
+    
+    This path is saved to `~/hackingtoolpath.txt` and used for all future tool downloads.
+  </Step>
+</Steps>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Permission Denied Error">
+    **Problem**: `Permission denied` when running installer or hackingtool
+    
+    **Solution**: Ensure you're running with root privileges:
+    ```bash
+    sudo python3 install.py
+    sudo hackingtool
+    ```
+  </Accordion>
+
+  <Accordion title="Internet Connection Failed">
+    **Problem**: Installer reports no internet connection
+    
+    **Solution**: The installer checks connectivity by pinging Google and GitHub. Verify your network:
+    ```bash
+    curl -sSf https://github.com
+    ```
+  </Accordion>
+
+  <Accordion title="Package Installation Fails">
+    **Problem**: apt or pacman errors during installation
+    
+    **Solution**: Update your package manager first:
+    ```bash
+    # For Debian/Ubuntu
+    sudo apt update && sudo apt upgrade -y
+    
+    # For Arch
+    sudo pacman -Syu
+    ```
+  </Accordion>
+
+  <Accordion title="Directory Already Exists">
+    **Problem**: `/usr/share/hackingtool` already exists from previous installation
+    
+    **Solution**: The installer will ask if you want to replace it. Choose yes to proceed:
+    ```
+    The directory /usr/share/hackingtool already exists.
+    Replace it? This will remove the existing directory [y/N]:
+    ```
+  </Accordion>
+
+  <Accordion title="Python 3 Not Found">
+    **Problem**: `python3: command not found`
+    
+    **Solution**: Install Python 3:
+    ```bash
+    # Debian/Ubuntu
+    sudo apt install python3 python3-pip
+    
+    # Arch
+    sudo pacman -S python python-pip
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Updating HackingTool
+
+To update to the latest version:
+
+<CodeGroup>
+```bash Option 1: Built-in Updater
+sudo hackingtool
+# Select option 99: "Update or Uninstall | Hackingtool"
+# Choose update option
+```
+
+```bash Option 2: Manual Update
+cd /usr/share/hackingtool
+sudo git pull origin master
+source venv/bin/activate
+pip install -r requirements.txt --upgrade
+```
+</CodeGroup>
+
+## Uninstalling
+
+To completely remove HackingTool:
+
+<CodeGroup>
+```bash Option 1: Built-in Uninstaller
+sudo hackingtool
+# Select option 99: "Update or Uninstall | Hackingtool"
+# Choose uninstall option
+```
+
+```bash Option 2: Manual Removal
+sudo rm -rf /usr/share/hackingtool
+sudo rm /usr/bin/hackingtool
+rm ~/hackingtoolpath.txt
+```
+</CodeGroup>
+
+<Warning>
+**Legal Disclaimer**: HackingTool is for educational and authorized security testing only. Do not use for illegal activities. Always obtain proper authorization before testing any systems you don't own.
+</Warning>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Quickstart Guide" icon="rocket" href="/quickstart">
+    Learn how to launch HackingTool and install your first security tool
+  </Card>
+  <Card title="Tool Categories" icon="grid" href="/tools/overview">
+    Explore the 18 categories of security tools available
+  </Card>
+</CardGroup>

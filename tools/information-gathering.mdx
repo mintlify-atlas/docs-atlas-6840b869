@@ -1,0 +1,528 @@
+---
+title: 'Information Gathering Tools'
+description: 'Network scanning, reconnaissance, and OSINT tools for security assessments'
+icon: 'magnifying-glass'
+---
+
+<Warning>
+  **Legal Notice**: Only scan and gather information on systems you own or have explicit written authorization to test. Unauthorized scanning is illegal.
+</Warning>
+
+## Overview
+
+Information gathering is the first phase of any security assessment. These tools help you discover network topology, identify live hosts, enumerate services, gather OSINT data, and map the attack surface before launching any attacks.
+
+## Use Cases
+
+- **Network Discovery**: Identify live hosts and network topology
+- **Service Enumeration**: Detect running services and versions
+- **OSINT Research**: Gather publicly available information
+- **Vulnerability Assessment**: Find potential weaknesses in infrastructure
+- **Reconnaissance**: Map target systems before penetration testing
+
+## Available Tools
+
+<CardGroup cols={3}>
+  <Card title="Nmap" icon="radar" href="https://github.com/nmap/nmap">
+    Industry-standard network scanner
+  </Card>
+  
+  <Card title="Dracnmap" icon="dragon" href="https://github.com/Screetsec/Dracnmap">
+    Enhanced Nmap interface with automation
+  </Card>
+  
+  <Card title="Port Scanner" icon="network-wired">
+    Built-in port scanning utility
+  </Card>
+  
+  <Card title="Host to IP" icon="server">
+    DNS resolution and hostname lookup
+  </Card>
+  
+  <Card title="Xerosploit" icon="crosshairs" href="https://github.com/LionSec/xerosploit">
+    MITM attack framework for testing
+  </Card>
+  
+  <Card title="RED HAWK" icon="hawk" href="https://github.com/Tuhinshubhra/RED_HAWK">
+    All-in-one information gathering scanner
+  </Card>
+  
+  <Card title="ReconSpider" icon="spider" href="https://github.com/bhavsec/reconspider">
+    Advanced OSINT framework
+  </Card>
+  
+  <Card title="IsItDown" icon="globe">
+    Website availability checker
+  </Card>
+  
+  <Card title="Infoga" icon="envelope" href="https://github.com/m4ll0k/Infoga">
+    Email OSINT gathering tool
+  </Card>
+  
+  <Card title="ReconDog" icon="dog" href="https://github.com/s0md3v/ReconDog">
+    Information gathering suite
+  </Card>
+  
+  <Card title="Striker" icon="bullseye" href="https://github.com/s0md3v/Striker">
+    Recon and vulnerability scanner
+  </Card>
+  
+  <Card title="SecretFinder" icon="key" href="https://github.com/m4ll0k/SecretFinder">
+    Find API keys and secrets in JavaScript
+  </Card>
+  
+  <Card title="Shodanfy" icon="search" href="https://github.com/m4ll0k/Shodanfy.py">
+    Shodan API information gatherer
+  </Card>
+  
+  <Card title="rang3r" icon="chart-network" href="https://github.com/floriankunushevci/rang3r">
+    Multi-threaded port scanner
+  </Card>
+  
+  <Card title="Breacher" icon="door-open" href="https://github.com/s0md3v/Breacher">
+    Admin panel finder
+  </Card>
+</CardGroup>
+
+---
+
+## Network Map (Nmap)
+
+### Description
+
+Nmap is the industry-standard free and open source utility for network discovery and security auditing. It uses raw IP packets to determine available hosts, services, operating systems, firewalls, and hundreds of other characteristics.
+
+### Installation
+
+```bash
+# Clone and build from source
+sudo git clone https://github.com/nmap/nmap.git
+sudo chmod -R 755 nmap
+cd nmap
+sudo ./configure && make && sudo make install
+```
+
+### Usage Examples
+
+```bash
+# Basic host scan
+nmap 192.168.1.1
+
+# Scan entire subnet
+nmap 192.168.1.0/24
+
+# Service version detection
+nmap -sV 192.168.1.1
+
+# OS detection (requires root)
+sudo nmap -O 192.168.1.1
+
+# Aggressive scan with scripts
+sudo nmap -A -T4 192.168.1.1
+
+# Scan specific ports
+nmap -p 22,80,443 192.168.1.1
+
+# Scan all ports
+nmap -p- 192.168.1.1
+
+# Output to file
+nmap -oN output.txt 192.168.1.1
+```
+
+<Note>
+  **Timing Templates**: Use `-T0` through `-T5` to control scan speed. `-T4` is recommended for most scenarios. `-T0` and `-T1` are for IDS evasion.
+</Note>
+
+---
+
+## Dracnmap
+
+### Description
+
+Dracnmap is an open source program that provides an enhanced interface for Nmap with automated scanning capabilities and pre-configured scan profiles.
+
+### Installation
+
+```bash
+sudo git clone https://github.com/Screetsec/Dracnmap.git
+cd Dracnmap
+chmod +x dracnmap-v2.2-dracOs.sh dracnmap-v2.2.sh
+```
+
+### Running Dracnmap
+
+```bash
+cd Dracnmap
+sudo ./dracnmap-v2.2.sh
+```
+
+### Features
+
+- Interactive menu-driven interface
+- Pre-configured scan profiles
+- Automated network discovery
+- Result organization and reporting
+
+---
+
+## Port Scanning
+
+### Description
+
+Built-in port scanning utility that leverages Nmap for OS detection and service enumeration.
+
+### Usage
+
+Run from HackingTool menu. You'll be prompted to enter a target IP address. The tool performs:
+
+- Operating system detection (`-O`)
+- Service enumeration
+- Skip host discovery (`-Pn`) for firewalled hosts
+
+---
+
+## Host to IP Converter
+
+### Description
+
+Simple DNS resolution tool to convert hostnames to IP addresses.
+
+### Usage
+
+```python
+# Example usage
+Enter host name: www.example.com
+Output: www.example.com -> 93.184.216.34
+```
+
+---
+
+## Xerosploit
+
+### Description
+
+Xerosploit is a penetration testing toolkit designed to perform man-in-the-middle attacks for security testing purposes. It can intercept and manipulate network traffic.
+
+### Installation
+
+```bash
+git clone https://github.com/LionSec/xerosploit.git
+cd xerosploit
+sudo python install.py
+```
+
+### Running
+
+```bash
+sudo xerosploit
+```
+
+### Capabilities
+
+- ARP spoofing
+- DNS spoofing
+- Traffic sniffing
+- Session hijacking
+- Code injection
+
+<Warning>
+  **MITM Attacks**: These techniques can disrupt network services and expose sensitive data. Only use on networks you own or have authorization to test.
+</Warning>
+
+---
+
+## RED HAWK
+
+### Description
+
+All-in-one tool for information gathering and vulnerability scanning. Written in PHP, it provides comprehensive website reconnaissance.
+
+### Installation
+
+```bash
+git clone https://github.com/Tuhinshubhra/RED_HAWK.git
+```
+
+### Running
+
+```bash
+cd RED_HAWK
+php rhawk.php
+```
+
+### Features
+
+- WHOIS lookup
+- Geo-IP lookup  
+- DNS lookup
+- Subdomain scanner
+- Reverse IP lookup
+- Port scanning
+- CMS detection
+- Cloudflare detection
+- Header analysis
+- Link grabber
+
+---
+
+## ReconSpider
+
+### Description
+
+Advanced Open Source Intelligence (OSINT) framework for scanning IP addresses, emails, websites, and organizations to gather information from multiple sources.
+
+### Installation
+
+```bash
+sudo git clone https://github.com/bhavsec/reconspider.git
+sudo apt install python3 python3-pip
+cd reconspider
+sudo python3 setup.py install
+```
+
+### Running
+
+```bash
+cd reconspider
+python3 reconspider.py
+```
+
+### Capabilities
+
+- IP address intelligence
+- Email OSINT
+- Domain reconnaissance  
+- Organization profiling
+- Social media enumeration
+- Data aggregation from multiple sources
+
+---
+
+## IsItDown
+
+### Description
+
+Quick website availability checker using isitdownrightnow.com service.
+
+### Usage
+
+Opens web browser to https://www.isitdownrightnow.com/ for checking website status.
+
+---
+
+## Infoga
+
+### Description
+
+Email OSINT tool that gathers email account information including IP, hostname, country, and more from different public sources.
+
+### Installation
+
+```bash
+git clone https://github.com/m4ll0k/Infoga.git
+cd Infoga
+sudo python3 setup.py install
+```
+
+### Running
+
+```bash
+cd Infoga
+python3 infoga.py
+```
+
+### Usage Examples
+
+```bash
+# Search for emails related to domain
+python3 infoga.py -d example.com
+
+# Search for specific email
+python3 infoga.py -e admin@example.com
+
+# Use specific source
+python3 infoga.py -d example.com -s google
+```
+
+---
+
+## ReconDog
+
+### Description
+
+Comprehensive information gathering suite with multiple reconnaissance modules.
+
+### Installation
+
+```bash
+git clone https://github.com/s0md3v/ReconDog.git
+```
+
+### Running
+
+```bash
+cd ReconDog
+sudo python dog
+```
+
+---
+
+## Striker
+
+### Description
+
+Recon and vulnerability scanning suite that combines multiple scanning techniques.
+
+### Installation
+
+```bash
+git clone https://github.com/s0md3v/Striker.git
+cd Striker
+pip3 install -r requirements.txt
+```
+
+### Running
+
+```bash
+cd Striker
+sudo python3 striker.py example.com
+```
+
+---
+
+## SecretFinder
+
+### Description
+
+Python script to find sensitive data like API keys, access tokens, authorizations, JWT tokens, and other secrets in JavaScript files.
+
+### Installation
+
+```bash
+git clone https://github.com/m4ll0k/SecretFinder.git secretfinder
+cd secretfinder
+sudo pip3 install -r requirements.txt
+```
+
+### Usage
+
+```bash
+# Scan JavaScript file
+python3 SecretFinder.py -i https://example.com/app.js
+
+# Scan with output file
+python3 SecretFinder.py -i https://example.com/app.js -o results.html
+```
+
+---
+
+## Shodanfy (Shodan)
+
+### Description
+
+Get ports, vulnerabilities, information, banners, and more for any IP using Shodan data.
+
+### Installation
+
+```bash
+git clone https://github.com/m4ll0k/Shodanfy.py.git
+```
+
+<Warning>
+  **Rate Limiting**: Using this tool without an API key may result in your IP being blocked by Shodan. Use with caution.
+</Warning>
+
+---
+
+## Port Scanner - rang3r
+
+### Description
+
+Multi-threaded port scanner that scans all alive hosts within your specified IP range.
+
+### Installation
+
+```bash
+git clone https://github.com/floriankunushevci/rang3r.git
+sudo pip install termcolor
+```
+
+### Running
+
+```bash
+cd rang3r
+sudo python rang3r.py --ip 192.168.1.0/24
+```
+
+---
+
+## Breacher
+
+### Description
+
+Advanced multithreaded admin panel finder that discovers hidden administrative interfaces on web applications.
+
+### Installation
+
+```bash
+git clone https://github.com/s0md3v/Breacher.git
+```
+
+### Running
+
+```bash
+cd Breacher
+python3 breacher.py -u example.com
+```
+
+---
+
+## Best Practices
+
+### Reconnaissance Methodology
+
+1. **Passive Reconnaissance First**
+   - WHOIS lookups
+   - DNS enumeration  
+   - Public records search
+   - Social media profiling
+
+2. **Active Reconnaissance**
+   - Port scanning
+   - Service enumeration
+   - Banner grabbing
+   - Directory brute-forcing
+
+3. **Document Everything**
+   - Keep detailed notes
+   - Save all scan outputs
+   - Create network diagrams
+   - Track discovered assets
+
+### Avoiding Detection
+
+```bash
+# Slow scan to avoid IDS
+nmap -T1 -sS target.com
+
+# Randomize host order
+nmap --randomize-hosts target.com/24
+
+# Spoof source IP (requires raw socket access)
+nmap -S spoofed.ip target.com
+
+# Fragment packets
+nmap -f target.com
+```
+
+<Note>
+  **Ethical Scanning**: Always respect rate limits, scan during authorized windows, and minimize impact on production systems.
+</Note>
+
+## Additional Resources
+
+- [Nmap Reference Guide](https://nmap.org/book/man.html)
+- [OSINT Framework](https://osintframework.com/)
+- [Recon-ng Documentation](https://github.com/lanmaster53/recon-ng)
+- [Bug Bounty Recon Guide](https://www.bugcrowd.com/blog/)

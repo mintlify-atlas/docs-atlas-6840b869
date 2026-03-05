@@ -1,0 +1,296 @@
+---
+title: DDoS Attack Tools
+description: Distributed Denial of Service testing tools for security assessment
+---
+
+# DDoS Attack Tools
+
+DDoS (Distributed Denial of Service) attack tools are used for stress testing servers, applications, and network infrastructure. These tools help security professionals assess system resilience and identify potential weaknesses in handling large volumes of traffic.
+
+<Warning>
+**CRITICAL LEGAL WARNING**:
+
+DDoS attacks are **ILLEGAL** when performed against systems you do not own or have explicit written authorization to test. These tools are provided for:
+- **SECURITY TESTING PURPOSES ONLY**
+- Testing your own infrastructure
+- Authorized penetration testing with signed agreements
+- Educational and research purposes in controlled environments
+
+**Unauthorized DDoS attacks can result in**:
+- Criminal prosecution and imprisonment
+- Significant financial penalties
+- Civil lawsuits for damages
+- Permanent criminal record
+
+**Always obtain explicit written permission before testing any system.**
+</Warning>
+
+## Use Cases (Authorized Only)
+
+- **Infrastructure Stress Testing**: Test server capacity under load
+- **DDoS Mitigation Validation**: Verify protection mechanisms work correctly
+- **Capacity Planning**: Determine infrastructure scaling requirements
+- **Security Assessments**: Evaluate system resilience during penetration tests
+- **Research**: Study DDoS attack patterns in controlled lab environments
+
+## Available Tools
+
+<CardGroup cols={2}>
+  <Card title="SlowLoris" icon="hourglass" href="https://github.com/gkbrk/slowloris">
+    HTTP Denial of Service attack tool using slow HTTP requests
+  </Card>
+  <Card title="aSYNcrone" icon="bolt" href="https://github.com/fatihsnsy/aSYNcrone">
+    Multifunction SYN Flood DDoS weapon written in C
+  </Card>
+  <Card title="UFONet" icon="network-wired" href="https://github.com/epsylon/ufonet">
+    P2P and cryptographic disruptive toolkit for DoS/DDoS attacks
+  </Card>
+  <Card title="GoldenEye" icon="eye" href="https://github.com/jseidl/GoldenEye">
+    HTTP DoS test tool for security testing purposes
+  </Card>
+  <Card title="SaphyraDDoS" icon="fire" href="https://github.com/anonymous24x7/Saphyra-DDoS">
+    Python-based DDoS tool with easy usage interface
+  </Card>
+</CardGroup>
+
+## Tool Details
+
+### SlowLoris
+
+**Description**: Slowloris is an HTTP Denial of Service attack tool that sends multiple HTTP requests to a target server but never completes them, keeping connections open and exhausting the server's connection pool.
+
+**Installation**:
+
+```bash
+sudo pip3 install slowloris
+```
+
+**Usage**:
+
+```bash
+# Basic usage
+slowloris target-website.com
+
+# With custom parameters
+slowloris target-website.com -p 80 -s 200
+```
+
+**How it works**:
+- Opens multiple connections to target server
+- Sends partial HTTP requests slowly
+- Keeps connections alive without completing requests
+- Exhausts server's connection pool
+
+---
+
+### aSYNcrone (Asyncrone)
+
+**Description**: aSYNcrone is a multifunction SYN Flood DDoS weapon written in C. It disables the destination system by sending SYN packets intensively to overwhelm the target.
+
+**GitHub**: [fatihsnsy/aSYNcrone](https://github.com/fatihsnsy/aSYNcrone)
+
+**Installation**:
+
+```bash
+git clone https://github.com/fatih4842/aSYNcrone.git
+cd aSYNcrone
+sudo gcc aSYNcrone.c -o aSYNcrone -lpthread
+```
+
+**Usage**:
+
+```bash
+# Run SYN flood attack
+sudo ./aSYNcrone <source_port> <target_ip> <target_port> <threads>
+
+# Example (authorized testing only)
+sudo ./aSYNcrone 8080 192.168.1.100 80 1000
+```
+
+<Accordion title="Technical Details">
+**SYN Flood Attack Mechanism**:
+- Exploits TCP three-way handshake process
+- Sends large volume of SYN packets
+- Never completes the handshake (no ACK)
+- Fills up connection queue on target
+- Prevents legitimate connections
+</Accordion>
+
+---
+
+### UFONet
+
+**Description**: UFONet is a free software, P2P and cryptographic disruptive toolkit that allows performing DoS and DDoS attacks. It supports multiple attack vectors and distributed testing capabilities.
+
+**GitHub**: [epsylon/ufonet](https://github.com/epsylon/ufonet)
+
+**Installation**:
+
+```bash
+sudo git clone https://github.com/epsylon/ufonet.git
+cd ufonet
+sudo python3 setup.py install
+sudo pip3 install GeoIP python-geoip pygeoip requests pycrypto pycurl whois scapy-python3
+```
+
+**Usage**:
+
+```bash
+# Launch GUI interface
+sudo python3 ufonet --gui
+
+# CLI usage
+sudo python3 ufonet -a <target> -r <rounds>
+```
+
+**Features**:
+- P2P distributed attack coordination
+- Multiple attack methods (36+ methods)
+- Web GUI interface
+- Cryptographic communication
+- GeoIP tracking capabilities
+
+---
+
+### GoldenEye
+
+**Description**: GoldenEye is a Python-based HTTP DoS test tool designed for security testing purposes. It can stress test web servers by generating high volumes of HTTP traffic.
+
+**GitHub**: [jseidl/GoldenEye](https://github.com/jseidl/GoldenEye)
+
+**Installation**:
+
+```bash
+sudo git clone https://github.com/jseidl/GoldenEye.git
+chmod -R 755 GoldenEye
+```
+
+**Usage**:
+
+```bash
+cd GoldenEye
+sudo ./goldeneye.py <url> [OPTIONS]
+
+# Example with options
+sudo ./goldeneye.py http://target-site.com -w 100 -s 500
+```
+
+<Accordion title="Command Options">
+```bash
+# Usage syntax
+./goldeneye.py <url> [OPTIONS]
+
+Options:
+  -w, --workers    Number of concurrent workers
+  -s, --sockets    Number of concurrent sockets
+  -m, --method     HTTP method to use (GET, POST, etc.)
+  -d, --debug      Enable debug mode
+```
+</Accordion>
+
+---
+
+### SaphyraDDoS
+
+**Description**: SaphyraDDoS is a complex Python-based tool designed to stress test websites with a very easy-to-use interface.
+
+**GitHub**: [anonymous24x7/Saphyra-DDoS](https://github.com/anonymous24x7/Saphyra-DDoS)
+
+**Installation**:
+
+```bash
+sudo su
+git clone https://github.com/anonymous24x7/Saphyra-DDoS.git
+cd Saphyra-DDoS
+chmod +x saphyra.py
+```
+
+**Usage**:
+
+```bash
+python saphyra.py <target_url>
+
+# Example (authorized testing only)
+python saphyra.py http://your-test-server.com
+```
+
+---
+
+## DDoS Protection & Mitigation
+
+<Note>
+**Understanding DDoS to Defend Against It**:
+
+These tools are valuable for testing your own DDoS protection measures:
+- Rate limiting effectiveness
+- CDN and load balancer performance
+- Firewall rule configuration
+- Intrusion detection system alerts
+- Incident response procedures
+</Note>
+
+### Protection Strategies
+
+1. **Traffic Filtering**:
+   - Implement rate limiting
+   - Use geo-blocking when appropriate
+   - Configure firewall rules for suspicious patterns
+
+2. **Infrastructure Design**:
+   - Use CDN services (Cloudflare, AWS CloudFront)
+   - Implement load balancing
+   - Design for horizontal scaling
+   - Separate critical services
+
+3. **Monitoring & Detection**:
+   - Set up traffic analysis
+   - Configure anomaly detection
+   - Implement automated alerting
+   - Monitor resource utilization
+
+4. **Incident Response**:
+   - Develop DDoS response playbook
+   - Establish communication channels
+   - Pre-configure mitigation services
+   - Practice response scenarios
+
+## Ethical Usage Guidelines
+
+<Warning>
+**Before Using These Tools**:
+
+1. ✅ **DO**: Obtain written authorization from system owners
+2. ✅ **DO**: Test only your own infrastructure or with explicit permission
+3. ✅ **DO**: Use in controlled lab environments for research
+4. ✅ **DO**: Coordinate with your security team and management
+5. ✅ **DO**: Document all testing activities thoroughly
+
+6. ❌ **DON'T**: Attack systems without authorization
+7. ❌ **DON'T**: Use for malicious purposes
+8. ❌ **DON'T**: Test production systems without proper approval
+9. ❌ **DON'T**: Exceed agreed-upon testing parameters
+10. ❌ **DON'T**: Share tools with unauthorized individuals
+</Warning>
+
+## Legal Framework
+
+### United States
+- Computer Fraud and Abuse Act (CFAA)
+- Can result in federal prosecution
+- Penalties up to 10 years imprisonment per offense
+
+### European Union
+- Network and Information Security Directive
+- National cybercrime laws
+- Potential extradition for cross-border attacks
+
+### International
+- Council of Europe Convention on Cybercrime
+- Varies by jurisdiction
+- Often treated as serious criminal offense
+
+## Related Resources
+
+- [OWASP DDoS Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/)
+- [NIST Cybersecurity Framework](https://www.nist.gov/cyberframework)
+- [AWS DDoS Best Practices](https://aws.amazon.com/shield/ddos-attack-protection/)

@@ -1,0 +1,142 @@
+---
+title: Introduction
+description: All-in-one hacking toolkit with 100+ security tools for penetration testing and CTF challenges
+---
+
+# Welcome to HackingTool
+
+HackingTool is a comprehensive, menu-driven command-line toolkit that brings together over 100 security and penetration testing tools in one convenient interface. Designed for security researchers, penetration testers, and CTF enthusiasts, it streamlines the process of installing and running security tools on Linux systems.
+
+<Warning>
+**Legal Disclaimer**: HackingTool is intended for educational purposes and authorized security testing only. Always obtain proper authorization before testing any system you don't own. Unauthorized access to computer systems is illegal.
+</Warning>
+
+## Key Features
+
+<CardGroup cols={2}>
+  <Card title="100+ Security Tools" icon="toolbox" color="#7B61FF">
+    Access a comprehensive collection of tools covering every aspect of security testing
+  </Card>
+  <Card title="Interactive CLI" icon="terminal" color="#9D84FF">
+    Navigate through an intuitive menu-driven interface powered by Rich UI
+  </Card>
+  <Card title="Auto Installation" icon="download" color="#7B61FF">
+    Automatically install and configure tools with a single command
+  </Card>
+  <Card title="18 Categories" icon="grid" color="#9D84FF">
+    Tools organized into categories from reconnaissance to exploitation
+  </Card>
+</CardGroup>
+
+## Tool Categories
+
+HackingTool organizes security tools into 18 comprehensive categories:
+
+- **Anonymously Hiding Tools** - Protect your identity with Anonsurf, Multitor
+- **Information Gathering** - Reconnaissance with Nmap, Recon-ng, Sherlock
+- **Wordlist Generator** - Create custom wordlists with Cupp, Crunch
+- **Wireless Attack Tools** - WiFi testing with Wifite, Fluxion, WiFi-Pumpkin
+- **SQL Injection** - Database exploitation with SQLmap, NoSQLMap
+- **Phishing Attacks** - Social engineering with SocialFish, HiddenEye
+- **Web Attack Tools** - Web security testing with Skipfish, Sublist3r
+- **Post Exploitation** - Maintain access with keyloggers and backdoors
+- **Forensic Tools** - Digital forensics with Autopsy, Volatility
+- **Payload Creation** - Generate payloads with TheFatRat, MSFvenom
+- **Exploit Frameworks** - RouterSploit, WebSploit, Commix
+- **Reverse Engineering** - Analyze binaries with Androguard, JadX
+- **DDOS Attack Tools** - Stress testing with SlowLoris, UFOnet
+- **Remote Administration** - RAT tools for remote access
+- **XSS Attack Tools** - Cross-site scripting with DalFox, XSStrike
+- **Steganography** - Hide data in images with SteganoHide
+- **Other Tools** - Android hacking, hash cracking, and more
+
+## Platform Support
+
+<Tabs>
+  <Tab title="Kali Linux / Parrot OS">
+    Fully supported with apt package manager. HackingTool is optimized for Debian-based security distributions.
+  </Tab>
+  <Tab title="Arch Linux">
+    Supported with pacman package manager. Some tools may require manual AUR installation.
+  </Tab>
+  <Tab title="Docker">
+    Run HackingTool in an isolated container for maximum portability and security.
+  </Tab>
+</Tabs>
+
+## Quick Start
+
+Get started with HackingTool in three simple steps:
+
+<Steps>
+  <Step title="Clone the Repository">
+    ```bash
+    git clone https://github.com/Z4nzu/hackingtool.git
+    cd hackingtool
+    ```
+  </Step>
+  
+  <Step title="Set Permissions">
+    ```bash
+    chmod -R 755 hackingtool
+    ```
+  </Step>
+  
+  <Step title="Run the Installer">
+    ```bash
+    sudo python3 install.py
+    ```
+    Then launch HackingTool:
+    ```bash
+    sudo hackingtool
+    ```
+  </Step>
+</Steps>
+
+## Why HackingTool?
+
+<AccordionGroup>
+  <Accordion title="All-in-One Solution">
+    Instead of manually installing and managing dozens of security tools, HackingTool provides a unified interface to access them all. Save time and avoid dependency conflicts.
+  </Accordion>
+  
+  <Accordion title="Perfect for Learning">
+    New to security testing? HackingTool exposes you to industry-standard tools organized by use case, helping you learn which tool to use for each scenario.
+  </Accordion>
+  
+  <Accordion title="Built for CTFs">
+    Competing in Capture The Flag competitions? HackingTool gives you quick access to all the tools you need, from reconnaissance to exploitation.
+  </Accordion>
+  
+  <Accordion title="Active Development">
+    With over 55,000 GitHub stars and regular updates, HackingTool is actively maintained and continuously improving.
+  </Accordion>
+</AccordionGroup>
+
+## What's Next?
+
+<CardGroup cols={2}>
+  <Card title="Installation Guide" icon="download" href="/installation">
+    Learn how to install HackingTool on your system
+  </Card>
+  <Card title="Quick Start" icon="rocket" href="/quickstart">
+    Get up and running with your first security scan
+  </Card>
+  <Card title="Tool Categories" icon="layer-group" href="/tools/overview">
+    Explore all available tool categories
+  </Card>
+  <Card title="Command Reference" icon="book" href="/reference/commands">
+    View the complete command reference
+  </Card>
+</CardGroup>
+
+## Community and Support
+
+- **GitHub**: [Z4nzu/hackingtool](https://github.com/Z4nzu/hackingtool)
+- **Stars**: 55,000+ on GitHub
+- **License**: MIT License
+- **Contributions**: Pull requests welcome
+
+<Note>
+HackingTool is maintained by the community. If you find a bug or want to suggest a feature, please open an issue on GitHub.
+</Note>

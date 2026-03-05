@@ -1,0 +1,598 @@
+---
+title: 'Payload Creation Tools'
+description: 'Tools for creating backdoors, payloads, and malicious binaries for penetration testing'
+icon: 'bomb'
+---
+
+<Warning>
+**Critical Security Warning**: These tools create malicious payloads and should ONLY be used in authorized penetration testing environments. Creating or distributing malware without authorization is illegal. Always obtain explicit written permission before using these tools.
+</Warning>
+
+## Overview
+
+Payload creation tools help security professionals generate custom backdoors and payloads for authorized penetration testing. These tools:
+
+- Create payloads that bypass antivirus detection
+- Generate backdoors for various platforms
+- Automate payload obfuscation and encoding
+- Provide reverse shell capabilities
+- Enable post-exploitation testing
+- Assess endpoint protection effectiveness
+
+<Note>
+All payload creation should be performed in isolated lab environments with proper security controls.
+</Note>
+
+## Featured Tools
+
+<CardGroup cols={2}>
+  <Card title="TheFatRat" icon="shield-virus" href="https://github.com/Screetsec/TheFatRat">
+    Easy-to-use tool for creating undetectable backdoors
+  </Card>
+  
+  <Card title="MSFvenom" icon="terminal" href="https://github.com/g0tmi1k/msfpc">
+    Metasploit's powerful payload generator wrapper
+  </Card>
+  
+  <Card title="Venom" icon="spider" href="https://github.com/r00t-3xp10it/venom">
+    Advanced shellcode generator with Apache integration
+  </Card>
+  
+  <Card title="Stitch" icon="code" href="https://nathanlopez.github.io/Stitch">
+    Cross-platform Python Remote Administrator Tool
+  </Card>
+</CardGroup>
+
+## Available Payload Creation Tools
+
+### Multi-Platform Payload Generators
+
+<Accordion title="TheFatRat">
+  **Description**: TheFatRat provides an easy way to create backdoors and payloads which can bypass most anti-virus software
+  
+  **Installation**:
+  ```bash
+  git clone https://github.com/Screetsec/TheFatRat.git
+  cd TheFatRat
+  sudo chmod +x setup.sh
+  ```
+  
+  **Usage**:
+  ```bash
+  cd TheFatRat
+  sudo bash setup.sh
+  ```
+  
+  **Features**:
+  - **Multiple Payload Types**: Windows, Linux, macOS, Android
+  - **AV Evasion**: Built-in obfuscation techniques
+  - **Easy Interface**: User-friendly menu system
+  - **Metasploit Integration**: Works with MSF framework
+  - **Custom Backdoors**: Create tailored payloads
+  
+  **Payload Types**:
+  - Windows backdoors (exe, dll)
+  - Android APK backdoors
+  - Powershell payloads
+  - Macro-based payloads
+  - PDF/Office document payloads
+  
+  **Additional Commands**:
+  ```bash
+  # Update TheFatRat
+  cd TheFatRat
+  bash update
+  chmod +x setup.sh
+  bash setup.sh
+  
+  # Troubleshoot installation
+  cd TheFatRat
+  sudo chmod +x chk_tools
+  ./chk_tools
+  ```
+  
+  **GitHub**: [Screetsec/TheFatRat](https://github.com/Screetsec/TheFatRat)
+</Accordion>
+
+<Accordion title="MSFvenom Payload Creator (MSFPC)">
+  **Description**: MSFvenom Payload Creator is a wrapper to generate multiple types of payloads based on user choice, simplifying the payload creation process
+  
+  **Installation**:
+  ```bash
+  git clone https://github.com/g0tmi1k/msfpc.git
+  cd msfpc
+  sudo chmod +x msfpc.sh
+  ```
+  
+  **Usage**:
+  ```bash
+  cd msfpc
+  
+  # Show help and version
+  sudo bash msfpc.sh -h -v
+  
+  # Generate Windows payload
+  ./msfpc.sh windows
+  
+  # Generate Linux payload
+  ./msfpc.sh linux
+  
+  # Generate Android payload
+  ./msfpc.sh apk
+  ```
+  
+  **Features**:
+  - Simplified MSFvenom interface
+  - Multiple payload formats
+  - Automatic listener setup
+  - Batch payload generation
+  - Template-based creation
+  
+  **Supported Platforms**:
+  - Windows (exe, dll, msi)
+  - Linux (elf)
+  - macOS (macho)
+  - Android (apk)
+  - Python, PHP, ASP
+  - Java (jar, war)
+  
+  **GitHub**: [g0tmi1k/msfpc](https://github.com/g0tmi1k/msfpc)
+</Accordion>
+
+<Accordion title="Venom Shellcode Generator">
+  **Description**: Venom 1.0.11 exploits Apache2 webserver to deliver payloads via fake webpages, providing advanced malicious server capabilities
+  
+  **Installation**:
+  ```bash
+  git clone https://github.com/r00t-3xp10it/venom.git
+  sudo chmod -R 775 venom*/
+  cd venom*/
+  cd aux
+  sudo bash setup.sh
+  
+  # Update Venom
+  sudo ./venom.sh -u
+  ```
+  
+  **Usage**:
+  ```bash
+  cd venom
+  sudo ./venom.sh
+  ```
+  
+  **Features**:
+  - **Apache2 Integration**: Deploy payloads via web server
+  - **Fake Webpages**: Deliver payloads through legitimate-looking pages
+  - **LAN Delivery**: Target local network systems
+  - **Multiple Encoders**: Bypass AV detection
+  - **Automation**: Automated payload delivery
+  
+  **Use Cases**:
+  - LAN-based payload delivery
+  - Web-based exploitation
+  - Social engineering attacks
+  - Internal penetration testing
+  
+  **GitHub**: [r00t-3xp10it/venom](https://github.com/r00t-3xp10it/venom)
+</Accordion>
+
+### Remote Administration Tools
+
+<Accordion title="Stitch - Cross Platform RAT">
+  **Description**: Stitch is a Cross-Platform Python Remote Administrator Tool with support for Windows, macOS, and Linux
+  
+  **Installation**:
+  ```bash
+  git clone https://github.com/nathanlopez/Stitch.git
+  cd Stitch
+  
+  # Linux installation
+  sudo pip install -r lnx_requirements.txt
+  ```
+  
+  **Usage**:
+  ```bash
+  cd Stitch
+  sudo python main.py
+  ```
+  
+  **Features**:
+  - **Cross-Platform**: Windows, macOS, Linux support
+  - **Remote Control**: Full system access
+  - **File Operations**: Upload/download files
+  - **Command Execution**: Run arbitrary commands
+  - **Persistence**: Maintain access across reboots
+  
+  **Platform-Specific Requirements**:
+  - **Linux**: `lnx_requirements.txt`
+  - **Windows**: Refer to documentation
+  - **macOS**: Refer to documentation
+  
+  <Note>
+  For Windows and macOS installation instructions, refer to the project documentation.
+  </Note>
+  
+  **Website**: [nathanlopez.github.io/Stitch](https://nathanlopez.github.io/Stitch)
+</Accordion>
+
+### Specialized Payload Tools
+
+<Accordion title="Brutal - HID Attack Tool">
+  **Description**: Brutal is a toolkit to quickly create various payloads, powershell attacks, virus attacks and launch listeners for Human Interface Devices
+  
+  **Installation**:
+  ```bash
+  git clone https://github.com/Screetsec/Brutal.git
+  cd Brutal
+  sudo chmod +x Brutal.sh
+  ```
+  
+  **Usage**:
+  ```bash
+  cd Brutal
+  sudo bash Brutal.sh
+  ```
+  
+  **Requirements**:
+  - Arduino Software (v1.6.7 or higher)
+  - TeensyDuino
+  - Linux udev rules
+  - PaensyLib folder in Arduino libraries
+  
+  **Installation Guide**:
+  Visit: [Brutal Wiki - Install Requirements](https://github.com/Screetsec/Brutal/wiki/Install-Requirements)
+  
+  **Features**:
+  - HID attack payloads
+  - PowerShell attack scripts
+  - Teensy/Arduino support
+  - Rubber Ducky payloads
+  - Automated attack sequences
+  
+  **Attack Types**:
+  - USB Rubber Ducky attacks
+  - Teensy-based attacks
+  - PowerShell execution
+  - Payload injection
+  
+  **GitHub**: [Screetsec/Brutal](https://github.com/Screetsec/Brutal)
+</Accordion>
+
+<Accordion title="Spycam">
+  **Description**: Generates a Win32 payload that captures webcam images every 1 minute and sends them to the attacker
+  
+  **Installation**:
+  ```bash
+  git clone https://github.com/indexnotfound404/spycam.git
+  cd spycam
+  bash install.sh
+  chmod +x spycam
+  ```
+  
+  **Usage**:
+  ```bash
+  cd spycam
+  ./spycam
+  ```
+  
+  **Features**:
+  - Automated webcam capture
+  - Periodic image collection (1-minute intervals)
+  - Remote image transmission
+  - Windows target support
+  
+  **Use Cases**:
+  - Physical security testing
+  - Social engineering assessment
+  - Awareness training demonstrations
+  
+  **GitHub**: [indexnotfound404/spycam](https://github.com/indexnotfound404/spycam)
+</Accordion>
+
+### Mobile & Android Payloads
+
+<Accordion title="Mob-Droid">
+  **Description**: Mob-Droid generates Metasploit Android payloads easily without typing long commands
+  
+  **Installation**:
+  ```bash
+  git clone https://github.com/kinghacker0/mob-droid.git
+  ```
+  
+  **Usage**:
+  ```bash
+  cd mob-droid
+  sudo python mob-droid.py
+  ```
+  
+  **Features**:
+  - Simplified Android payload generation
+  - Metasploit integration
+  - Multiple payload options
+  - Easy-to-use interface
+  - Automatic APK creation
+  
+  **Generated Payloads**:
+  - Android Meterpreter
+  - Reverse TCP connections
+  - Reverse HTTP/HTTPS
+  - Custom LHOST/LPORT
+  
+  **GitHub**: [kinghacker0/Mob-Droid](https://github.com/kinghacker0/Mob-Droid)
+</Accordion>
+
+<Accordion title="Enigma - Multiplatform Payload Dropper">
+  **Description**: Enigma is a multiplatform payload dropper for various operating systems
+  
+  **Installation**:
+  ```bash
+  git clone https://github.com/UndeadSec/Enigma.git
+  ```
+  
+  **Usage**:
+  ```bash
+  cd Enigma
+  sudo python enigma.py
+  ```
+  
+  **Features**:
+  - Multi-platform support
+  - Payload dropping capabilities
+  - Various payload formats
+  - Easy deployment
+  
+  **Supported Platforms**:
+  - Windows
+  - Linux
+  - Android
+  - macOS
+  
+  **GitHub**: [UndeadSec/Enigma](https://github.com/UndeadSec/Enigma)
+</Accordion>
+
+## Payload Development Workflow
+
+<Steps>
+  <Step title="Requirements Analysis">
+    Identify target platform, required capabilities, and evasion requirements
+  </Step>
+  
+  <Step title="Payload Generation">
+    Use appropriate tool to generate payload with desired functionality
+  </Step>
+  
+  <Step title="Obfuscation">
+    Apply encoding and obfuscation techniques to evade detection
+  </Step>
+  
+  <Step title="Testing">
+    Test payload in isolated environment against security controls
+  </Step>
+  
+  <Step title="Delivery">
+    Deploy payload through authorized delivery mechanism
+  </Step>
+  
+  <Step title="Handler Setup">
+    Configure listener to receive connections from payload
+  </Step>
+</Steps>
+
+## Evasion Techniques
+
+### Antivirus Bypass Methods
+
+<CardGroup cols={2}>
+  <Card title="Encoding" icon="shuffle">
+    Multiple encoding layers to obscure payload signature
+  </Card>
+  
+  <Card title="Encryption" icon="lock">
+    Encrypt payload with runtime decryption
+  </Card>
+  
+  <Card title="Obfuscation" icon="masks-theater">
+    Modify code structure and variable names
+  </Card>
+  
+  <Card title="Packing" icon="box">
+    Use custom packers to compress and hide payload
+  </Card>
+</CardGroup>
+
+### Best Practices for AV Evasion
+
+<Note>
+**Evasion Testing Tips**:
+
+- Use multiple encoding iterations
+- Avoid known malicious signatures
+- Test against target AV before deployment
+- Use custom templates instead of defaults
+- Implement time-based or environment-based execution
+- Utilize living-off-the-land binaries (LOLBins)
+</Note>
+
+## Example Workflows
+
+### Generate Windows Backdoor
+
+```bash
+# Using TheFatRat
+cd TheFatRat
+sudo bash setup.sh
+# Select option for Windows backdoor
+# Configure LHOST and LPORT
+# Generate payload
+
+# Using MSFPC
+cd msfpc
+./msfpc.sh windows
+# Follow prompts for configuration
+```
+
+### Create Android Payload
+
+```bash
+# Using Mob-Droid
+cd mob-droid
+sudo python mob-droid.py
+# Select payload type
+# Set LHOST and LPORT
+# Generate APK
+
+# Using TheFatRat
+cd TheFatRat
+sudo bash setup.sh
+# Select Android APK option
+# Configure settings
+# Build APK
+```
+
+### Setup Listener
+
+```bash
+# Start Metasploit
+msfconsole
+
+# Configure handler
+use exploit/multi/handler
+set payload windows/meterpreter/reverse_tcp
+set LHOST <your_ip>
+set LPORT <your_port>
+exploit -j
+```
+
+## Payload Types Comparison
+
+| Payload Type | Platform | Use Case | Stealth |
+|--------------|----------|----------|----------|
+| **EXE** | Windows | Desktop/Server | Medium |
+| **DLL** | Windows | Injection/Persistence | High |
+| **APK** | Android | Mobile devices | Medium |
+| **ELF** | Linux | Server/Desktop | Medium |
+| **Macro** | Office | Document-based | High |
+| **PowerShell** | Windows | Fileless attacks | Very High |
+| **Python** | Cross-platform | Scripting | High |
+
+## Security Testing Scenarios
+
+### Antivirus Testing
+
+<Accordion title="Test AV Detection Capabilities">
+  **Objective**: Assess endpoint protection effectiveness
+  
+  **Process**:
+  1. Generate baseline payload with default settings
+  2. Test detection rate
+  3. Apply obfuscation techniques
+  4. Retest with modified payload
+  5. Document detection results
+  6. Recommend improvements
+  
+  **Metrics**:
+  - Detection rate before/after obfuscation
+  - Time to detection
+  - Response actions taken
+  - False positive rate
+</Accordion>
+
+### Red Team Operations
+
+<Accordion title="Simulate Advanced Threats">
+  **Objective**: Test organizational security posture
+  
+  **Phases**:
+  1. **Initial Access**: Deliver payload via authorized method
+  2. **Execution**: Achieve code execution on target
+  3. **Persistence**: Maintain access across reboots
+  4. **Privilege Escalation**: Gain higher-level access
+  5. **Defense Evasion**: Avoid detection by security tools
+  6. **Credential Access**: Harvest credentials
+  7. **Discovery**: Enumerate environment
+  8. **Lateral Movement**: Spread to other systems
+  9. **Collection**: Gather sensitive data
+  10. **Exfiltration**: Remove data from network
+</Accordion>
+
+## Legal and Ethical Guidelines
+
+<Warning>
+**Critical Legal Requirements**:
+
+1. **Written Authorization**: Obtain explicit written permission
+2. **Scope Definition**: Clearly define authorized systems and activities
+3. **Legal Review**: Have authorization reviewed by legal counsel
+4. **Compliance**: Follow all applicable laws and regulations
+5. **Liability**: Understand potential legal and liability issues
+6. **Criminal Laws**: Be aware of computer fraud and abuse laws
+</Warning>
+
+### Responsible Use
+
+<Note>
+**Ethical Guidelines**:
+
+- Only create payloads for authorized testing
+- Store payloads securely in isolated environments
+- Never distribute payloads publicly
+- Delete payloads after testing completion
+- Document all payload creation and usage
+- Follow responsible disclosure for vulnerabilities found
+- Maintain professional certifications and standards
+</Note>
+
+## Detection and Defense
+
+### How to Detect Malicious Payloads
+
+<CardGroup cols={2}>
+  <Card title="Signature Detection" icon="fingerprint">
+    Traditional AV using known malware signatures
+  </Card>
+  
+  <Card title="Behavioral Analysis" icon="chart-line">
+    Monitor for suspicious behavior patterns
+  </Card>
+  
+  <Card title="Sandboxing" icon="box-open">
+    Execute files in isolated environment
+  </Card>
+  
+  <Card title="Heuristic Analysis" icon="brain">
+    AI/ML-based detection of malicious code
+  </Card>
+</CardGroup>
+
+### Defense Recommendations
+
+- Implement application whitelisting
+- Use advanced EDR solutions
+- Enable PowerShell logging and constraints
+- Deploy network segmentation
+- Monitor for unusual outbound connections
+- Regular security awareness training
+- Patch management and vulnerability scanning
+
+## Related Tools and Resources
+
+- [Post-Exploitation Tools](/tools/post-exploitation) - What to do after payload execution
+- [Exploit Frameworks](/tools/exploit-frameworks) - Complete exploitation frameworks
+- [Phishing Tools](/tools/phishing) - Payload delivery mechanisms
+
+## Training and Certifications
+
+### Recommended Learning Paths
+
+- **OSCP** - Offensive Security Certified Professional
+- **CRTO** - Certified Red Team Operator  
+- **PNPT** - Practical Network Penetration Tester
+- **eCPPT** - eLearnSecurity Certified Professional Penetration Tester
+
+### Practice Environments
+
+- HackTheBox
+- TryHackMe
+- PentesterLab
+- VulnHub
+- SANS NetWars

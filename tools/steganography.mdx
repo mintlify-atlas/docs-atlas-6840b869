@@ -1,0 +1,428 @@
+---
+title: Steganography Tools
+description: Tools for hiding and extracting data in images, audio files, and other media
+---
+
+# Steganography Tools
+
+Steganography is the practice of concealing messages or information within other non-secret data. These tools allow security professionals and researchers to hide data in images, audio files, and other media, as well as to detect and extract hidden information.
+
+## What is Steganography?
+
+Unlike encryption, which makes data unreadable, steganography hides the existence of the data itself. The goal is to conceal communication by embedding secret information within ordinary, non-secret files or messages.
+
+### Common Use Cases
+
+- **Covert Communication**: Hide messages in plain sight
+- **Digital Watermarking**: Embed copyright or ownership information
+- **Data Exfiltration Detection**: Identify hidden data channels in security assessments
+- **Forensic Analysis**: Discover hidden information during investigations
+- **Security Research**: Study data hiding techniques and detection methods
+
+<Note>
+Steganography tools have both legitimate security uses and potential for misuse. Always ensure you have authorization before analyzing files you don't own.
+</Note>
+
+## Available Tools
+
+<CardGroup cols={2}>
+  <Card title="SteganoHide" icon="eye-slash" href="https://github.com/StefanoDeVuono/steghide">
+    Embed and extract hidden data in image and audio files
+  </Card>
+  <Card title="StegnoCracker" icon="key" href="https://github.com/Paradoxis/StegCracker">
+    Brute-force utility to uncover hidden data with password cracking
+  </Card>
+  <Card title="StegoCracker" icon="image" href="https://github.com/W1LDN16H7/StegoCracker">
+    Hide and retrieve data in image or audio files
+  </Card>
+  <Card title="Whitespace" icon="font" href="https://github.com/beardog108/snow10">
+    Use whitespace and unicode characters for steganography
+  </Card>
+</CardGroup>
+
+## Tool Details
+
+### SteganoHide
+
+**Description**: Steghide is a steganography program that is able to hide data in various kinds of image and audio files. It supports embedding and extracting data with password protection.
+
+**Installation**:
+
+```bash
+sudo apt-get install steghide -y
+```
+
+**Usage**:
+
+#### Hiding Data
+
+```bash
+# Embed a file into an image
+steghide embed -cf cover_image.jpeg -ef secret_file.txt
+
+# With custom passphrase
+steghide embed -cf cover_image.jpeg -ef secret_file.txt -p "mypassword"
+```
+
+#### Extracting Data
+
+```bash
+# Extract hidden data from file
+steghide extract -sf stego_image.jpeg
+
+# With passphrase
+steghide extract -sf stego_image.jpeg -p "mypassword"
+```
+
+#### Getting Information
+
+```bash
+# Get info about embedded data (without extracting)
+steghide info stego_image.jpeg
+```
+
+<Accordion title="Steghide Command Options">
+```bash
+Common Options:
+  -cf <file>     Cover file (file to embed data in)
+  -ef <file>     Embed file (file to hide)
+  -sf <file>     Stego file (file containing hidden data)
+  -p <pass>      Passphrase
+  -e <algo>      Encryption algorithm
+  -z <level>     Compression level (1-9)
+  -f             Force overwrite
+  -q             Quiet mode
+  -v             Verbose mode
+
+Supported Formats:
+  Images: JPEG, BMP, WAV, AU
+  Audio:  WAV, AU
+```
+</Accordion>
+
+<Note>
+**Best Practices**:
+- Use strong passphrases to protect embedded data
+- Choose high-quality cover images with sufficient capacity
+- Original image is not modified; a new stego file is created
+- Larger cover files can hide more data
+</Note>
+
+---
+
+### StegnoCracker (StegCracker)
+
+**Description**: SteganoCracker is a brute-force utility designed to uncover hidden data inside files using dictionary attacks. It works with steghide-protected files.
+
+**Installation**:
+
+```bash
+pip3 install stegcracker
+pip3 install stegcracker -U --force-reinstall
+```
+
+**Usage**:
+
+```bash
+# Basic usage with wordlist
+stegcracker image.jpeg wordlist.txt
+
+# Use default rockyou wordlist
+stegcracker image.jpeg
+
+# Specify output file
+stegcracker image.jpeg wordlist.txt -o output.txt
+```
+
+**How it Works**:
+1. Takes a steganography file and wordlist as input
+2. Tries each password from the wordlist
+3. Attempts to extract hidden data with each password
+4. Stops when correct password is found
+5. Extracts and saves the hidden data
+
+<Accordion title="Example Workflow">
+```bash
+# 1. Download a wordlist (if needed)
+wget https://github.com/danielmiessler/SecLists/raw/master/Passwords/Common-Credentials/10-million-password-list-top-1000.txt
+
+# 2. Run StegCracker
+stegcracker suspicious_image.jpg 10-million-password-list-top-1000.txt
+
+# 3. Wait for password discovery
+# Output will show:
+# - Passwords attempted
+# - Progress percentage
+# - Password found (if successful)
+# - Extracted file location
+```
+</Accordion>
+
+<Warning>
+Brute-force cracking can take significant time depending on:
+- Wordlist size
+- Password complexity
+- System performance
+
+Use strong passwords when hiding data to prevent easy cracking.
+</Warning>
+
+---
+
+### StegoCracker
+
+**Description**: StegoCracker is a comprehensive tool that lets you hide and retrieve data in image or audio files with additional features beyond basic steganography.
+
+**GitHub**: [W1LDN16H7/StegoCracker](https://github.com/W1LDN16H7/StegoCracker)
+
+**Installation**:
+
+```bash
+sudo git clone https://github.com/W1LDN16H7/StegoCracker.git
+sudo chmod -R 755 StegoCracker
+cd StegoCracker
+python3 -m pip install -r requirements.txt
+./install.sh
+```
+
+**Features**:
+- Image and audio file support
+- Password protection
+- Multiple embedding algorithms
+- User-friendly interface
+- Automated detection capabilities
+
+---
+
+### Whitespace Steganography (Snow10)
+
+**Description**: Whitespace steganography uses whitespace characters and unicode characters to hide data. Snow10 is an implementation that can conceal messages in text files.
+
+**GitHub**: [beardog108/snow10](https://github.com/beardog108/snow10)
+
+**Installation**:
+
+```bash
+sudo git clone https://github.com/beardog108/snow10.git
+sudo chmod -R 755 snow10
+cd snow10
+./install.sh
+```
+
+**How it Works**:
+
+Whitespace steganography works by:
+- Using spaces and tabs to encode binary data
+- Hiding data at the end of lines in text files
+- Using unicode whitespace characters
+- Being virtually invisible to casual observation
+
+**Use Cases**:
+- Hide data in source code
+- Conceal messages in documents
+- Embed information in configuration files
+- Test data leak prevention systems
+
+<Accordion title="Whitespace Steganography Concepts">
+**Encoding Methods**:
+
+1. **Space/Tab Encoding**:
+   - Space = 0, Tab = 1 (binary encoding)
+   - Added to line endings
+   - Invisible in most text editors
+
+2. **Unicode Whitespace**:
+   - Zero-width characters
+   - Multiple whitespace types
+   - Supported in various formats
+
+3. **Detection Challenges**:
+   - Difficult to detect visually
+   - Requires specialized tools
+   - Can bypass basic content filters
+</Accordion>
+
+---
+
+## Steganography Techniques
+
+### LSB (Least Significant Bit)
+
+The most common image steganography technique:
+
+```
+Original pixel: RGB(11010010, 10110101, 01101011)
+Secret bit:     1
+Modified pixel: RGB(11010011, 10110101, 01101011)
+                        ^
+                    Modified
+```
+
+**Characteristics**:
+- Modifies least significant bits of pixel values
+- Creates minimal visual change
+- Higher capacity than other methods
+- Vulnerable to image manipulation
+
+### Audio Steganography
+
+**Techniques**:
+- **LSB Encoding**: Similar to images, modify audio samples
+- **Phase Coding**: Alter phase of audio signal
+- **Spread Spectrum**: Spread data across frequency spectrum
+- **Echo Hiding**: Add subtle echoes containing data
+
+### Text Steganography
+
+**Methods**:
+- Whitespace encoding
+- Synonym substitution
+- Character formatting
+- Invisible character insertion
+
+## Detection and Analysis
+
+### Steganalysis Tools
+
+```bash
+# Check for steganography indicators
+stegdetect image.jpg
+
+# Analyze file entropy
+ent image.jpg
+
+# Compare original and suspected stego files
+diff original.jpg suspected.jpg
+
+# Examine hex dump
+hexdump -C image.jpg | less
+```
+
+### Detection Indicators
+
+<Warning>
+**Signs of Steganography**:
+
+- Unusual file size compared to similar images
+- Metadata anomalies
+- Statistical irregularities in pixel values
+- Unexpected file structure
+- High entropy in specific areas
+- Modified file timestamps
+</Warning>
+
+## Security Considerations
+
+### For Hiding Data
+
+<CardGroup cols={2}>
+  <Card title="Use Strong Passwords" icon="lock">
+    Always encrypt embedded data with strong passphrases
+  </Card>
+  <Card title="Choose Appropriate Cover" icon="image">
+    Select cover files with sufficient capacity and complexity
+  </Card>
+  <Card title="Avoid Patterns" icon="random">
+    Don't use predictable embedding locations or methods
+  </Card>
+  <Card title="Test Detection" icon="magnifying-glass">
+    Verify your stego files don't raise red flags
+  </Card>
+</CardGroup>
+
+### For Detection
+
+1. **Statistical Analysis**: Check for unusual patterns in file data
+2. **Visual Inspection**: Look for artifacts or distortions
+3. **Metadata Examination**: Review file properties and history
+4. **Comparison Analysis**: Compare suspected files with originals
+5. **Automated Tools**: Use steganalysis software
+
+## Practical Examples
+
+### Example 1: Hide Text in Image
+
+```bash
+# Create a secret message
+echo "This is a secret message" > secret.txt
+
+# Hide it in an image
+steghide embed -cf vacation_photo.jpg -ef secret.txt -p "strongpassword123"
+
+# Result: vacation_photo.jpg now contains hidden message
+```
+
+### Example 2: Extract Hidden Data
+
+```bash
+# You received suspicious_image.jpg
+# Try to extract data
+steghide extract -sf suspicious_image.jpg
+# Enter passphrase: (if you know it)
+
+# Or brute force if authorized
+stegcracker suspicious_image.jpg rockyou.txt
+```
+
+### Example 3: Digital Watermarking
+
+```bash
+# Create watermark file
+echo "Copyright 2026 - YourName" > watermark.txt
+
+# Embed in all images
+for img in *.jpg; do
+    steghide embed -cf "$img" -ef watermark.txt -p "watermark_pass" -f
+done
+```
+
+## Legal and Ethical Considerations
+
+<Warning>
+**Important Notice**:
+
+Steganography has both legitimate and malicious uses:
+
+**Legitimate Uses**:
+- Digital watermarking and copyright protection
+- Secure communication in authorized contexts
+- Security research and education
+- Privacy protection
+
+**Prohibited Uses**:
+- Data exfiltration from corporate networks
+- Concealing malware or malicious payloads
+- Circumventing security controls
+- Unauthorized information hiding
+
+**Legal Implications**:
+- May violate organizational security policies
+- Could be illegal for data exfiltration
+- Subject to regulatory compliance requirements
+- Potential evidence tampering in legal cases
+</Warning>
+
+## Best Practices
+
+### For Security Professionals
+
+1. **Policy Development**: Establish clear guidelines for steganography use
+2. **Monitoring**: Implement DLP solutions to detect stego channels
+3. **Training**: Educate staff about steganography risks
+4. **Forensics**: Develop capabilities to detect and analyze hidden data
+5. **Incident Response**: Include steganalysis in security investigations
+
+### For Researchers
+
+1. **Documentation**: Keep detailed records of steganography tests
+2. **Controlled Environment**: Use isolated systems for experiments
+3. **Responsible Disclosure**: Report findings appropriately
+4. **Avoid Real Data**: Use sample files, not sensitive information
+5. **Legal Compliance**: Ensure all activities are authorized
+
+## Related Resources
+
+- [Steganography Techniques](https://www.jjtc.com/Steganography/)
+- [Digital Watermarking Guide](https://www.forensicfocus.com/)
+- [Steganalysis Research](https://www.springer.com/)
+- [NIST Digital Forensics](https://www.nist.gov/digital-forensics)

@@ -1,0 +1,598 @@
+---
+title: 'Docker Usage'
+description: 'Running HackingTool in Docker containers with docker-compose'
+---
+
+## Overview
+
+HackingTool provides Docker support for running in isolated containers, making it easy to deploy on any system without installing dependencies directly on your host machine.
+
+## Docker Image
+
+### Pre-built Image
+
+HackingTool is available as a pre-built Docker image:
+
+```yaml
+# From docker-compose.yml:4
+image: vgpastor/hackingtool
+```
+
+Pull the image directly:
+
+```bash
+docker pull vgpastor/hackingtool
+```
+
+### Base Image
+
+The Docker image is built on Kali Linux:
+
+```dockerfile
+# From Dockerfile:1
+FROM kalilinux/kali-rolling:latest
+```
+
+<Note>
+Using Kali Linux as the base ensures all security tools and dependencies are available.
+</Note>
+
+## Building the Docker Image
+
+### From Dockerfile
+
+Build the image from source:
+
+```bash
+docker build -t hackingtool .
+```
+
+This executes the multi-stage Dockerfile:
+
+<Accordion title="Step 1: System Dependencies">
+  ```dockerfile
+  # From Dockerfile:2-4
+  RUN apt-get update && \
+      apt-get install -y git python3-pip figlet sudo && \
+      apt-get install -y boxes php curl xdotool wget
+  ```
+  
+  Installs essential packages:
+  - `git` - Version control
+  - `python3-pip` - Python package manager
+  - `figlet` - ASCII art generation
+  - `sudo` - Privilege elevation
+  - `boxes`, `php`, `curl`, `xdotool`, `wget` - Tool dependencies
+</Accordion>
+
+<Accordion title="Step 2: Working Directory">
+  ```dockerfile
+  # From Dockerfile:6
+  WORKDIR /root/hackingtool
+  ```
+  
+  Sets the container working directory to `/root/hackingtool`.
+</Accordion>
+
+<Accordion title="Step 3: Python Dependencies">
+  ```dockerfile
+  # From Dockerfile:7-8
+  COPY requirements.txt ./
+  RUN pip3 install --no-cache-dir boxes flask lolcat requests -r requirements.txt
+  ```
+  
+  Installs Python packages:
+  - `boxes` - Text box drawing
+  - `flask` - Web framework
+  - `lolcat` - Colorful output
+  - `requests` - HTTP library
+  - `rich` - Terminal formatting (from requirements.txt)
+</Accordion>
+
+<Accordion title="Step 4: Application Files">
+  ```dockerfile
+  # From Dockerfile:9
+  COPY . .
+  ```
+  
+  Copies all HackingTool source files into the container.
+</Accordion>
+
+<Accordion title="Step 5: Configuration">
+  ```dockerfile
+  # From Dockerfile:10
+  RUN true && echo "/root/hackingtool/" > /home/hackingtoolpath.txt;
+  ```
+  
+  Pre-configures the installation path to `/root/hackingtool/`.
+</Accordion>
+
+<Accordion title="Step 6: Port Exposure">
+  ```dockerfile
+  # From Dockerfile:11
+  EXPOSE 1-65535
+  ```
+  
+  Exposes all ports for tools that may need network access.
+</Accordion>
+
+<Accordion title="Step 7: Entrypoint">
+  ```dockerfile
+  # From Dockerfile:12
+  ENTRYPOINT ["python3", "/root/hackingtool/hackingtool.py"]
+  ```
+  
+  Automatically launches HackingTool when the container starts.
+</Accordion>
+
+### Build with Custom Tag
+
+```bash
+# Build with version tag
+docker build -t hackingtool:1.1.0 .
+
+# Build with custom name
+docker build -t my-hackingtool .
+```
+
+## Running with Docker Compose
+
+### Docker Compose Configuration
+
+The provided `docker-compose.yml` file:
+
+```yaml
+# From docker-compose.yml:1-11
+version: "3.9"
+services:
+  hackingtool:
+    image: vgpastor/hackingtool
+    container_name: hackingtool
+    stdin_open: true
+    tty: true
+    volumes:
+      - .:/root/hackingtool
+    ports:
+      - 22:22
+```
+
+### Configuration Breakdown
+
+<Tabs>
+  <Tab title="Version">
+    ```yaml
+    version: "3.9"
+    ```
+    Uses Docker Compose file format version 3.9.
+  </Tab>
+  
+  <Tab title="Service Name">
+    ```yaml
+    services:
+      hackingtool:
+        container_name: hackingtool
+    ```
+    Defines a service named `hackingtool` with container name `hackingtool`.
+  </Tab>
+  
+  <Tab title="Interactive Mode">
+    ```yaml
+    stdin_open: true
+    tty: true
+    ```
+    - `stdin_open: true` - Keeps STDIN open for interactive input
+    - `tty: true` - Allocates a pseudo-TTY for terminal interaction
+    
+    <Note>
+    These are essential for HackingTool's interactive menu system.
+    </Note>
+  </Tab>
+  
+  <Tab title="Volumes">
+    ```yaml
+    volumes:
+      - .:/root/hackingtool
+    ```
+    Mounts the current directory (`.`) to `/root/hackingtool` in the container.
+    
+    **Benefits:**
+    - Access source code from host
+    - Persist changes and installed tools
+    - Easy development and debugging
+  </Tab>
+  
+  <Tab title="Ports">
+    ```yaml
+    ports:
+      - 22:22
+    ```
+    Maps port 22 (SSH) from container to host.
+    
+    <Tip>
+    Add more port mappings for tools that require specific ports.
+    </Tip>
+  </Tab>
+</Tabs>
+
+### Starting the Container
+
+Launch HackingTool with docker-compose:
+
+```bash
+docker-compose up
+```
+
+Run in detached mode:
+
+```bash
+docker-compose up -d
+```
+
+### Stopping the Container
+
+```bash
+# Stop gracefully
+docker-compose down
+
+# Stop and remove volumes
+docker-compose down -v
+```
+
+## Container Interaction
+
+### Attaching to Running Container
+
+If running in detached mode, attach to the interactive session:
+
+```bash
+docker attach hackingtool
+```
+
+<Warning>
+Detaching with `Ctrl+C` will stop the container. Use `Ctrl+P`, `Ctrl+Q` to detach without stopping.
+</Warning>
+
+### Executing Commands
+
+Run commands in the container:
+
+```bash
+# Start a bash shell
+docker exec -it hackingtool /bin/bash
+
+# Run a specific command
+docker exec -it hackingtool ls -la
+
+# Check Python version
+docker exec -it hackingtool python3 --version
+```
+
+### Viewing Logs
+
+```bash
+# Follow logs
+docker-compose logs -f
+
+# View last 50 lines
+docker-compose logs --tail=50
+
+# Logs for specific service
+docker logs hackingtool
+```
+
+## Volume Mounts and Persistence
+
+### Default Volume Mount
+
+The docker-compose configuration mounts the current directory:
+
+```yaml
+volumes:
+  - .:/root/hackingtool
+```
+
+### Custom Volume Mounts
+
+Add additional volumes for persistence:
+
+```yaml
+volumes:
+  - .:/root/hackingtool
+  - ./data:/root/data          # Persistent data
+  - ./tools:/home/hackingtool  # Tool installations
+```
+
+### Named Volumes
+
+Use named volumes for better management:
+
+```yaml
+volumes:
+  - hackingtool_data:/root/hackingtool
+  - hackingtool_tools:/home/hackingtool
+
+volumes:
+  hackingtool_data:
+  hackingtool_tools:
+```
+
+<Tip>
+Named volumes persist even after `docker-compose down` and survive container recreation.
+</Tip>
+
+## Port Configuration
+
+### SSH Port Mapping
+
+Default SSH port mapping:
+
+```yaml
+ports:
+  - 22:22
+```
+
+### Adding Additional Ports
+
+Map ports for specific tools:
+
+<CodeGroup>
+```yaml Web Tools
+ports:
+  - 22:22
+  - 80:80      # HTTP
+  - 443:443    # HTTPS
+  - 8080:8080  # Alternative HTTP
+```
+
+```yaml Reverse Shells
+ports:
+  - 22:22
+  - 4444:4444  # Metasploit default
+  - 4445:4445  # Alternative listener
+```
+
+```yaml Database Tools
+ports:
+  - 22:22
+  - 3306:3306  # MySQL
+  - 5432:5432  # PostgreSQL
+```
+</CodeGroup>
+
+### Port Range Mapping
+
+Map a range of ports:
+
+```yaml
+ports:
+  - "8000-8100:8000-8100"
+```
+
+## Running Without Docker Compose
+
+### Manual Docker Run
+
+Run the container directly with `docker run`:
+
+```bash
+docker run -it \
+  --name hackingtool \
+  -v $(pwd):/root/hackingtool \
+  -p 22:22 \
+  vgpastor/hackingtool
+```
+
+### With Additional Options
+
+```bash
+docker run -it \
+  --name hackingtool \
+  --rm \
+  --privileged \
+  -v $(pwd):/root/hackingtool \
+  -v hackingtool_data:/home/hackingtool \
+  -p 22:22 \
+  -p 80:80 \
+  -p 443:443 \
+  vgpastor/hackingtool
+```
+
+Options explained:
+- `--rm` - Remove container after exit
+- `--privileged` - Give extended privileges (needed for some tools)
+- `-v` - Volume mounts
+- `-p` - Port mappings
+
+## Environment Variables
+
+### Setting Environment Variables
+
+Add environment variables in docker-compose:
+
+```yaml
+services:
+  hackingtool:
+    image: vgpastor/hackingtool
+    environment:
+      - TERM=xterm-256color
+      - PYTHONUNBUFFERED=1
+      - TZ=America/New_York
+```
+
+Or use an environment file:
+
+```yaml
+services:
+  hackingtool:
+    image: vgpastor/hackingtool
+    env_file:
+      - .env
+```
+
+## Container Customization
+
+### Custom Dockerfile
+
+Extend the base image:
+
+```dockerfile
+FROM vgpastor/hackingtool:latest
+
+# Install additional tools
+RUN apt-get update && apt-get install -y \
+    nmap \
+    netcat \
+    john
+
+# Add custom scripts
+COPY custom-scripts/ /opt/scripts/
+
+# Set custom entrypoint
+ENTRYPOINT ["python3", "/root/hackingtool/hackingtool.py"]
+```
+
+Build and run:
+
+```bash
+docker build -t hackingtool-custom .
+docker run -it hackingtool-custom
+```
+
+## Troubleshooting Docker
+
+### Container Won't Start
+
+```bash
+# Check container status
+docker ps -a
+
+# View container logs
+docker logs hackingtool
+
+# Inspect container
+docker inspect hackingtool
+```
+
+### Permission Issues
+
+```bash
+# Run with elevated privileges
+docker-compose run --privileged hackingtool
+
+# Fix volume permissions
+docker exec -it hackingtool chown -R root:root /root/hackingtool
+```
+
+### TTY Errors
+
+If you see "cannot enable tty mode on non tty input":
+
+```bash
+# Use -T flag to disable TTY
+docker-compose exec -T hackingtool command
+```
+
+### Rebuild Container
+
+Force rebuild and restart:
+
+```bash
+# Rebuild image
+docker-compose build --no-cache
+
+# Recreate containers
+docker-compose up --force-recreate
+```
+
+## Docker Best Practices
+
+<Tip>
+**Recommended Practices:**
+1. Use named volumes for persistence
+2. Map only necessary ports
+3. Run with `--rm` for temporary sessions
+4. Use `.dockerignore` to exclude unnecessary files
+5. Keep the base image updated
+6. Limit resource usage with `--memory` and `--cpus`
+</Tip>
+
+<Warning>
+**Security Considerations:**
+- Avoid running with `--privileged` unless necessary
+- Don't expose sensitive ports publicly
+- Use secrets for sensitive data
+- Regularly update the base image for security patches
+- Limit container capabilities with `--cap-drop` and `--cap-add`
+</Warning>
+
+## Resource Limits
+
+### Memory Limits
+
+```yaml
+services:
+  hackingtool:
+    image: vgpastor/hackingtool
+    mem_limit: 2g
+    memswap_limit: 2g
+```
+
+### CPU Limits
+
+```yaml
+services:
+  hackingtool:
+    image: vgpastor/hackingtool
+    cpus: 2
+    cpu_percent: 50
+```
+
+## Complete Docker Compose Example
+
+A production-ready docker-compose configuration:
+
+```yaml
+version: "3.9"
+
+services:
+  hackingtool:
+    image: vgpastor/hackingtool
+    container_name: hackingtool
+    stdin_open: true
+    tty: true
+    restart: unless-stopped
+    
+    # Resource limits
+    mem_limit: 4g
+    cpus: 2
+    
+    # Environment
+    environment:
+      - TERM=xterm-256color
+      - PYTHONUNBUFFERED=1
+    
+    # Volumes
+    volumes:
+      - .:/root/hackingtool
+      - hackingtool_data:/home/hackingtool
+      - hackingtool_logs:/var/log
+    
+    # Ports
+    ports:
+      - "22:22"
+      - "80:80"
+      - "443:443"
+      - "4444:4444"
+    
+    # Networking
+    networks:
+      - hackingtool_network
+
+volumes:
+  hackingtool_data:
+  hackingtool_logs:
+
+networks:
+  hackingtool_network:
+    driver: bridge
+```
